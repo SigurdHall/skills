@@ -1,0 +1,3 @@
+display_name: Finance BI DAX Patterns
+short_description: Build finance DAX measures for budgets, actuals, forecasts, bullet charts, and drilldown behavior.
+default_prompt: Use this for DAX measures in finance BI models, especially budget/accounting comparisons, common chart axes, blank categories, and Sum1-Sum5 drilldown.

@@ -1,0 +1,4 @@
+display_name: Fabric Data Contract Doc
+short_description: Lag datakontrakter for Fabric-tabeller, grensesnitt, kvalitet, SLA og eierskap.
+default_prompt: Lag en datakontrakt i Markdown for denne Fabric-tabellen eller dataleveransen.
+

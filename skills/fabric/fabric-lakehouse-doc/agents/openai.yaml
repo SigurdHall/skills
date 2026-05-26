@@ -1,0 +1,4 @@
+display_name: Fabric Lakehouse Doc
+short_description: Dokumenter lakehouse, warehouse, medallion, notebooks, pipelines og datakvalitet.
+default_prompt: Lag et Fabric lakehouse-/warehouse-dokument i Markdown med tabeller, korn, refresh, kvalitet og tilgang.
+

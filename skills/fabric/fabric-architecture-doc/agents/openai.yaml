@@ -1,0 +1,4 @@
+display_name: Fabric Architecture Doc
+short_description: Skriv Fabric arkitektur-, migrerings- og beslutningsdokumenter.
+default_prompt: Lag et Fabric arkitekturdokument i Markdown med alternativer, anbefaling, governance og driftskonsekvenser.
+

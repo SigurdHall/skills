@@ -1,0 +1,4 @@
+display_name: Fabric Power BI Report Doc
+short_description: Dokumenter Power BI-rapporter, sider, visuals, navigasjon og testpunkter.
+default_prompt: Lag Markdown-dokumentasjon for denne Power BI/Fabric-rapporten basert på PBIP/PBIR-filene.
+

@@ -1,0 +1,4 @@
+display_name: Fabric CI/CD Governance Doc
+short_description: Dokumenter Fabric Git, deployment, miljøer, roller, risiko og kontroller.
+default_prompt: Lag et Fabric CI/CD- og governance-dokument i Markdown med miljøer, roller, deploy og kontrollpunkter.
+

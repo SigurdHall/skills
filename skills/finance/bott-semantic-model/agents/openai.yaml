@@ -1,0 +1,4 @@
+﻿interface:
+  display_name: "BOTT semantic model"
+  short_description: "Lag semantiske modeller for BOTT okonomidata."
+  default_prompt: "Lag en semantisk modell for dette okonomidatasettet basert pa BOTT, med konteringsdimensjonene som faktiske koblingsnokler."

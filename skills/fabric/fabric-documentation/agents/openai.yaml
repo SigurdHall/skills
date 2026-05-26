@@ -1,0 +1,4 @@
+display_name: Fabric Documentation
+short_description: Lag Markdown-dokumentasjon for Fabric, Power BI, modeller, drift og governance.
+default_prompt: Lag et Fabric-dokument i Markdown basert på repoets faktiske filer, og bruk relevante Power BI/BOTT-skills ved behov.
+

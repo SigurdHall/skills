@@ -1,0 +1,4 @@
+﻿interface:
+  display_name: "UiT BOTT okonomimodell"
+  short_description: "Tolk UiT okonomidata etter BOTT okonomimodell."
+  default_prompt: "Tolk dette datasettet etter UiT/BOTT okonomimodell og skill faktatabellnokler fra dimensjonsattributter."

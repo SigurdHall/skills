@@ -1,0 +1,4 @@
+display_name: Fabric Semantic Model Doc
+short_description: Dokumenter TMDL, star schema, relasjoner, målinger og modellkvalitet.
+default_prompt: Dokumenter denne Fabric/Power BI semantic modellen i Markdown basert på faktiske TMDL-/PBIP-filer.
+

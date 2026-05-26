@@ -1,0 +1,3 @@
+display_name: Tableau REST API
+short_description: Test Tableau API access, download data sources, and convert TDSX/Hyper extracts safely.
+default_prompt: Use this when building or debugging Tableau REST API scripts, sign-in tests, PAT credentials, redirects, data source downloads, or .tdsx/.hyper conversion.
