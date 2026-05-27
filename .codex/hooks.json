@@ -1,0 +1,17 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python scripts/suggest_skill_updates.py --codex-stop-hook",
+            "commandWindows": "python scripts\\suggest_skill_updates.py --codex-stop-hook",
+            "timeout": 15,
+            "statusMessage": "Checking whether skill self-review is needed"
+          }
+        ]
+      }
+    ]
+  }
+}
