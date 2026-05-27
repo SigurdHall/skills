@@ -1,6 +1,6 @@
 ---
 name: prompt-engineering
-description: Improve, critique, rewrite, or design prompts for LLMs, especially prompts for public-sector finance, reporting, BI, SQL, Power BI, Python data analysis, or model-agnostic prompt libraries. Use when the user asks to review a prompt, make a prompt more precise, add constraints, create eval criteria, or convert an ad hoc prompt into a reusable prompt artifact.
+description: Improve, critique, rewrite, or design prompts for LLMs and agent workflows. Use when the user asks to forbedre en prompt, skrive bedre instruks, lage systemprompt, review/critique a prompt, make a prompt more precise, add constraints, add examples, define output format, create eval criteria, reduce hallucination, or convert an ad hoc prompt into a reusable prompt artifact for finance, BI, SQL, Power BI, Python, public-sector work, or model-agnostic prompt libraries.
 ---
 
 # Prompt Engineering

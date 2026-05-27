@@ -1,6 +1,6 @@
 ---
 name: fabric-data-contract-doc
-description: Lag datakontrakter i Markdown for Fabric data products, lakehouse/warehouse-tabeller, semantic model-kilder, API/fil-leveranser, økonomidata, kontrollregler, SLA, skjemaendringer og eierskap. Use when documenting table contracts, source-to-Fabric interfaces, data quality rules, schema requirements, refresh expectations, consumer obligations, or public-sector/finance data governance.
+description: Create or review data contracts in Markdown for Fabric data products, lakehouse/warehouse tables, semantic model sources, APIs, files, finance data, schema changes, quality rules, SLA, ownership, and consumer obligations. Use when the user asks for datakontrakt, tabellkontrakt, interface contract, source-to-Fabric agreement, field definitions, data quality checks, refresh expectations, breaking changes, or public-sector/finance data governance.
 ---
 
 # Fabric Data Contract Doc
@@ -35,4 +35,3 @@ Bruk denne tabellen for viktige felt:
 ## Output
 
 Bruk `Data Contract`-malen fra `../fabric-documentation/references/document-templates.md`.
-

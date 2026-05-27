@@ -1,6 +1,6 @@
 ---
 name: powerbi-pbip
-description: Work safely with Power BI PBIP/PBIR projects, report JSON files, semantic model TMDL, calculated tables, relationships, themes, bookmarks, groups, visual containers, templates, and .pbit preparation. Use when editing Power BI report definitions, Fabric/Power BI project files, theme JSON, TMDL measures/tables, bookmarks, page sizes, visual positions, or when avoiding known UTF-8 BOM encoding errors in Power BI.
+description: Safely edit, inspect, validate, or explain local Power BI/Fabric PBIP/PBIR projects, report JSON, semantic model TMDL, relationships, measures, calculated tables, themes, bookmarks, groups, visual containers, templates, and .pbit preparation. Use when the user mentions PBIP, PBIR, TMDL, .platform, definition.pbir, report.json, visual.json, Power BI project files, page sizes, visual positions, UTF-8 BOM errors, or asks to modify a local Power BI report/model.
 ---
 
 # Power BI PBIP

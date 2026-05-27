@@ -1,6 +1,6 @@
 ---
 name: uit-powerbi-reporting
-description: Use for UiT Power BI finance/reporting work, especially Tertialrapport and templates under UiT/PowerBI, UiT color/theme conventions, KPI card icons, reporting unit mappings, and semantic model conventions for UiT finance dashboards.
+description: Use for UiT Power BI finance/reporting work, especially Tertialrapport, UiT/PowerBI templates, UiT økonomirapporter, finance dashboards, report themes, color conventions, KPI card icons, reporting unit mappings, Rapporteringsenheter, cost center prefix logic, semantic model conventions, and user-facing labels for UiT finance dashboards.
 ---
 
 # UiT Power BI Reporting

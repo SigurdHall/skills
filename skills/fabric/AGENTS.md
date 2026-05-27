@@ -16,4 +16,9 @@ existing skills when relevant:
 - `uit-powerbi-reporting`
 - `finance-bi-dax-patterns`
 - `tableau-rest-api`
+- `delta-sharing-powerbi-ppu`
 
+Use `fabric-delta-sharing-ingestion` when Delta Sharing data should land in
+Fabric Dataflow Gen2, lakehouse, warehouse, or a governed data product before
+Power BI reporting. Use `delta-sharing-powerbi-ppu` for direct Power BI
+Desktop/PPU consumption.

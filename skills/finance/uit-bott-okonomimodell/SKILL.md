@@ -1,6 +1,6 @@
 ---
 name: uit-bott-okonomimodell
-description: Tolk, kvalitetssjekk, normaliser og dokumenter UiT økonomidata etter BOTT økonomimodell og UiTs felles økonomistruktur. Use when working with datasets, extracts, flat files, multiple tables, Power BI/Tableau models, Excel files, API responses, saldotabell, hovedbok, faktura, reskontro, GL/voucher data, budget reports, prosjekt/BOA data, delprosjekt, koststed, konto, konteringsstreng, Unit4 ERP, SAP lønn, or questions about separating fact-table accounting dimensions from dimension/master tables, finance reporting, internal control, and dataset semantics.
+description: Interpret, quality-check, normalize, or document UiT finance data using BOTT økonomimodell and UiT økonomistruktur. Use when the user asks what columns mean, how to model UiT/BOTT data, or mentions datasets, extracts, flat files, Excel/API data, Power BI/Tableau models, saldotabell, hovedbok, faktura, reskontro, GL/voucher, budget reports, prosjekt/BOA, delprosjekt, koststed, konto, konteringsstreng, Unit4 ERP, SAP lønn, accounting dimensions vs master data, finance reporting, internal control, or dataset semantics.
 ---
 
 # UiT BOTT Økonomimodell

@@ -1,6 +1,6 @@
 ---
 name: finance-bi-dax-patterns
-description: Use for finance BI DAX measures and Power BI semantic model patterns, especially budget/accounting/prognosis measures, bullet chart axis scaling, blank category handling, Sum1-Sum5 drilldown, common maximum calculations, and Norwegian public-sector finance reporting terms.
+description: Write, review, debug, or explain finance BI DAX measures and Power BI semantic model patterns. Use when the user asks for DAX, measure, budsjett/regnskap/prognose, avvik, prosentavvik, finance dashboard calculations, bullet chart axis scaling, blank category handling, Sum1-Sum5 drilldown, common maximum calculations, Norwegian public-sector finance reporting terms, or why a Power BI finance measure behaves wrong.
 ---
 
 # Finance BI DAX Patterns

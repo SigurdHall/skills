@@ -1,6 +1,6 @@
 ---
 name: readable-python-code
-description: Use when writing, simplifying, reviewing, or explaining Python code for readability, maintainability, beginner-friendly scripts, .env-driven test scripts, command-line smoke tests, code section headers, comments/docstrings, PEP 8 style, PEP 257 docstrings, and clear line-by-line explanations.
+description: Write, simplify, review, refactor, or explain Python code for readability and maintainability. Use when the user asks for Python script, notebook helper, ETL utility, smoke test, .env-driven test script, command-line tool, logging/error handling, type hints, docstrings, PEP 8/PEP 257, beginner-friendly explanation, rydd opp i Python-kode, forklar linje for linje, or make Python code clearer without changing behavior.
 ---
 
 # Readable Python Code

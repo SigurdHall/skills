@@ -1,0 +1,7 @@
+interface:
+  display_name: "UiT Deck Generator"
+  short_description: "Create UiT-branded PowerPoint decks."
+  brand_color: "#003349"
+  default_prompt: "Use $uit-deck-generator to create a UiT-branded PowerPoint deck from this outline using the maturity workflow and official visual profile."
+policy:
+  allow_implicit_invocation: true

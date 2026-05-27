@@ -1,6 +1,6 @@
 ---
 name: bott-semantic-model
-description: Lag, vurder og dokumenter semantiske modeller og Power BI/Tableau-stjerneskjema for BOTT-baserte økonomidata. Use when working with UiT/BOTT finance datasets, Unit4/ERP extracts, saldotabell, hovedbok, budsjett, faktura, reskontro, konto, koststed, prosjekt, delprosjekt, anlegg/ansatt, bygg/arbeidspakke, konteringsstreng, semantic models, Power BI, TMDL, PBIP, star schemas, fact/dimension separation, and model quality checks.
+description: Create, review, normalize, or document semantic models and Power BI/Tableau star schemas for BOTT-based finance data. Use when the user mentions BOTT økonomimodell, UiT finance datasets, Unit4/ERP extracts, saldotabell, hovedbok, budsjett, faktura, reskontro, konto, koststed, prosjekt, delprosjekt, anlegg/ansatt, bygg/arbeidspakke, konteringsstreng, fact/dimension separation, natural keys, model quality checks, TMDL, PBIP, or "lag stjerneskjema".
 ---
 
 # BOTT Semantic Model

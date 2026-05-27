@@ -53,3 +53,8 @@ Bruk `tableau-rest-api` når dokumentasjonen beskriver:
 - `.tdsx`, `.tds` eller `.hyper`
 - migrering fra Tableau til Fabric/Power BI
 
+## Delta Sharing Til Power BI Og Fabric
+
+Bruk `delta-sharing-powerbi-ppu` når dokumentasjonen beskriver direkte Delta Sharing-forbruk i Power BI Desktop, Power BI dataflows, semantic models eller PPU workspaces.
+
+Bruk `fabric-delta-sharing-ingestion` når dokumentasjonen beskriver Delta Sharing som kilde til Fabric Dataflow Gen2, lakehouse, warehouse, styrt data product, gjenbrukbar semantic model eller offisiell rapportering.

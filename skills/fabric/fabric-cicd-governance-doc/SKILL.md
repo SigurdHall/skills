@@ -1,6 +1,6 @@
 ---
 name: fabric-cicd-governance-doc
-description: Dokumenter Fabric Git integration, CI/CD, deployment pipelines, branch policy, dev/test/prod, workspace permissions, release process, governance, auditability, ownership, operations and risk controls in Markdown. Use for Fabric lifecycle documentation, governance models, runbooks, release notes, production readiness, public-sector control documentation, and safe deployment practices.
+description: Document or design Fabric Git integration, CI/CD, deployment pipelines, branch policy, dev/test/prod, workspace permissions, release process, governance, ownership, auditability, operations, and risk controls. Use when the user asks for Fabric lifecycle, deployment, release, runbook, production readiness, governance model, tilgangsstyring, kontrollopplegg, public-sector control documentation, or safe deployment practices in Markdown.
 ---
 
 # Fabric CI/CD Governance Doc
@@ -37,4 +37,3 @@ description: Dokumenter Fabric Git integration, CI/CD, deployment pipelines, bra
 ## Output
 
 Bruk `CI/CD And Governance`-malen fra `../fabric-documentation/references/document-templates.md`.
-

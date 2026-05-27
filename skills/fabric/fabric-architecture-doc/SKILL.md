@@ -1,6 +1,6 @@
 ---
 name: fabric-architecture-doc
-description: Skriv Fabric arkitektur- og beslutningsdokumenter i Markdown. Use when documenting Microsoft Fabric solution architecture, target architecture, migration from Tableau/Databricks/SQL/Excel, workspace design, data product architecture, lakehouse vs warehouse, Direct Lake vs Import vs DirectQuery, environment strategy, governance choices, or architecture decision records.
+description: Write Microsoft Fabric architecture, target architecture, decision notes, and migration plans in Markdown. Use when the user asks for Fabric arkitektur, løsningsdesign, ADR, beslutningsnotat, målarkitektur, workspace design, data product architecture, Tableau/Databricks/SQL/Excel migration, lakehouse vs warehouse, Direct Lake vs Import vs DirectQuery, environment strategy, medallion choices, governance trade-offs, or "hvilken Fabric-arkitektur bør vi velge?".
 ---
 
 # Fabric Architecture Doc
@@ -28,4 +28,3 @@ description: Skriv Fabric arkitektur- og beslutningsdokumenter i Markdown. Use w
 ## Output
 
 Bruk malen `Architecture Decision Note` fra `document-templates.md` når dokumentet er et beslutningsnotat. Bruk full dokumentstruktur fra `fabric-documentation` når det er løsningsdokumentasjon.
-

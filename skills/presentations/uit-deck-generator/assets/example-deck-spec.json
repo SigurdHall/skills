@@ -1,0 +1,100 @@
+{
+  "deck_id": "Testdeck",
+  "title": "Fra rapportmigrering til styringsdata",
+  "subtitle": "Eksempel for UiT deck generator",
+  "outcome": "Vise at generatoren lager et gyldig UiT-branded deck.",
+  "footer": "UiT deck generator",
+  "slides": [
+    {
+      "type": "decision",
+      "title": "Beslutningen vi må ta",
+      "message": "Dette er et styringsvalg, ikke bare et verktøyvalg.",
+      "options": [
+        {
+          "title": "A. Isolert migrering",
+          "body": "Rask flytting, men dagens fragmentering videreføres."
+        },
+        {
+          "title": "B. Styrt pilot",
+          "body": "Bygger varig styringsevne gjennom et data product."
+        }
+      ]
+    },
+    {
+      "type": "bullets",
+      "title": "Dagens risiko",
+      "message": "Fragmentert rapportering gir styringsrisiko.",
+      "bullets": [
+        "Isolert migrering flytter eksisterende svakheter.",
+        "Styrt dataplattform gir felles definisjoner og mindre personavhengighet.",
+        "Pilot gir konkret læring før skalering."
+      ]
+    },
+    {
+      "type": "process",
+      "title": "Dataflyten",
+      "message": "Fra kildesystem til lederrapport er det flere styringspunkter.",
+      "steps": [
+        {
+          "label": "Kilder",
+          "body": "Unit4/BOTT, HR og lokale filer."
+        },
+        {
+          "label": "Plattform",
+          "body": "Innhenting og kvalitet."
+        },
+        {
+          "label": "Modell",
+          "body": "Felles begreper."
+        },
+        {
+          "label": "Rapport",
+          "body": "Lederflate og analyse."
+        }
+      ]
+    },
+    {
+      "type": "hub",
+      "title": "Styringsmodell",
+      "message": "Felles spilleregler sentralt, analyse lokalt.",
+      "center": "Styrt dataplattform",
+      "spokes": [
+        {
+          "title": "Sentralt",
+          "body": "Definisjoner og tilgang."
+        },
+        {
+          "title": "Domener",
+          "body": "Faglig betydning."
+        },
+        {
+          "title": "Lokalt",
+          "body": "Analyse og lederstøtte."
+        },
+        {
+          "title": "ITA",
+          "body": "Arkitektur og drift."
+        }
+      ]
+    },
+    {
+      "type": "timeline",
+      "title": "Neste steg",
+      "message": "Kort pilot med tydelig beslutningspunkt.",
+      "steps": [
+        {
+          "label": "30 dager",
+          "body": "Kartlegg kilder og begreper."
+        },
+        {
+          "label": "60 dager",
+          "body": "Foreslå modell og data product-kontrakt."
+        },
+        {
+          "label": "90 dager",
+          "body": "Vis lederpakke og beslutningsnotat."
+        }
+      ]
+    }
+  ]
+}

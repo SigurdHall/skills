@@ -1,6 +1,6 @@
 ---
 name: fabric-lakehouse-doc
-description: Dokumenter Fabric Lakehouse, Warehouse, medallion, notebooks, pipelines, Dataflow Gen2, tabeller, datakorn, kvalitetsregler og databehandling i Markdown. Use when writing docs for Fabric data engineering, Bronze/Silver/Gold, Delta/Parquet tables, ingestion, transformations, refresh, lineage, data quality, or data products before semantic modeling.
+description: Document Fabric Lakehouse, Warehouse, medallion architecture, notebooks, pipelines, Dataflow Gen2, tables, datakorn, ingestion, transformations, Delta/Parquet, refresh, lineage, data quality, and data engineering workflows in Markdown. Use when the user asks for lakehouse docs, warehouse docs, Bronze/Silver/Gold, pipeline documentation, notebook documentation, table overview, data product before semantic model, or "dokumenter databehandlingen".
 ---
 
 # Fabric Lakehouse Doc
@@ -37,4 +37,3 @@ Dokumenter idempotens, duplikatregler, nullverdier, typekonvertering, avstemming
 ## Output
 
 Bruk `Lakehouse / Warehouse Data Product`-malen fra `../fabric-documentation/references/document-templates.md`.
-

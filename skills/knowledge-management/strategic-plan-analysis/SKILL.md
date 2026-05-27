@@ -1,6 +1,6 @@
 ---
 name: strategic-plan-analysis
-description: Analyze an organization's strategy, long-term plans, operating model, and governance documents. Use when Codex should research current public or internal strategy documents, compare strategy with operational plans, assess implementation quality, create critical Markdown notes, build topic pages in an Obsidian vault, or evaluate whether plans translate into priorities, resources, indicators, risk management, reporting, and accountability.
+description: Analyze, critique, or synthesize an organization's strategy, long-term plans, operating model, governance documents, annual plans, budget documents, allocation letters, or implementation plans. Use when the user asks for strategianalyse, kritisk vurdering, operasjonalisering, virksomhetsstyring, current/latest strategy research, compare strategy with plans, create Markdown notes/topic pages, or evaluate priorities, resources, indicators, risk management, reporting, accountability, and governance quality.
 ---
 
 # Strategic Plan Analysis

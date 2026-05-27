@@ -1,0 +1,3 @@
+display_name: Skill Design
+short_description: Lag, vurder og stram inn Codex-skills for avanserte agenter.
+default_prompt: Vurder eller lag denne skillen. Hold den kompakt, trigger-presis og nyttig for avanserte agenter.

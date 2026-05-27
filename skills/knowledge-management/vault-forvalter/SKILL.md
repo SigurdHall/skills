@@ -1,6 +1,6 @@
 ---
 name: vault-forvalter
-description: Maintain the user's Obsidian Vault as a knowledge system. Use when the task involves private/Vault, _principal, _forvalter, _kontekst, note cleanup, links/backlinks, topic pages, note classification, RSS note processing, Vault structure, or syncing Vault changes to GitHub.
+description: Maintain the user's Obsidian Vault and Markdown knowledge system. Use when the user asks to update the vault, rydde noter, lage topic page, classify notes, process RSS notes, fix wikilinks/backlinks, organize private/Vault, edit _principal/_forvalter/_kontekst, create source/resource notes, improve vault structure, or sync vault changes to GitHub.
 ---
 
 # Vault Forvalter

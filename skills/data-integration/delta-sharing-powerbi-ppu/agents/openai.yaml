@@ -1,0 +1,4 @@
+interface:
+  display_name: "Delta Sharing Power BI PPU"
+  short_description: "Use Delta Sharing safely with Power BI PPU"
+  default_prompt: "Use $delta-sharing-powerbi-ppu to document a Delta Sharing connection for Power BI PPU."

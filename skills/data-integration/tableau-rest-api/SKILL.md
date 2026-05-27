@@ -1,6 +1,6 @@
 ---
 name: tableau-rest-api
-description: Use when testing or building Tableau REST API access, personal access token sign-in, .env-based Tableau configuration, Tableau site/project smoke tests, downloading Tableau .tdsx data sources, converting .tds/.hyper extracts to readable files, redirect handling, and diagnosing Tableau HTTP errors such as 301, 405, 401, 403, or connection refused.
+description: Build, test, debug, or document Tableau REST API and extract workflows. Use when the user mentions Tableau API, Tableau Server, Personal Access Token, PAT login, .env Tableau config, site/project smoke test, download Tableau datasource, .tdsx, .tds, .hyper, Hyper API, convert Tableau extracts to CSV/Parquet/readable files, Metadata API, Tableau-to-Fabric migration, redirect handling, or HTTP errors 301, 405, 401, 403, 404, connection refused.
 ---
 
 # Tableau REST API

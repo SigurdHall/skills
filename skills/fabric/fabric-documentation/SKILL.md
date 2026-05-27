@@ -1,6 +1,6 @@
 ---
 name: fabric-documentation
-description: Lag og kvalitetssikre Markdown-dokumentasjon for Microsoft Fabric, Power BI, semantic models, lakehouse, warehouse, medallion, notebooks, pipelines, Git integration, CI/CD, governance og data products. Use this as the main Fabric documentation skill whenever the user asks for Fabric docs, README/docs files, architecture notes, implementation plans, operating models, runbooks, data contracts, semantic model documentation, star schema documentation, Power BI/Fabric governance, or documentation generated from PBIP/TMDL/Fabric item files.
+description: Main skill for creating, improving, or quality-checking Markdown documentation for Microsoft Fabric and Power BI. Use when the user asks to skrive Fabric-dokumentasjon, lage README/docs, document semantic models, lakehouse, warehouse, medallion, notebooks, pipelines, Git integration, CI/CD, governance, data products, runbooks, data contracts, star schema docs, PBIP/TMDL/Fabric item files, or when a Fabric documentation task does not clearly fit a narrower Fabric skill.
 ---
 
 # Fabric Documentation
@@ -29,6 +29,7 @@ Bruk denne hovedskillen til å lage praktiske, repo-vennlige Markdown-dokumenter
 
 - Bruk `fabric-architecture-doc` for målarkitektur, løsningsdesign, plattformvalg, migrering og beslutningsnotater.
 - Bruk `fabric-lakehouse-doc` for lakehouse, warehouse, medallion, datakilder, tabeller, pipelines, notebooks og databehandling.
+- Bruk `fabric-delta-sharing-ingestion` for Delta Sharing til Fabric Dataflow Gen2, lakehouse/warehouse, gjenbrukbare data products og styrt overgang fra direkte Power BI-import til Fabric.
 - Bruk `fabric-semantic-model-doc` for semantic model, TMDL, stjerneskjema, relasjoner, målinger, RLS/OLS og modellkvalitet.
 - Bruk `fabric-powerbi-report-doc` for rapporter, sider, visuals, navigasjon, tema, KPI-er og rapportstandard.
 - Bruk `fabric-cicd-governance-doc` for Git integration, deployment pipelines, miljøer, roller, publisering, drift, risiko og kontroll.
@@ -73,4 +74,3 @@ Les bare det som trengs:
 3. Sjekk at Fabric/Power BI-navn matcher filene eller kildene.
 4. Sjekk at personvern, tilgang, refresh, lineage og eier er dekket der det er relevant.
 5. For PBIP/TMDL-dokumentasjon, rapporter om du faktisk leste modellfilene eller bare jobbet fra antakelser.
-

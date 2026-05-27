@@ -1,0 +1,4 @@
+interface:
+  display_name: "Fabric Delta Sharing Ingestion"
+  short_description: "Plan Delta Sharing ingestion in Fabric"
+  default_prompt: "Use $fabric-delta-sharing-ingestion to choose a Fabric ingestion pattern for Delta Sharing data."

@@ -1,6 +1,6 @@
 ---
 name: fabric-semantic-model-doc
-description: Dokumenter Fabric/Power BI semantic models, TMDL, star schema, faktatabeller, dimensjoner, relasjoner, DAX measures, RLS/OLS, Direct Lake/Import/DirectQuery og modellkvalitet i Markdown. Use whenever generating semantic model documentation from PBIP/TMDL files, CSV star schemas, BOTT finance data, Power BI models, or Fabric semantic model item definitions.
+description: Document, review, or explain Fabric/Power BI semantic models in Markdown, including TMDL, star schema, fact tables, dimensions, relationships, DAX measures, RLS/OLS, Direct Lake, Import, DirectQuery, refresh, and model quality. Use when the user asks for semantic model docs, datamodell-dokumentasjon, TMDL documentation, star schema documentation, PBIP model docs, CSV star schema docs, BOTT finance model, or relationship/measure documentation.
 ---
 
 # Fabric Semantic Model Doc
@@ -41,4 +41,3 @@ description: Dokumenter Fabric/Power BI semantic models, TMDL, star schema, fakt
 ## Output
 
 Bruk `Semantic Model`-malen fra `../fabric-documentation/references/document-templates.md`. Ta med Mermaid ER-diagram når det gjør modellen lettere å kontrollere.
-

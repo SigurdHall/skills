@@ -5,5 +5,5 @@ data migration, and conversion workflows.
 
 Current skills:
 
+- `delta-sharing-powerbi-ppu`
 - `tableau-rest-api`
-

@@ -1,0 +1,23 @@
+{
+  "retrieved": "2026-05-26",
+  "official_sources": {
+    "logo": "https://uit.no/ansatte/kommunikasjonstips/grafisk/profilmanual/sub?p_document_id=861333",
+    "colors": "https://uit.no/ansatte/kommunikasjonstips/grafisk/profilmanual/sub?p_document_id=861335",
+    "profile_elements": "https://uit.no/ansatte/kommunikasjonstips/grafisk/profilmanual/sub?p_document_id=861336",
+    "powerpoint_templates": "https://uit.no/ansatte/kommunikasjonstips/grafisk/maler/sub?p_document_id=861316"
+  },
+  "downloaded_assets": {
+    "logo_zip": "UiT_logo_Bokmaal.zip",
+    "color_pdf": "UiT_fargekart_CMYK.pdf",
+    "extracted_logo_folder": "uit-logo-bokmal"
+  },
+  "palette": {
+    "main_dark_blue": "#003349",
+    "blue": "#007396",
+    "light_blue": "#59BEC9",
+    "red": "#CB333B",
+    "yellow": "#F2A900",
+    "black": "#000000",
+    "white": "#FFFFFF"
+  }
+}
