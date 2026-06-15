@@ -1,11 +1,15 @@
 ---
 name: tableau-rest-api
-description: Build, test, debug, or document Tableau REST API and extract workflows. Use when the user mentions Tableau API, Tableau Server, Personal Access Token, PAT login, .env Tableau config, site/project smoke test, download Tableau datasource, .tdsx, .tds, .hyper, Hyper API, convert Tableau extracts to CSV/Parquet/readable files, Metadata API, Tableau-to-Fabric migration, redirect handling, or HTTP errors 301, 405, 401, 403, 404, connection refused.
+description: Build, test, debug, or document Tableau REST API and extract workflows. Use when the user mentions Tableau API, Tableau Server, PAT login, .env Tableau config, site/project smoke tests, workbook/report evidence, views, crosstabs, download Tableau workbooks or datasources, .twb, .twbx, .tdsx, .tds, .hyper, Hyper API, Metadata API, Tableau-to-Power-BI/Fabric migration, redirects, or HTTP errors 301, 405, 401, 403, 404, connection refused.
 ---
 
 # Tableau REST API
 
 Use this for Tableau REST API smoke tests and small automation scripts.
+
+For workbook/report evidence capture, read
+`references/workbook-report-extraction.md` before designing extraction scripts or
+Tableau-to-Power BI migration evidence.
 
 ## Configuration
 
@@ -115,3 +119,18 @@ explicit all-rows option before exporting everything:
 --hyper-row-limit 0
 --hyper-chunk-size 100000
 ```
+
+## Workbook And Report Evidence
+
+Use Tableau REST API and existing Tableau metadata to capture workbook/report
+evidence before rebuilding reports elsewhere. Prefer small, auditable artifacts:
+workbook inventory, view/page list, datasource bindings, field usage, filters,
+parameters, calculated fields, permissions, schedules, subscriptions, thumbnails,
+and owner/project context.
+
+If table migration contracts exist, join the Tableau field/datasource evidence
+to those contracts instead of inferring renamed tables or columns from report
+labels. Keep unresolved mappings explicit for human review.
+
+See `references/workbook-report-extraction.md` for a compact artifact checklist
+and extraction sequence.

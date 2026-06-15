@@ -18,13 +18,13 @@ Skills should be reusable workflows, not project notes. Keep project-specific in
 
 Use this map when a task could trigger more than one skill:
 
-- Thinking/planning: [grill-me](skills/thinking-planning/grill-me/SKILL.md), [narrative-design](skills/thinking-planning/narrative-design/SKILL.md), [skill-design](skills/thinking-planning/skill-design/SKILL.md)
+- Thinking/planning: [grill-me](skills/thinking-planning/grill-me/SKILL.md), [narrative-design](skills/thinking-planning/narrative-design/SKILL.md), [skill-design](skills/thinking-planning/skill-design/SKILL.md), [small-council](skills/thinking-planning/small-council/SKILL.md)
 - Coding/prompts: [readable-python-code](skills/coding/readable-python-code/SKILL.md), [prompt-engineering](skills/coding/prompt-engineering/SKILL.md)
 - Data integration: [delta-sharing-powerbi-ppu](skills/data-integration/delta-sharing-powerbi-ppu/SKILL.md), [tableau-rest-api](skills/data-integration/tableau-rest-api/SKILL.md)
 - Fabric docs: [fabric-documentation](skills/fabric/fabric-documentation/SKILL.md) plus the narrower Fabric skills under [fabric](skills/fabric/AGENTS.md)
 - Finance/BOTT: [uit-bott-okonomimodell](skills/finance/uit-bott-okonomimodell/SKILL.md), [bott-semantic-model](skills/finance/bott-semantic-model/SKILL.md), [finance-bi-dax-patterns](skills/finance/finance-bi-dax-patterns/SKILL.md)
 - Knowledge management: [vault-forvalter](skills/knowledge-management/vault-forvalter/SKILL.md), [strategic-plan-analysis](skills/knowledge-management/strategic-plan-analysis/SKILL.md)
-- Local Power BI files: [powerbi-pbip](skills/powerbi-local/powerbi-pbip/SKILL.md), [uit-powerbi-reporting](skills/powerbi-local/uit-powerbi-reporting/SKILL.md)
+- Local Power BI files: [pbip-full-report](skills/powerbi-local/pbip-full-report/SKILL.md), [powerbi-pbip](skills/powerbi-local/powerbi-pbip/SKILL.md), [powerbi-report-production-loop](skills/powerbi-local/powerbi-report-production-loop/SKILL.md), [uit-powerbi-reporting](skills/powerbi-local/uit-powerbi-reporting/SKILL.md)
 - Presentations: [uit-deck-generator](skills/presentations/uit-deck-generator/SKILL.md) for UiT-branded PowerPoint deck generation, template/layout compliance, deck specs, and `.pptx` validation
 
 ## Skill Format

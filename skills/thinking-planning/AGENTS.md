@@ -12,6 +12,7 @@ Current skills:
 - [grill-me](grill-me/SKILL.md)
 - [narrative-design](narrative-design/SKILL.md)
 - [skill-design](skill-design/SKILL.md)
+- [small-council](small-council/SKILL.md)
 
 Useful adjacent skills:
 

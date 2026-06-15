@@ -1,4 +1,3 @@
 display_name: Grill Me
 short_description: Stresstest ideer, planer, antakelser og beslutninger før gjennomføring.
-default_prompt: Grill denne ideen eller planen. Vær direkte om svake antakelser, risiko, overkomplisering og bedre neste steg.
-
+default_prompt: Grill denne ideen eller planen. Start med svakeste antakelse eller høyeste risiko, og still ett konkret oppfølgingsspørsmål om gangen.

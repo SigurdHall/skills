@@ -1,0 +1,4 @@
+interface:
+  display_name: "HTML Report Builder"
+  short_description: "Specify and generate HTML reports"
+  default_prompt: "Use $html-report-builder to specify, validate, and generate a static HTML report."

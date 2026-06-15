@@ -1,0 +1,4 @@
+interface:
+  display_name: "Power BI Report Production Loop"
+  short_description: "Run Tableau-to-Power-BI report migration loops."
+  default_prompt: "Use $powerbi-report-production-loop to run a Tableau-to-Power-BI report migration loop."

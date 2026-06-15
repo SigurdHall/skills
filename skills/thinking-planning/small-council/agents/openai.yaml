@@ -1,0 +1,3 @@
+display_name: Small Council
+short_description: Bruk hele rådet som daily intelligence council for RSS, kilder, vault, anbefalinger og skill-kapasitet.
+default_prompt: Kall inn Small Council som daily intelligence council. Bruk Tyrion i hovedtråden, forsøk alle rådsseter som subagenter i bølger ved thread limit, la Varys planlegge eventuelle datahentende Spider 1..N-scouter på hovedmodell, bruk billigere modeller bare for slike smale scout-underagenter når risikoen er lav, og lever en kort brief med funn, anbefalinger, tiltak, kildegap og skill/workflow-upgrades.

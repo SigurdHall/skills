@@ -9,6 +9,7 @@ publishing to Power BI Service or Fabric.
 
 Current skills:
 
+- `pbip-full-report`
 - `powerbi-pbip`
+- `powerbi-report-production-loop`
 - `uit-powerbi-reporting`
-

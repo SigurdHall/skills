@@ -1,6 +1,6 @@
 ---
 name: grill-me
-description: Relentlessly interview the user one question at a time to stress-test an idea, plan, prompt, architecture, analysis, roadmap, project scope, assumption, or decision. Use when the user asks to be grilled, challenged, sanity-checked, pressure-tested, red-teamed, criticized, poked holes in, asked "what am I missing?", "does this make sense?", "any concerns?", or wants sharper thinking, hidden risks, better trade-offs, stronger questions, or a more defensible plan.
+description: Use when the user asks to be grilled, challenged, sanity-checked, pressure-tested, red-teamed, criticized, poked holes in, asked "what am I missing?", "does this make sense?", "any concerns?", or wants sharper thinking, hidden risks, better trade-offs, stronger questions, or a more defensible idea, plan, prompt, architecture, analysis, roadmap, scope, assumption, or decision.
 ---
 
 # Grill Me
@@ -23,6 +23,18 @@ Core protocol:
   inspect them instead of asking.
 - Follow dependencies between decisions; do not jump randomly across topics.
 - Be direct and persistent, but do not be contrarian for its own sake.
+
+Hardness rules:
+
+- Do not praise the idea before naming the weakest assumption or highest-risk
+  gap.
+- Do not treat "brutally honest" as a tone request. Be specific, evidenced,
+  and decision-oriented.
+- Ask the question that could most change the plan, not the question that is
+  easiest to answer.
+- If the user's answer is vague, optimistic, or unfalsifiable, ask a narrower
+  follow-up instead of moving on.
+- For each branch, identify what evidence would change the conclusion.
 
 Question targets:
 

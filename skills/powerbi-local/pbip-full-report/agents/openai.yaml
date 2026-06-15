@@ -1,0 +1,4 @@
+interface:
+  display_name: "PBIP Full Report"
+  short_description: "Build complete Power BI reports with PBIP/PBIR best practices."
+  default_prompt: "Create or adapt a full Power BI report using PBIP."
