@@ -5,6 +5,14 @@ description: Safely edit, inspect, validate, or explain local Power BI/Fabric PB
 
 # Power BI PBIP
 
+## When to use
+
+This is the **offline fallback** for raw PBIP/PBIR/TMDL file edits. When MCP and
+the Power BI Desktop bridge are available, prefer `skills-for-fabric`
+(`semantic-model-authoring`, `powerbi-report-authoring`) for live model and
+report changes. Use this skill for encoding/BOM-safe direct file edits, no-MCP
+sessions, and validation.
+
 ## Core Rules
 
 1. Treat PBIP/PBIR files as structured project files. Inspect relevant `*.pbip`, `definition.pbir`, `definition/report.json`, `definition/pages/**/page.json`, `visual.json`, bookmarks, and theme files before changing them.
@@ -79,6 +87,14 @@ Get-ChildItem -Recurse -Filter *.json |
 if ($failed.Count -eq 0) { "OK all JSON files parsed" } else { $failed }
 ```
 
+For bookmark-driven filter panels or reset buttons, also validate that button actions do not jump to another page:
+
+```powershell
+python C:\repos\skills\skills\powerbi-local\powerbi-pbip\scripts\validate_bookmark_actions.py C:\path\to\Report\definition
+```
+
+Use this after editing `definition/bookmarks/*.bookmark.json` or `definition/pages/**/visual.json` with `visualLink` bookmark actions. The script reports buttons whose bookmark target has an `explorationState.activeSection` different from the page where the button lives.
+
 ## TMDL Model Edits
 
 When editing semantic models:
@@ -130,7 +146,7 @@ When copying or moving a Power BI template:
    - `.Report/StaticResources/RegisteredResources/*.json`
 6. Check page size in every `page.json`.
 7. If scaling layout, scale visual and group `position.x`, `position.y`, `position.width`, and `position.height` consistently.
-8. Validate bookmarks after renaming groups or filter panels.
+8. Validate bookmarks after renaming groups or filter panels. Use `scripts/validate_bookmark_actions.py` when buttons open/close filter panels or reset page state.
 9. Check `SemanticModel/definition/database.tmdl`. If Power BI reports `PFE_IMBI_DB_COMPLEVEL_DOWNGRADE` or says current `CompatibilityLevel` is higher than requested, raise the requested level in `database.tmdl` to the current level, for example from `1600` to `1601`.
 10. Run JSON validation and BOM check before reporting completion.
 

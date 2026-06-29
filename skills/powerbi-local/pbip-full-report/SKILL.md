@@ -9,7 +9,9 @@ description: Use when creating, scaffolding, or substantially adapting complete 
 
 Build Power BI reports as maintainable PBIP/PBIR projects. Treat the report as a product: define the decision it supports, confirm the semantic model, design page flows, choose visuals deliberately, then edit PBIP files with validation.
 
-**REQUIRED SUB-SKILL:** Use `powerbi-pbip` before reading or editing PBIP/PBIR/TMDL/report JSON files. Use `uit-powerbi-reporting` as well for UiT finance/reporting reports.
+**MECHANICS:** Delegate live model and report editing to `skills-for-fabric` (`semantic-model-authoring`, `powerbi-report-authoring`) when MCP/Desktop is available. This skill owns UiT report structure and decisions, not generic PBIR/TMDL tooling.
+
+**REQUIRED SUB-SKILL:** Use `powerbi-pbip` before reading or editing PBIP/PBIR/TMDL/report JSON files offline. Use `uit-powerbi-reporting` as well for UiT finance/reporting reports.
 
 When rebuilding from Tableau evidence, read
 `references/tableau-derived-templates.md` and use Tableau artifacts as design
