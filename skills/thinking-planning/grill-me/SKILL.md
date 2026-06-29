@@ -52,8 +52,8 @@ critical lens, not as a replacement for domain rules.
 Related skills: [skill-design](../skill-design/SKILL.md),
 [prompt-engineering](../../coding/prompt-engineering/SKILL.md),
 [readable-python-code](../../coding/readable-python-code/SKILL.md),
-[fabric-documentation](../../fabric/fabric-documentation/SKILL.md),
-[uit-bott-okonomimodell](../../finance/uit-bott-okonomimodell/SKILL.md),
+[fabric-documentation](../../reporting/fabric/fabric-documentation/SKILL.md),
+[uit-bott-okonomimodell](../../reporting/norms/uit-bott-okonomimodell/SKILL.md),
 [powerbi-pbip](../../reporting/powerbi/powerbi-pbip/SKILL.md).
 
 Only switch from interview mode to summary mode when the user asks for a

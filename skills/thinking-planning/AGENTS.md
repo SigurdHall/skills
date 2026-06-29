@@ -18,6 +18,6 @@ Useful adjacent skills:
 
 - [prompt-engineering](../coding/prompt-engineering/SKILL.md) for prompt critique.
 - [readable-python-code](../coding/readable-python-code/SKILL.md) for Python implementation quality.
-- [fabric-documentation](../fabric/fabric-documentation/SKILL.md) for Fabric documentation tasks.
-- [uit-bott-okonomimodell](../finance/uit-bott-okonomimodell/SKILL.md) for UiT/BOTT finance data.
+- [fabric-documentation](../reporting/fabric/fabric-documentation/SKILL.md) for Fabric documentation tasks.
+- [uit-bott-okonomimodell](../reporting/norms/uit-bott-okonomimodell/SKILL.md) for UiT/BOTT finance data.
 - [powerbi-pbip](../reporting/powerbi/powerbi-pbip/SKILL.md) for PBIP/TMDL/report JSON work.

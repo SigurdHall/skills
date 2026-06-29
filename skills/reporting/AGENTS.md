@@ -7,18 +7,21 @@ end-to-end orchestration, UiT norms, and private business data.
 Categories:
 
 - `powerbi/` — pure Power BI file skills (PBIP/PBIR/TMDL, metadata).
-- `presentation/` — HTML/static report builders.
+- `presentation/` — HTML/static report builders + slide decks.
 - `orchestration/` — end-to-end processes that pull mechanics from
   `skills-for-fabric` and other skills into a full report.
-- `norms/` — UiT conventions (finance, theme, labels, encoding).
+- `fabric/` — Fabric documentation skills (architecture, model, lakehouse,
+  data contract, cicd, delta-sharing).
+- `norms/` — UiT + finance/BOTT conventions (model, DAX, theme, labels).
 - `*/private/` — per-skill business data, **gitignored** (see Backup).
 
 Current skills:
 
 - powerbi: `powerbi-pbip`, `semantic-model-metadata`
-- presentation: `html-report-builder`
+- presentation: `html-report-builder`, `presentation-factory`, `uit-deck-generator`
 - orchestration: `pbip-full-report`, `powerbi-report-production-loop`
-- norms: `uit-powerbi-reporting`
+- fabric: `fabric-documentation` (hub) + doc-type skills
+- norms: `uit-powerbi-reporting`, `uit-bott-okonomimodell`, `bott-semantic-model`, `finance-bi-dax-patterns`
 
 ## Ownership boundary (avoid two truths)
 
@@ -48,6 +51,11 @@ Current skills:
 - Any DAX/measure write → pair `semantic-model-authoring` (mechanics) with
   `powerbi/semantic-model-metadata` (description/lineage standard).
 - Any UiT finance/økonomi specifics → `norms/uit-powerbi-reporting`.
+- Finance/BOTT model semantics → `norms/uit-bott-okonomimodell`; star-schema →
+  `norms/bott-semantic-model`; finance DAX → `norms/finance-bi-dax-patterns`.
+- Write Markdown docs about a Fabric/Power BI item → `fabric/*` (hub:
+  `fabric/fabric-documentation`), not the build skills above.
+- Slide decks → `presentation/uit-deck-generator` (PPTX), `presentation/presentation-factory` (HTML).
 
 Rule: generic Power BI mechanics → `skills-for-fabric`; this group stays focused
 on UiT conventions, offline fallback, and orchestration.

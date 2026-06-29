@@ -17,7 +17,7 @@ clear narrative, appropriate maturity checks, and reusable generation scripts.
 3. If the deck is not mature enough, use the routed skill first:
    - narrative/storyline: `thinking-planning/narrative-design`
    - hard challenge: `thinking-planning/grill-me`
-   - Fabric documentation: `fabric/fabric-documentation`
+   - Fabric documentation: `reporting/fabric/fabric-documentation`
    - BOTT/economy model: finance skills
    - Power BI local artifacts: `reporting/powerbi/*`, `reporting/orchestration/*`
    - missing recurring workflow: create/update a focused skill with
