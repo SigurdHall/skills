@@ -12,6 +12,7 @@ Current skills:
 - `pbip-full-report`
 - `powerbi-pbip`
 - `powerbi-report-production-loop`
+- `semantic-model-metadata`
 - `uit-powerbi-reporting`
 
 ## Ownership boundary (avoid two truths)
@@ -36,6 +37,8 @@ Current skills:
 - Build a complete report end to end → `pbip-full-report` for UiT structure,
   delegating mechanics to the Fabric skills.
 - Tableau → Power BI migration → `powerbi-report-production-loop`.
+- Measure/column documentation, lineage, descriptions, annotations → `semantic-model-metadata` (conventions) + `semantic-model-authoring` (edit).
+- Any DAX/measure write or edit → always pair `semantic-model-authoring` (mechanics) with `semantic-model-metadata` (description/lineage standard), since authoring cannot cross-reference back into this group.
 - Any UiT finance/økonomi specifics → always `uit-powerbi-reporting`.
 
 Rule: if a step is generic Power BI mechanics, prefer the `skills-for-fabric`
