@@ -2,7 +2,7 @@ import unittest
 from pathlib import Path
 
 
-SKILL_ROOT = Path(__file__).resolve().parents[1] / "skills" / "powerbi-local" / "uit-powerbi-reporting"
+SKILL_ROOT = Path(__file__).resolve().parents[1] / "skills" / "reporting" / "norms" / "uit-powerbi-reporting"
 
 
 class UitPowerBiReportingLayoutReferenceTests(unittest.TestCase):

@@ -6,7 +6,8 @@ from pathlib import Path
 SCRIPT_DIR = (
     Path(__file__).resolve().parents[1]
     / "skills"
-    / "powerbi-local"
+    / "reporting"
+    / "powerbi"
     / "powerbi-pbip"
     / "scripts"
 )
