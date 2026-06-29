@@ -54,7 +54,7 @@ Related skills: [skill-design](../skill-design/SKILL.md),
 [readable-python-code](../../coding/readable-python-code/SKILL.md),
 [fabric-documentation](../../fabric/fabric-documentation/SKILL.md),
 [uit-bott-okonomimodell](../../finance/uit-bott-okonomimodell/SKILL.md),
-[powerbi-pbip](../../powerbi-local/powerbi-pbip/SKILL.md).
+[powerbi-pbip](../../reporting/powerbi/powerbi-pbip/SKILL.md).
 
 Only switch from interview mode to summary mode when the user asks for a
 verdict, plan, or synthesis. Then summarize: strongest parts, weakest

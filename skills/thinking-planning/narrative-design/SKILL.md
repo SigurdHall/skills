@@ -1,6 +1,6 @@
 ---
 name: narrative-design
-description: Create, critique, or improve narratives, red threads, storylines, data stories, visual explanations, presentations, pitches, proposals, meeting prep, decision memos, executive briefings, or talk tracks. Use when the user asks for a clearer narrative, bedre rød tråd, storytelling with data, slide/deck structure, pitch structure, audience framing, meeting agenda, speaker notes, objection handling, or a persuasive/informative communication plan across any domain.
+description: Shape the narrative, structure, and argument behind communication work: red threads, storylines, data stories, slide/deck structure, pitch structure, proposals, meeting prep, decision memos, executive briefings, or talk tracks. Use when the user asks for a clearer narrative, bedre rød tråd, storytelling with data, audience framing, meeting agenda, speaker notes, objection handling, or a persuasive/informative communication plan across any domain. This is the preparatory structuring step; use presentation-factory or uit-deck-generator instead when the task is to build the actual slide deck or .pptx file.
 ---
 
 # Narrative Design

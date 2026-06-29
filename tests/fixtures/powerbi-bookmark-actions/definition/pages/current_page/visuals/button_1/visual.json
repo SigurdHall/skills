@@ -1,0 +1,27 @@
+{
+  "name": "button_1",
+  "visual": {
+    "visualContainerObjects": {
+      "visualLink": [
+        {
+          "properties": {
+            "type": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Bookmark'"
+                }
+              }
+            },
+            "bookmark": {
+              "expr": {
+                "Literal": {
+                  "Value": "'open_other'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

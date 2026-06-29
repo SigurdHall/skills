@@ -1,6 +1,6 @@
 ---
 name: uit-bott-okonomimodell
-description: Interpret, quality-check, normalize, or document UiT finance data using BOTT økonomimodell and UiT økonomistruktur. Use when the user asks what columns mean, how to model UiT/BOTT data, or mentions datasets, extracts, flat files, Excel/API data, Power BI/Tableau models, saldotabell, hovedbok, faktura, reskontro, GL/voucher, budget reports, prosjekt/BOA, delprosjekt, koststed, konto, konteringsstreng, Unit4 ERP, SAP lønn, accounting dimensions vs master data, finance reporting, internal control, or dataset semantics.
+description: Interpret, quality-check, or normalize the meaning of UiT finance data fields using BOTT økonomimodell and UiT økonomistruktur. Use when the user asks what columns mean, which dimension a field belongs to, or mentions datasets, extracts, flat files, Excel/API data, saldotabell, hovedbok, faktura, reskontro, GL/voucher, budget reports, prosjekt/BOA, delprosjekt, koststed, konto, konteringsstreng, Unit4 ERP, SAP lønn, accounting dimensions vs master data, data quality risks, or dataset semantics. Use bott-semantic-model instead when the task is to build a fact/dimension star schema, and fabric-semantic-model-doc when the task is to write Markdown documentation of an existing model.
 ---
 
 # UiT BOTT Økonomimodell

@@ -66,16 +66,17 @@ Minimum report contents:
 - local Parquet/CSV datasets
 - SQL query files
 - visuals tied to named queries
-- evaluation checks that define when the report is usable
+
+Datasets marked `sensitivity: confidential` or `restricted` will produce a validation warning; ensure the output HTML is excluded from git before rendering. Queries returning more than 500 rows will be truncated in the HTML output — add a `WHERE` clause or `LIMIT` in SQL.
 
 ## Completion Criteria
 
 A report-building task is complete only when:
 
-- `html-report validate` succeeds
+- `html-report validate` passes with no errors
 - `html-report render` produces the expected HTML file
-- `html-report check` succeeds
-- sensitive data and generated outputs are excluded from git when required
+- `html-report check` passes with no errors
+- any warnings (e.g. sensitive datasets) are resolved or explicitly accepted
 - assumptions are documented in the spec or decision log
 
 ## Common Mistakes

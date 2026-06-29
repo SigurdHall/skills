@@ -1,6 +1,6 @@
 ---
 name: fabric-powerbi-report-doc
-description: Document Power BI/Fabric reports, PBIR/PBIP report definitions, pages, visuals, navigation, slicers, filter panels, bookmarks, themes, KPI cards, report standards, and QA checks in Markdown. Use when the user asks to dokumentere rapport, Power BI report docs, report pages, visual layout, Tertialrapport, UiT Power BI templates, finance dashboards, rapportnormer, testpunkter, or user-facing report documentation.
+description: Write Markdown documentation that describes Power BI/Fabric reports, PBIR/PBIP report definitions, pages, visuals, navigation, slicers, filter panels, bookmarks, themes, KPI cards, report standards, and QA checks. Use when the user asks to dokumentere rapport, Power BI report docs, report pages, visual layout, rapportnormer, testpunkter, or user-facing report documentation. Use uit-powerbi-reporting instead when the task is to build or edit the UiT report itself rather than document it; this skill still uses uit-powerbi-reporting for UiT templates, colors, and KPI conventions.
 ---
 
 # Fabric Power BI Report Doc

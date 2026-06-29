@@ -1,6 +1,6 @@
 ---
 name: fabric-semantic-model-doc
-description: Document, review, or explain Fabric/Power BI semantic models in Markdown, including TMDL, star schema, fact tables, dimensions, relationships, DAX measures, RLS/OLS, Direct Lake, Import, DirectQuery, refresh, and model quality. Use when the user asks for semantic model docs, datamodell-dokumentasjon, TMDL documentation, star schema documentation, PBIP model docs, CSV star schema docs, BOTT finance model, or relationship/measure documentation.
+description: Write Markdown documentation that describes an existing Fabric/Power BI semantic model, including TMDL, star schema, fact tables, dimensions, relationships, DAX measures, RLS/OLS, Direct Lake, Import, DirectQuery, refresh, and model quality. Use when the user asks for semantic model docs, datamodell-dokumentasjon, TMDL documentation, star schema documentation, PBIP model docs, CSV star schema docs, or relationship/measure documentation. Use bott-semantic-model instead when the task is to design the model structure, and uit-bott-okonomimodell when the task is to interpret individual BOTT finance fields.
 ---
 
 # Fabric Semantic Model Doc

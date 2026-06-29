@@ -21,11 +21,6 @@ visuals:
     title: Variance by unit
     type: table
     query: summary
-
-evaluation:
-  required_checks:
-    - validate
-    - render
 ```
 
 Required top-level fields:
@@ -40,7 +35,6 @@ Required top-level fields:
 | `output` | Output HTML filename. |
 | `queries` | Named SQL files. |
 | `visuals` | Visual blocks bound to named queries. |
-| `evaluation` | Checks required before completion. |
 
 Current visual support:
 

@@ -1,0 +1,757 @@
+<!doctype html>
+<html lang="no">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Økonomirapport layoutkatalog</title>
+  <style>
+    :root {
+      --navy: #003349;
+      --blue: #007396;
+      --teal: #00a0b0;
+      --yellow: #f2a900;
+      --red: #cb333b;
+      --line: #c8d3d8;
+      --muted: #5a7380;
+      --bg: #eef3f5;
+      --paper: #ffffff;
+      --soft: #f8fafb;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: #17313c;
+      font-family: "Segoe UI", Arial, sans-serif;
+      line-height: 1.4;
+    }
+    main {
+      max-width: 1500px;
+      margin: 0 auto;
+      padding: 28px;
+    }
+    h1 {
+      margin: 0 0 6px;
+      color: var(--navy);
+      font-size: 30px;
+    }
+    h2 {
+      margin: 0 0 6px;
+      color: var(--navy);
+      font-size: 18px;
+    }
+    .subtitle {
+      margin: 0 0 22px;
+      color: var(--muted);
+      max-width: 980px;
+    }
+    .controls {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+      align-items: center;
+      margin-bottom: 14px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    button {
+      border: 1px solid var(--blue);
+      background: #fff;
+      color: var(--blue);
+      border-radius: 4px;
+      min-height: 34px;
+      padding: 0 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    button:hover { background: #f0f8fb; }
+    .matrix {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(120px, 1fr));
+      gap: 10px;
+      margin-bottom: 22px;
+    }
+    .matrix-card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 10px;
+      min-height: 108px;
+    }
+    .matrix-card strong {
+      color: var(--navy);
+      display: block;
+      margin-bottom: 4px;
+      font-size: 13px;
+    }
+    .matrix-card span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .layouts {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+    .layout-card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+      box-shadow: 0 10px 22px rgba(0, 51, 73, 0.08);
+    }
+    .layout-card.wide { grid-column: 1 / -1; }
+    .ideas {
+      margin-top: 22px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+    .section-title {
+      grid-column: 1 / -1;
+      margin-top: 6px;
+    }
+    .idea-card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-left: 5px solid var(--yellow);
+      border-radius: 8px;
+      padding: 14px;
+      min-height: 178px;
+      box-shadow: 0 8px 18px rgba(0, 51, 73, 0.06);
+    }
+    .idea-card h3 {
+      margin: 0 0 7px;
+      color: var(--navy);
+      font-size: 16px;
+    }
+    .idea-card p {
+      margin: 0 0 8px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .meta {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 8px 0 10px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .tag {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 3px 8px;
+      background: #fbfdfe;
+    }
+    .canvas {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: var(--soft);
+      border: 1px solid #b7c7ce;
+      overflow: hidden;
+    }
+    .zone {
+      position: absolute;
+      border: 2px solid var(--navy);
+      background: rgba(0, 51, 73, 0.05);
+      color: var(--navy);
+      font-weight: 700;
+      font-size: clamp(8px, 0.78vw, 11px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 4px;
+    }
+    .header {
+      left: 1.25%;
+      top: 1.1%;
+      width: 97.5%;
+      height: 7.2%;
+      border-color: var(--blue);
+      background: rgba(0, 115, 150, 0.12);
+      z-index: 3;
+      justify-content: flex-start;
+      padding-left: 10px;
+    }
+    .filters {
+      left: 1.25%;
+      top: 9.7%;
+      width: 97.5%;
+      height: 7.2%;
+      border-color: var(--blue);
+      background: rgba(0, 115, 150, 0.08);
+      z-index: 2;
+    }
+    .filter-menu {
+      left: 73.75%;
+      top: 0.35%;
+      width: 25.65%;
+      height: 47.5%;
+      border-color: var(--yellow);
+      background: rgba(255, 255, 255, 0.97);
+      box-shadow: -10px 8px 22px rgba(0, 51, 73, 0.18);
+      z-index: 10;
+      display: grid;
+      grid-template-rows: 12% 12% 14% 1fr 12%;
+      gap: 2%;
+    }
+    .menu-buttons {
+      display: grid;
+      grid-template-columns: 1fr 0.9fr;
+      gap: 4px;
+      width: 60%;
+      justify-self: end;
+      align-self: start;
+      margin: 4px 4px 0 0;
+    }
+    .small-button {
+      border: 1px solid var(--blue);
+      color: var(--blue);
+      background: #fff;
+      border-radius: 3px;
+      font-size: clamp(7px, 0.6vw, 9px);
+      min-height: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+    }
+    .menu-title {
+      justify-content: flex-start;
+      padding-left: 8px;
+      border: 0;
+      background: transparent;
+      font-size: clamp(9px, 0.8vw, 12px);
+    }
+    .menu-slicers {
+      display: grid;
+      gap: 5px;
+      padding: 0 8px;
+    }
+    .slicer-mini {
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--muted);
+      border-radius: 2px;
+      min-height: 24px;
+      display: flex;
+      align-items: center;
+      padding-left: 6px;
+      font-size: clamp(7px, 0.65vw, 9px);
+    }
+    .footer-note {
+      border: 0;
+      border-top: 1px solid var(--line);
+      background: transparent;
+      color: var(--muted);
+      font-size: clamp(7px, 0.6vw, 9px);
+    }
+    .kpi { border-color: #5a7380; background: rgba(90, 115, 128, 0.09); }
+    .chart { border-color: var(--teal); background: rgba(0, 160, 176, 0.09); }
+    .table { border-color: var(--navy); background: rgba(0, 51, 73, 0.08); }
+    .note { border-color: var(--yellow); background: rgba(242, 169, 0, 0.12); }
+    .blank { border-style: dashed; background: #fff; color: var(--muted); }
+    .hidden-overlays .filter-menu { display: none; }
+    ul {
+      margin: 10px 0 0;
+      padding-left: 18px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    li { margin-bottom: 5px; }
+    @media (max-width: 1100px) {
+      main { padding: 16px; }
+      .layouts { grid-template-columns: 1fr; }
+      .ideas { grid-template-columns: 1fr; }
+      .matrix { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Økonomirapport layoutkatalog</h1>
+    <p class="subtitle">Samlet plan over layoutfamiliene vi bør støtte i en økonomirapport-mal basert på eksisterende Økonomi_rapport. Alle fulle sider arver samme Sideheader, Sidefiltre og filtermeny-overlay.</p>
+
+    <div class="controls">
+      <span>Illustrasjonskontroll</span>
+      <button type="button" onclick="toggleOverlays()">Skjul filtermenyer</button>
+    </div>
+
+    <section class="matrix" aria-label="Layoutoversikt">
+      <div class="matrix-card"><strong>1. Base / ledig</strong><span>Tom innholdsflate med felles chrome.</span></div>
+      <div class="matrix-card"><strong>2. 3-kolonne status</strong><span>Tre parallelle tema, hvert med kort + graf + graf + graf.</span></div>
+      <div class="matrix-card"><strong>3. KPI + to grafer</strong><span>Tre KPI-er over to hovedgrafer.</span></div>
+      <div class="matrix-card"><strong>4. 4 KPI + tidsserie</strong><span>Fire KPI-er, stor tidsserie og kompakt sekundærgraf.</span></div>
+      <div class="matrix-card"><strong>5. Stablet tidsserie</strong><span>Stor hovedgraf og mindre detalj-/historikkgraf.</span></div>
+      <div class="matrix-card"><strong>6. Datagrunnlag</strong><span>Kontrolltabell og sporbarhet, ofte skjult i visningsmodus.</span></div>
+    </section>
+
+    <section class="layouts">
+      <article class="layout-card">
+        <h2>1. Base / ledig side</h2>
+        <div class="meta"><span class="tag">Kilde: Ledig</span><span class="tag">Bruk: nye spesialsider</span></div>
+        <div class="canvas">
+          <div class="zone header">Sideheader: tittel, logo, beta, oppdatering, Flere filtre, Nullstill</div>
+          <div class="zone filters">Sidefiltre: variable slicerplasser med labels</div>
+          <div class="zone blank" style="left:1.25%;top:19%;width:97.5%;height:76%;">Ledig innholdsflate</div>
+          <div class="zone filter-menu">
+            <div class="menu-buttons"><div class="small-button">Flere filtre</div><div class="small-button">Nullstill</div></div>
+            <div class="zone menu-title">Filtermeny</div>
+            <div class="menu-slicers"><div class="slicer-mini">Slicer 1</div><div class="slicer-mini">Slicer 2</div><div class="slicer-mini">Slicer 3</div></div>
+            <div class="zone footer-note">Data sist oppdatert</div>
+          </div>
+        </div>
+        <ul>
+          <li>Anbefalt bruk: startpunkt for nye spesialsider, eksperimenter og rapporter der du vil beholde header, slicerheader og filtermeny uten å låse innholdsflaten.</li>
+          <li>Opprett når analysebehovet er uklart, eller når siden skal bygges rundt ett nytt visuelt hovedgrep.</li>
+        </ul>
+      </article>
+
+      <article class="layout-card">
+        <h2>2. 3-kolonne status</h2>
+        <div class="meta"><span class="tag">Kilde: Økonomioversikt</span><span class="tag">3 tema x kort + 3 grafer</span></div>
+        <div class="canvas">
+          <div class="zone header">Sideheader</div>
+          <div class="zone filters">Sidefiltre</div>
+          <div class="zone kpi" style="left:1.25%;top:18.5%;width:31.6%;height:12.0%;">Kolonne 1 kort</div>
+          <div class="zone chart" style="left:1.25%;top:32.0%;width:31.6%;height:20.0%;">Graf 1</div>
+          <div class="zone chart" style="left:1.25%;top:54.0%;width:31.6%;height:20.0%;">Graf 2</div>
+          <div class="zone chart" style="left:1.25%;top:76.0%;width:31.6%;height:21.0%;">Graf 3</div>
+          <div class="zone kpi" style="left:34.1%;top:18.5%;width:31.9%;height:12.0%;">Kolonne 2 kort</div>
+          <div class="zone chart" style="left:34.1%;top:32.0%;width:31.9%;height:20.0%;">Graf 1</div>
+          <div class="zone chart" style="left:34.1%;top:54.0%;width:31.9%;height:20.0%;">Graf 2</div>
+          <div class="zone chart" style="left:34.1%;top:76.0%;width:31.9%;height:21.0%;">Graf 3</div>
+          <div class="zone kpi" style="left:67.2%;top:18.5%;width:31.7%;height:12.0%;">Kolonne 3 kort</div>
+          <div class="zone chart" style="left:67.2%;top:32.0%;width:31.7%;height:20.0%;">Graf 1</div>
+          <div class="zone chart" style="left:67.2%;top:54.0%;width:31.7%;height:20.0%;">Graf 2</div>
+          <div class="zone chart" style="left:67.2%;top:76.0%;width:31.7%;height:21.0%;">Graf 3</div>
+          <div class="zone filter-menu"><div class="menu-buttons"><div class="small-button">Flere filtre</div><div class="small-button">Nullstill</div></div><div class="zone menu-title">Filtermeny</div><div class="menu-slicers"><div class="slicer-mini">Slicer 1</div><div class="slicer-mini">Slicer 2</div><div class="slicer-mini">Slicer 3</div></div><div class="zone footer-note">Data sist oppdatert</div></div>
+        </div>
+        <ul>
+          <li>Anbefalt bruk: side for parallell oppfølging av tre faste tema, for eksempel inntekter, kostnader og nettobidrag.</li>
+          <li>Hver kolonne bør lese likt: statuskort først, deretter utvikling, fordeling og detaljert drivergraf.</li>
+        </ul>
+      </article>
+
+      <article class="layout-card">
+        <h2>3. KPI-rad + to hovedgrafer</h2>
+        <div class="meta"><span class="tag">Kilde: Avsetninger</span><span class="tag">3 KPI + 2 grafer</span></div>
+        <div class="canvas">
+          <div class="zone header">Sideheader</div>
+          <div class="zone filters">Sidefiltre</div>
+          <div class="zone kpi" style="left:1.25%;top:18.5%;width:34.7%;height:18.3%;">KPI 1</div>
+          <div class="zone kpi" style="left:37.2%;top:18.5%;width:29.4%;height:18.3%;">KPI 2</div>
+          <div class="zone kpi" style="left:67.9%;top:18.5%;width:30.9%;height:18.3%;">KPI 3</div>
+          <div class="zone chart" style="left:4.7%;top:39.0%;width:44.1%;height:59.6%;">Graf venstre</div>
+          <div class="zone chart" style="left:53.8%;top:39.0%;width:41.6%;height:59.6%;">Graf høyre</div>
+          <div class="zone filter-menu"><div class="menu-buttons"><div class="small-button">Flere filtre</div><div class="small-button">Nullstill</div></div><div class="zone menu-title">Filtermeny</div><div class="menu-slicers"><div class="slicer-mini">Slicer 1</div><div class="slicer-mini">Slicer 2</div><div class="slicer-mini">Slicer 3</div></div><div class="zone footer-note">Data sist oppdatert</div></div>
+        </div>
+        <ul>
+          <li>Anbefalt bruk: tema der brukeren trenger rask oppsummering i KPI-rad og deretter to store sammenlignbare grafer.</li>
+          <li>Ikke legg inn forklaringstekst i denne malen; forklaring hører hjemme i tittel, hoverdetalj, drillthrough eller dokumentasjon.</li>
+        </ul>
+      </article>
+
+      <article class="layout-card">
+        <h2>4. Fire KPI-er + hovedtidsserie</h2>
+        <div class="meta"><span class="tag">Kilde: Økonomiutvikling as-of</span><span class="tag">4 KPI + 2 tidsserier</span></div>
+        <div class="canvas">
+          <div class="zone header">Sideheader</div>
+          <div class="zone filters">Sidefiltre</div>
+          <div class="zone kpi" style="left:1.25%;top:18.5%;width:23.8%;height:13.9%;">KPI 1</div>
+          <div class="zone kpi" style="left:25.8%;top:18.5%;width:23.8%;height:13.9%;">KPI 2</div>
+          <div class="zone kpi" style="left:50.4%;top:18.5%;width:23.8%;height:13.9%;">KPI 3</div>
+          <div class="zone kpi" style="left:75.0%;top:18.5%;width:23.8%;height:13.9%;">KPI 4</div>
+          <div class="zone chart" style="left:1.25%;top:35.2%;width:97.5%;height:40.6%;">Stor tidsserie / as-of graf</div>
+          <div class="zone chart" style="left:1.25%;top:78.6%;width:97.5%;height:18.4%;">Sekundærgraf / årsresultat</div>
+          <div class="zone filter-menu"><div class="menu-buttons"><div class="small-button">Flere filtre</div><div class="small-button">Nullstill</div></div><div class="zone menu-title">Filtermeny</div><div class="menu-slicers"><div class="slicer-mini">Slicer 1</div><div class="slicer-mini">Slicer 2</div><div class="slicer-mini">Slicer 3</div></div><div class="zone footer-note">Data sist oppdatert</div></div>
+        </div>
+        <ul>
+          <li>Anbefalt bruk: periodeutvikling der fire nøkkeltall skal sette kontekst før brukeren leser hovedtidsserien.</li>
+          <li>God for as-of, hittil-i-år, årsprognose og sammenligning mellom valgt periode og referanseperiode.</li>
+        </ul>
+      </article>
+
+      <article class="layout-card">
+        <h2>5. Stablet fullbredde tidsserie</h2>
+        <div class="meta"><span class="tag">Kilde: Prognoseutvikling</span><span class="tag">2 linjegrafer</span></div>
+        <div class="canvas">
+          <div class="zone header">Sideheader</div>
+          <div class="zone filters">Sidefiltre</div>
+          <div class="zone chart" style="left:1.25%;top:18.5%;width:97.5%;height:47.8%;">Hovedgraf full bredde</div>
+          <div class="zone chart" style="left:1.25%;top:69.1%;width:97.5%;height:27.8%;">Detalj-/historikkgraf full bredde</div>
+          <div class="zone filter-menu"><div class="menu-buttons"><div class="small-button">Flere filtre</div><div class="small-button">Nullstill</div></div><div class="zone menu-title">Filtermeny</div><div class="menu-slicers"><div class="slicer-mini">Slicer 1</div><div class="slicer-mini">Slicer 2</div><div class="slicer-mini">Slicer 3</div></div><div class="zone footer-note">Data sist oppdatert</div></div>
+        </div>
+        <ul>
+          <li>Anbefalt bruk: når grafene er hovedproduktet, for eksempel prognoseutvikling, historikk, sesongprofil eller akkumulert utvikling.</li>
+          <li>Bruk når du vil gi maksimal bredde til tidsserier og bare trenger støtteinformasjon i sidefiltre og legend.</li>
+        </ul>
+      </article>
+
+      <article class="layout-card">
+        <h2>6. Datagrunnlag / kontrolltabell</h2>
+        <div class="meta"><span class="tag">Kilde: Datagrunnlag</span><span class="tag">Skjult i visningsmodus</span></div>
+        <div class="canvas">
+          <div class="zone header" style="top:1.7%;height:7.0%;width:100%;left:0;">Sideheader / kontrolltittel</div>
+          <div class="zone table" style="left:0;top:12%;width:100%;height:88%;">Fullbredde tabell / sporbarhet / teknisk kontroll</div>
+        </div>
+        <ul>
+          <li>Anbefalt bruk: skjult arbeidsflate for validering, kildesporing, teknisk kontroll og test av filterkontekst.</li>
+          <li>Hold den enkel og tabellorientert; dette er en utvikler-/forvaltningsside, ikke en leserside.</li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="layouts" aria-label="Kombinert økonomi og HR">
+      <div class="section-title">
+        <h2>Kombinerte økonomi- og HR-maler</h2>
+        <p class="subtitle">Disse malene er rollebaserte. De bruker samme header, slicerheader og filtermeny som økonomimalene, men prioriterer ulike beslutninger for seksjons-, institutt- og fakultetsledere.</p>
+      </div>
+
+      <article class="layout-card">
+        <h2>Seksjonsleder: kombinert økonomi og HR</h2>
+        <div class="meta"><span class="tag">Operativ ledelse</span><span class="tag">Bemanning, årsverk og lønn</span></div>
+        <div class="canvas">
+          <div class="zone header">Sideheader: seksjon, periode, oppdatering, Flere filtre, Nullstill</div>
+          <div class="zone filters">Sidefiltre: år, måned, seksjon, stillingskategori, finansiering</div>
+          <div class="zone kpi" style="left:1.25%;top:18.5%;width:23.6%;height:14.0%;">Årsverk<br>plan vs faktisk</div>
+          <div class="zone kpi" style="left:25.7%;top:18.5%;width:23.6%;height:14.0%;">Lønn<br>mot budsjett</div>
+          <div class="zone kpi" style="left:50.1%;top:18.5%;width:23.6%;height:14.0%;">Bemanning<br>vakans / innleie</div>
+          <div class="zone kpi" style="left:74.5%;top:18.5%;width:24.2%;height:14.0%;">Tilstedeværelse<br>fravær</div>
+          <div class="zone chart" style="left:1.25%;top:35.5%;width:47.3%;height:28.0%;">Månedsutvikling: lønn, årsverk og budsjett</div>
+          <div class="zone chart" style="left:51.4%;top:35.5%;width:47.3%;height:28.0%;">Bemanning per stillingsgruppe</div>
+          <div class="zone table" style="left:1.25%;top:66.5%;width:97.5%;height:30.5%;">Oppfølgingsliste: vakans, overtid, fravær, tiltak og ansvarlig</div>
+          <div class="zone filter-menu"><div class="menu-buttons"><div class="small-button">Flere filtre</div><div class="small-button">Nullstill</div></div><div class="zone menu-title">Filtermeny</div><div class="menu-slicers"><div class="slicer-mini">Personalkategori</div><div class="slicer-mini">Finansiering</div><div class="slicer-mini">Koststed</div></div><div class="zone footer-note">Data sist oppdatert</div></div>
+        </div>
+        <ul>
+          <li>Behov: rask operativ kontroll på om seksjonen har riktig bemanning innenfor lønnsbudsjett.</li>
+          <li>Brukes i kortsiktig oppfølging, bemanningsplanlegging og samtaler om vakans, fravær, overtid og kapasitet.</li>
+        </ul>
+      </article>
+
+      <article class="layout-card">
+        <h2>Instituttleder: kombinert økonomi og HR</h2>
+        <div class="meta"><span class="tag">Taktisk ledelse</span><span class="tag">Studieportefølje, prosjekter og risiko</span></div>
+        <div class="canvas">
+          <div class="zone header">Sideheader: institutt, periode, oppdatering, Flere filtre, Nullstill</div>
+          <div class="zone filters">Sidefiltre: år, måned, institutt, prosjekt, finansieringskilde</div>
+          <div class="zone kpi" style="left:1.25%;top:18.5%;width:23.6%;height:14.0%;">Resultat<br>mot budsjett</div>
+          <div class="zone kpi" style="left:25.7%;top:18.5%;width:23.6%;height:14.0%;">Årsverk<br>undervisning / forskning</div>
+          <div class="zone kpi" style="left:50.1%;top:18.5%;width:23.6%;height:14.0%;">Prosjekter<br>BOA-risiko</div>
+          <div class="zone kpi" style="left:74.5%;top:18.5%;width:24.2%;height:14.0%;">Studieportefølje<br>kapasitet</div>
+          <div class="zone chart" style="left:1.25%;top:35.5%;width:47.3%;height:29.0%;">Økonomi og bemanning over tid</div>
+          <div class="zone chart" style="left:51.4%;top:35.5%;width:47.3%;height:29.0%;">Prosjekter, rekruttering og leveranserisiko</div>
+          <div class="zone table" style="left:1.25%;top:67.5%;width:97.5%;height:29.5%;">Porteføljetabell: studieprogram, prosjekt, årsverk, budsjettavvik og tiltak</div>
+          <div class="zone filter-menu"><div class="menu-buttons"><div class="small-button">Flere filtre</div><div class="small-button">Nullstill</div></div><div class="zone menu-title">Filtermeny</div><div class="menu-slicers"><div class="slicer-mini">Prosjektstatus</div><div class="slicer-mini">Studieprogram</div><div class="slicer-mini">Koststed</div></div><div class="zone footer-note">Data sist oppdatert</div></div>
+        </div>
+        <ul>
+          <li>Behov: balansere studieportefølje, forskningsprosjekter, bemanning og økonomisk risiko på instituttet.</li>
+          <li>Brukes til prioritering mellom fagmiljø, prosjektoppfølging, rekrutteringsbehov og tiltak mot budsjettavvik.</li>
+        </ul>
+      </article>
+
+      <article class="layout-card wide">
+        <h2>Fakultetsleder: kombinert økonomi og HR</h2>
+        <div class="meta"><span class="tag">Strategisk ledelse</span><span class="tag">Ramme, kapasitet og prioritering</span></div>
+        <div class="canvas">
+          <div class="zone header">Sideheader: fakultet, periode, oppdatering, Flere filtre, Nullstill</div>
+          <div class="zone filters">Sidefiltre: år, tertial, fakultet, institutt, finansieringskilde</div>
+          <div class="zone kpi" style="left:1.25%;top:18.5%;width:18.6%;height:14.0%;">Ramme<br>handlingsrom</div>
+          <div class="zone kpi" style="left:20.7%;top:18.5%;width:18.6%;height:14.0%;">Lønnsandel<br>og kapasitet</div>
+          <div class="zone kpi" style="left:40.2%;top:18.5%;width:18.6%;height:14.0%;">Strategisk<br>rekruttering</div>
+          <div class="zone kpi" style="left:59.7%;top:18.5%;width:18.6%;height:14.0%;">BOA<br>portefølje</div>
+          <div class="zone kpi" style="left:79.2%;top:18.5%;width:19.5%;height:14.0%;">Risiko<br>neste 12 mnd</div>
+          <div class="zone chart" style="left:1.25%;top:35.5%;width:37.5%;height:29.5%;">Instituttmatrise: økonomi, årsverk og risiko</div>
+          <div class="zone chart" style="left:40.5%;top:35.5%;width:58.2%;height:29.5%;">Strategisk utvikling: ramme, lønn, eksternfinansiering og kapasitet</div>
+          <div class="zone table" style="left:1.25%;top:68.0%;width:97.5%;height:29.0%;">Lederagenda: prioriterte institutt, tiltak, konsekvens og beslutningspunkt</div>
+          <div class="zone filter-menu"><div class="menu-buttons"><div class="small-button">Flere filtre</div><div class="small-button">Nullstill</div></div><div class="zone menu-title">Filtermeny</div><div class="menu-slicers"><div class="slicer-mini">Institutt</div><div class="slicer-mini">Finansiering</div><div class="slicer-mini">Risikotype</div></div><div class="zone footer-note">Data sist oppdatert</div></div>
+        </div>
+        <ul>
+          <li>Behov: styre samlet ramme, kapasitet og strategisk prioritering på tvers av institutter.</li>
+          <li>Brukes i ledermøter, budsjettfordeling, rekrutteringsprioritering, porteføljestyring og risikogjennomgang.</li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="layouts" aria-label="Detaljerte rapporttyper">
+      <div class="section-title">
+        <h2>Detaljerte rapporttyper å planlegge for</h2>
+        <p class="subtitle">Disse er mer konkrete enn grunnmalene. De beskriver rapporttyper som ofte blir nødvendige når lederne har gått fra oversikt til forklaring, prioritering og oppfølging.</p>
+      </div>
+
+      <article class="layout-card">
+        <h2>Avvik og årsak</h2>
+        <div class="meta"><span class="tag">Analyse</span><span class="tag">Forklar budsjettavvik</span></div>
+        <div class="canvas">
+          <div class="zone header">Sideheader: avvik mot budsjett, prognose og regnskap</div>
+          <div class="zone filters">Sidefiltre: år, måned, enhet, konto, prosjekt, finansiering</div>
+          <div class="zone kpi" style="left:1.25%;top:18.5%;width:23.8%;height:14.0%;">Budsjettavvik</div>
+          <div class="zone kpi" style="left:25.8%;top:18.5%;width:23.8%;height:14.0%;">Prognoseavvik</div>
+          <div class="zone kpi" style="left:50.4%;top:18.5%;width:23.8%;height:14.0%;">Største årsaksdriver</div>
+          <div class="zone kpi" style="left:75.0%;top:18.5%;width:23.8%;height:14.0%;">Tiltak åpne</div>
+          <div class="zone chart" style="left:1.25%;top:35.5%;width:47.3%;height:29.5%;">Bro-/drivergraf: fra budsjett til faktisk</div>
+          <div class="zone chart" style="left:51.4%;top:35.5%;width:47.3%;height:29.5%;">Topp årsaksdrivere per konto, prosjekt og koststed</div>
+          <div class="zone table" style="left:1.25%;top:68.0%;width:97.5%;height:29.0%;">Tiltakstabell: årsak, tiltak, eier, frist og forventet effekt</div>
+          <div class="zone filter-menu"><div class="menu-buttons"><div class="small-button">Flere filtre</div><div class="small-button">Nullstill</div></div><div class="zone menu-title">Filtermeny</div><div class="menu-slicers"><div class="slicer-mini">Avvikstype</div><div class="slicer-mini">Tiltaksstatus</div><div class="slicer-mini">Ansvarlig enhet</div></div><div class="zone footer-note">Data sist oppdatert</div></div>
+        </div>
+        <ul>
+          <li>Brukes når leder spør hvorfor tallet avviker, ikke bare hvor stort avviket er.</li>
+          <li>Skal gjøre avvik operasjonelle ved å koble årsaksdriver til tiltak og ansvar.</li>
+        </ul>
+      </article>
+
+      <article class="layout-card">
+        <h2>Drillthrough detaljside</h2>
+        <div class="meta"><span class="tag">Navigasjon</span><span class="tag">Valgt kontekst</span></div>
+        <div class="canvas">
+          <div class="zone header">Sideheader: valgt kontekst og tilbakeknapp</div>
+          <div class="zone filters">Drillthrough-kontekst: valgt enhet, konto, prosjekt eller finansieringskilde</div>
+          <div class="zone kpi" style="left:1.25%;top:18.5%;width:23.8%;height:14.0%;">Valgt kontekst</div>
+          <div class="zone kpi" style="left:25.8%;top:18.5%;width:23.8%;height:14.0%;">Saldo / resultat</div>
+          <div class="zone kpi" style="left:50.4%;top:18.5%;width:23.8%;height:14.0%;">Endring hittil i år</div>
+          <div class="zone kpi" style="left:75.0%;top:18.5%;width:23.8%;height:14.0%;">Datapunkt valgt</div>
+          <div class="zone chart" style="left:1.25%;top:35.5%;width:47.3%;height:29.5%;">Trend for valgt kontekst</div>
+          <div class="zone chart" style="left:51.4%;top:35.5%;width:47.3%;height:29.5%;">Fordeling på konto, prosjekt eller delprosjekt</div>
+          <div class="zone table" style="left:1.25%;top:68.0%;width:97.5%;height:29.0%;">transaksjoner og underliggende linjer filtrert av drillthrough</div>
+          <div class="zone filter-menu"><div class="menu-buttons"><div class="small-button">Tilbake</div><div class="small-button">Nullstill</div></div><div class="zone menu-title">Detaljfilter</div><div class="menu-slicers"><div class="slicer-mini">Konto</div><div class="slicer-mini">Prosjekt</div><div class="slicer-mini">Periode</div></div><div class="zone footer-note">Data sist oppdatert</div></div>
+        </div>
+        <ul>
+          <li>Brukes fra oversiktssider når en leder må undersøke én valgt verdi uten å rote til hovedsiden.</li>
+          <li>Bør ha tydelig tilbakeknapp og tittel som gjentar valgt kontekst.</li>
+        </ul>
+      </article>
+
+      <article class="layout-card">
+        <h2>Portefølje og rangering</h2>
+        <div class="meta"><span class="tag">Prioritering</span><span class="tag">Topp og bunn</span></div>
+        <div class="canvas">
+          <div class="zone header">Sideheader: porteføljeoversikt og rangering</div>
+          <div class="zone filters">Sidefiltre: enhet, prosjektstatus, finansiering, risikonivå</div>
+          <div class="zone kpi" style="left:1.25%;top:18.5%;width:23.8%;height:14.0%;">Porteføljeverdi</div>
+          <div class="zone kpi" style="left:25.8%;top:18.5%;width:23.8%;height:14.0%;">Topp bidrag</div>
+          <div class="zone kpi" style="left:50.4%;top:18.5%;width:23.8%;height:14.0%;">Bunn / risiko</div>
+          <div class="zone kpi" style="left:75.0%;top:18.5%;width:23.8%;height:14.0%;">Konsentrasjon</div>
+          <div class="zone chart" style="left:1.25%;top:35.5%;width:47.3%;height:29.5%;">Pareto: prosjekter eller enheter sortert etter effekt</div>
+          <div class="zone chart" style="left:51.4%;top:35.5%;width:47.3%;height:29.5%;">Risikomatrise: økonomi, kapasitet og fremdrift</div>
+          <div class="zone table" style="left:1.25%;top:68.0%;width:97.5%;height:29.0%;">Rangert porteføljetabell: topp, bunn, eier, avvik og neste handling</div>
+          <div class="zone filter-menu"><div class="menu-buttons"><div class="small-button">Flere filtre</div><div class="small-button">Nullstill</div></div><div class="zone menu-title">Porteføljefilter</div><div class="menu-slicers"><div class="slicer-mini">Prosjekttype</div><div class="slicer-mini">Risikotype</div><div class="slicer-mini">Ansvarlig</div></div><div class="zone footer-note">Data sist oppdatert</div></div>
+        </div>
+        <ul>
+          <li>Brukes når totalbildet må brytes ned til hvilke enheter, prosjekter eller kontoer som faktisk betyr mest.</li>
+          <li>Passer for prioritering, porteføljemøter og ressursallokering.</li>
+        </ul>
+      </article>
+
+      <article class="layout-card">
+        <h2>Scenario og prognose</h2>
+        <div class="meta"><span class="tag">Fremtid</span><span class="tag">Basis, optimistisk, pessimistisk</span></div>
+        <div class="canvas">
+          <div class="zone header">Sideheader: prognose og scenario</div>
+          <div class="zone filters">Sidefiltre: år, scenario, budsjettversjon, enhet, finansiering</div>
+          <div class="zone kpi" style="left:1.25%;top:18.5%;width:23.8%;height:14.0%;">Basis prognose</div>
+          <div class="zone kpi" style="left:25.8%;top:18.5%;width:23.8%;height:14.0%;">Optimistisk</div>
+          <div class="zone kpi" style="left:50.4%;top:18.5%;width:23.8%;height:14.0%;">Pessimistisk</div>
+          <div class="zone kpi" style="left:75.0%;top:18.5%;width:23.8%;height:14.0%;">Gap mot budsjett</div>
+          <div class="zone chart" style="left:1.25%;top:35.5%;width:63.2%;height:35.0%;">Scenariofan: regnskap, budsjett, basis, optimistisk og pessimistisk</div>
+          <div class="zone table" style="left:66.5%;top:35.5%;width:32.2%;height:35.0%;">Forutsetninger og manuelle justeringer</div>
+          <div class="zone chart" style="left:1.25%;top:73.5%;width:97.5%;height:23.5%;">Sensitivitet: effekt av lønn, inntekter, BOA og tiltak</div>
+          <div class="zone filter-menu"><div class="menu-buttons"><div class="small-button">Flere filtre</div><div class="small-button">Nullstill</div></div><div class="zone menu-title">Scenariofilter</div><div class="menu-slicers"><div class="slicer-mini">Scenario</div><div class="slicer-mini">Budsjettversjon</div><div class="slicer-mini">Prognosemåned</div></div><div class="zone footer-note">Data sist oppdatert</div></div>
+        </div>
+        <ul>
+          <li>Brukes når prognosen skal støtte beslutning, ikke bare vise forventet årsresultat.</li>
+          <li>Skal skille mellom beregnet basis, optimistisk/pessimistisk vurdering og manuelle forutsetninger.</li>
+        </ul>
+      </article>
+
+      <article class="layout-card">
+        <h2>Datakvalitet og publisering</h2>
+        <div class="meta"><span class="tag">Forvaltning</span><span class="tag">Refresh og publiseringsdag</span></div>
+        <div class="canvas">
+          <div class="zone header">Sideheader: datakvalitet, refresh og publisering</div>
+          <div class="zone filters">Sidefiltre: kilde, tabell, periode, alvorlighetsgrad</div>
+          <div class="zone kpi" style="left:1.25%;top:18.5%;width:23.8%;height:14.0%;">Siste refresh</div>
+          <div class="zone kpi" style="left:25.8%;top:18.5%;width:23.8%;height:14.0%;">Publiseringsdag</div>
+          <div class="zone kpi" style="left:50.4%;top:18.5%;width:23.8%;height:14.0%;">Datakvalitet score</div>
+          <div class="zone kpi" style="left:75.0%;top:18.5%;width:23.8%;height:14.0%;">Blokkerende feil</div>
+          <div class="zone table" style="left:1.25%;top:35.5%;width:47.3%;height:61.5%;">Datakvalitet: manglende nøkler, blanke verdier, duplikater og uventede koder</div>
+          <div class="zone table" style="left:51.4%;top:35.5%;width:47.3%;height:29.5%;">Publiseringskontroll: regnskap, budsjett og sist oppdatert</div>
+          <div class="zone chart" style="left:51.4%;top:68.0%;width:47.3%;height:29.0%;">Feiltrend og refresh-historikk</div>
+          <div class="zone filter-menu"><div class="menu-buttons"><div class="small-button">Flere filtre</div><div class="small-button">Nullstill</div></div><div class="zone menu-title">Kontrollfilter</div><div class="menu-slicers"><div class="slicer-mini">Datakilde</div><div class="slicer-mini">Feiltype</div><div class="slicer-mini">Alvorlighet</div></div><div class="zone footer-note">Data sist oppdatert</div></div>
+        </div>
+        <ul>
+          <li>Brukes av rapportforvaltere og økonomimiljøet før tall brukes i styringsdialog.</li>
+          <li>Skal gjøre publiseringslogikk og datakvalitet synlig nok til å bygge tillit.</li>
+        </ul>
+      </article>
+
+      <article class="layout-card">
+        <h2>Narrativ månedsrapport</h2>
+        <div class="meta"><span class="tag">Ledermøte</span><span class="tag">Hovedbudskap og beslutningspunkt</span></div>
+        <div class="canvas">
+          <div class="zone header">Sideheader: månedsrapport for lederdialog</div>
+          <div class="zone filters">Sidefiltre: måned, enhet, rapportpakke, finansiering</div>
+          <div class="zone note" style="left:1.25%;top:18.5%;width:97.5%;height:16.0%;">Hovedbudskap: status, endring og vurdering for perioden</div>
+          <div class="zone kpi" style="left:1.25%;top:37.5%;width:23.8%;height:14.0%;">Resultat</div>
+          <div class="zone kpi" style="left:25.8%;top:37.5%;width:23.8%;height:14.0%;">Prognose</div>
+          <div class="zone kpi" style="left:50.4%;top:37.5%;width:23.8%;height:14.0%;">Bemanning</div>
+          <div class="zone kpi" style="left:75.0%;top:37.5%;width:23.8%;height:14.0%;">Risiko</div>
+          <div class="zone chart" style="left:1.25%;top:54.5%;width:63.2%;height:42.5%;">Én hovedgraf som støtter historien i lederdialog</div>
+          <div class="zone table" style="left:66.5%;top:54.5%;width:32.2%;height:42.5%;">Beslutningspunkt, tiltak og saker til oppfølging</div>
+          <div class="zone filter-menu"><div class="menu-buttons"><div class="small-button">Flere filtre</div><div class="small-button">Nullstill</div></div><div class="zone menu-title">Månedsfilter</div><div class="menu-slicers"><div class="slicer-mini">Måned</div><div class="slicer-mini">Enhet</div><div class="slicer-mini">Tema</div></div><div class="zone footer-note">Data sist oppdatert</div></div>
+        </div>
+        <ul>
+          <li>Brukes når rapporten skal inn i møte eller beslutningsprosess, ikke bare distribueres som analyseflate.</li>
+          <li>Skal lede leseren fra hovedbudskap til dokumentert beslutningspunkt.</li>
+        </ul>
+      </article>
+
+      <article class="layout-card">
+        <h2>Periodematrise</h2>
+        <div class="meta"><span class="tag">Mønsterfunn</span><span class="tag">Måned og organisatorisk enhet</span></div>
+        <div class="canvas">
+          <div class="zone header">Sideheader: periodematrise og mønsteranalyse</div>
+          <div class="zone filters">Sidefiltre: år, måned, organisatorisk enhet, konto, avvikstype</div>
+          <div class="zone kpi" style="left:1.25%;top:18.5%;width:23.8%;height:14.0%;">Største måned</div>
+          <div class="zone kpi" style="left:25.8%;top:18.5%;width:23.8%;height:14.0%;">Største enhet</div>
+          <div class="zone kpi" style="left:50.4%;top:18.5%;width:23.8%;height:14.0%;">Uvanlig mønster</div>
+          <div class="zone kpi" style="left:75.0%;top:18.5%;width:23.8%;height:14.0%;">Avvik over terskel</div>
+          <div class="zone chart" style="left:1.25%;top:35.5%;width:63.2%;height:61.5%;">heatmap: måneder mot organisatorisk enhet</div>
+          <div class="zone table" style="left:66.5%;top:35.5%;width:32.2%;height:61.5%;">Topp-/bunnliste med drillthrough til detalj</div>
+          <div class="zone filter-menu"><div class="menu-buttons"><div class="small-button">Flere filtre</div><div class="small-button">Nullstill</div></div><div class="zone menu-title">Matrisefilter</div><div class="menu-slicers"><div class="slicer-mini">Måned</div><div class="slicer-mini">Organisatorisk enhet</div><div class="slicer-mini">Terskel</div></div><div class="zone footer-note">Data sist oppdatert</div></div>
+        </div>
+        <ul>
+          <li>Brukes for å oppdage sesong, periodisering og enheter som skiller seg ut.</li>
+          <li>Gir rask vei fra mønster til detaljside uten at hovedrapporten blir tabelltung.</li>
+        </ul>
+      </article>
+
+      <article class="layout-card">
+        <h2>Kilde- og definisjonsside</h2>
+        <div class="meta"><span class="tag">Dokumentasjon</span><span class="tag">Målkatalog og datakilder</span></div>
+        <div class="canvas">
+          <div class="zone header">Sideheader: kilder, definisjoner og forretningsregel</div>
+          <div class="zone filters">Sidefiltre: domene, measure, datakilde og rapportside</div>
+          <div class="zone table" style="left:1.25%;top:18.5%;width:47.3%;height:38.5%;">Målkatalog: navn, definisjon, DAX/regel og eier</div>
+          <div class="zone table" style="left:51.4%;top:18.5%;width:47.3%;height:38.5%;">Datakilder: system, tabell, refresh, personvern og koblingsnøkkel</div>
+          <div class="zone table" style="left:1.25%;top:60.0%;width:47.3%;height:37.0%;">Forretningsregel: budsjettversjon, transaksjonstype og publisering</div>
+          <div class="zone table" style="left:51.4%;top:60.0%;width:47.3%;height:37.0%;">Endringslogg, kjente begrensninger og kontaktpunkt</div>
+          <div class="zone filter-menu"><div class="menu-buttons"><div class="small-button">Flere filtre</div><div class="small-button">Nullstill</div></div><div class="zone menu-title">Definisjonsfilter</div><div class="menu-slicers"><div class="slicer-mini">Domene</div><div class="slicer-mini">Measure</div><div class="slicer-mini">Datakilde</div></div><div class="zone footer-note">Data sist oppdatert</div></div>
+        </div>
+        <ul>
+          <li>Brukes når rapporten skal deles bredt, forvaltes over tid eller brukes som offisiell styringsrapport.</li>
+          <li>Skal gjøre målkatalog, datakilder og forretningsregel etterprøvbare.</li>
+        </ul>
+      </article>
+
+      <article class="layout-card">
+        <h2>Handlings- og oppfølgingsside</h2>
+        <div class="meta"><span class="tag">Oppfølging</span><span class="tag">Ansvarlig, frist og status</span></div>
+        <div class="canvas">
+          <div class="zone header">Sideheader: tiltak og oppfølging</div>
+          <div class="zone filters">Sidefiltre: status, ansvarlig, frist, enhet, avvikstype</div>
+          <div class="zone kpi" style="left:1.25%;top:18.5%;width:23.8%;height:14.0%;">Åpne tiltak</div>
+          <div class="zone kpi" style="left:25.8%;top:18.5%;width:23.8%;height:14.0%;">Forfalt frist</div>
+          <div class="zone kpi" style="left:50.4%;top:18.5%;width:23.8%;height:14.0%;">Estimert effekt</div>
+          <div class="zone kpi" style="left:75.0%;top:18.5%;width:23.8%;height:14.0%;">Kritisk status</div>
+          <div class="zone table" style="left:1.25%;top:35.5%;width:63.2%;height:61.5%;">Tiltaksliste: avvik, tiltak, ansvarlig, frist, status og kommentar</div>
+          <div class="zone chart" style="left:66.5%;top:35.5%;width:32.2%;height:29.5%;">Tiltaksstatus etter enhet og alvorlighet</div>
+          <div class="zone table" style="left:66.5%;top:68.0%;width:32.2%;height:29.0%;">Neste lederoppfølging og beslutningspunkt</div>
+          <div class="zone filter-menu"><div class="menu-buttons"><div class="small-button">Flere filtre</div><div class="small-button">Nullstill</div></div><div class="zone menu-title">Oppfølgingsfilter</div><div class="menu-slicers"><div class="slicer-mini">Ansvarlig</div><div class="slicer-mini">Frist</div><div class="slicer-mini">Status</div></div><div class="zone footer-note">Data sist oppdatert</div></div>
+        </div>
+        <ul>
+          <li>Brukes når rapporten skal drive handling, ikke bare analyse.</li>
+          <li>Passer som felles oppfølgingstavle for økonomi, HR, prosjekt og ledermøter.</li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="ideas" aria-label="Fremtidige malidéer">
+      <div class="section-title">
+        <h2>Fremtidige maler jeg anbefaler å planlegge for</h2>
+        <p class="subtitle">Disse bør ikke nødvendigvis bygges med en gang, men de dekker analysebehov som ofte kommer etter at standard økonomioversikt, utvikling og datagrunnlag er på plass.</p>
+      </div>
+
+      <article class="idea-card">
+        <h3>Avvik og årsak</h3>
+        <p><strong>Bruksområde:</strong> Forklare hvorfor regnskap, budsjett og prognose avviker.</p>
+        <p><strong>Anbefalt innhold:</strong> KPI-er for avvik, bro-/drivergraf, topp 10 bidragsytere og tabell med konto, prosjekt, koststed og tiltak.</p>
+        <p><strong>Opprett når:</strong> brukeren spør mer om "hvorfor" enn "hvor mye".</p>
+      </article>
+
+      <article class="idea-card">
+        <h3>Drillthrough detaljside</h3>
+        <p><strong>Bruksområde:</strong> Gå fra en oppsummering til én valgt enhet, prosjekt, konto eller finansieringskilde.</p>
+        <p><strong>Anbefalt innhold:</strong> konteksttittel, nøkkeltall, trend, detaljtabell og tilbakeknapp.</p>
+        <p><strong>Opprett når:</strong> samme side får for mange detaljer, eller når brukeren må undersøke én valgt verdi grundig.</p>
+      </article>
+
+      <article class="idea-card">
+        <h3>Portefølje og rangering</h3>
+        <p><strong>Bruksområde:</strong> Finne hvilke enheter, prosjekter eller kontoer som driver totalbildet.</p>
+        <p><strong>Anbefalt innhold:</strong> rangert liste, Pareto-/stolpegraf, små trender og markering av største avvik.</p>
+        <p><strong>Opprett når:</strong> prioritering og oppfølging er viktigere enn totalutvikling alene.</p>
+      </article>
+
+      <article class="idea-card">
+        <h3>Scenario og prognose</h3>
+        <p><strong>Bruksområde:</strong> Sammenligne basis, optimistisk og pessimistisk prognose mot budsjett og regnskap.</p>
+        <p><strong>Anbefalt innhold:</strong> scenariofilter, linjegraf med intervall, KPI for årsestimat og tabell med forutsetninger.</p>
+        <p><strong>Opprett når:</strong> prognosen skal brukes til beslutning, ikke bare rapportering.</p>
+      </article>
+
+      <article class="idea-card">
+        <h3>Datakvalitet og publisering</h3>
+        <p><strong>Bruksområde:</strong> Kontrollere refresh, publiseringsregler, manglende koblinger og uventede verdier.</p>
+        <p><strong>Anbefalt innhold:</strong> statuskort, avvikstabell, siste oppdatering, publiseringsdag og teknisk sporbarhet.</p>
+        <p><strong>Opprett når:</strong> tillit til tallgrunnlaget er et eksplisitt tema.</p>
+      </article>
+
+      <article class="idea-card">
+        <h3>Narrativ månedsrapport</h3>
+        <p><strong>Bruksområde:</strong> Gi ledere en leseretning: status, endring, årsak og anbefalt oppfølging.</p>
+        <p><strong>Anbefalt innhold:</strong> hovedbudskap, tre nøkkeltall, én hovedgraf, avviksdrivere og handlingspunkt.</p>
+        <p><strong>Opprett når:</strong> rapporten skal brukes i møte, tertialrapport eller lederdialog.</p>
+      </article>
+
+      <article class="idea-card">
+        <h3>Periodematrise</h3>
+        <p><strong>Bruksområde:</strong> Se mønstre, sesong og avvik på tvers av måneder og organisatoriske enheter.</p>
+        <p><strong>Anbefalt innhold:</strong> heatmap, sortering på avvik, topp-/bunnliste og drillthrough til detaljside.</p>
+        <p><strong>Opprett når:</strong> brukeren trenger å oppdage uvanlige perioder raskt.</p>
+      </article>
+
+      <article class="idea-card">
+        <h3>Kilde- og definisjonsside</h3>
+        <p><strong>Bruksområde:</strong> Forklare hvilke kilder, måldefinisjoner og filterregler rapporten bygger på.</p>
+        <p><strong>Anbefalt innhold:</strong> målkatalog, datakilder, oppdateringsfrekvens, publiseringslogikk og kjente begrensninger.</p>
+        <p><strong>Opprett når:</strong> rapporten skal forvaltes, deles bredt eller brukes som offisiell styringsrapport.</p>
+      </article>
+
+      <article class="idea-card">
+        <h3>Handlings- og oppfølgingsside</h3>
+        <p><strong>Bruksområde:</strong> Koble tallene til ansvar, frister og oppfølgingspunkter.</p>
+        <p><strong>Anbefalt innhold:</strong> avviksliste, ansvarlig enhet, status, frist, kommentar og lenke tilbake til relevant visual.</p>
+        <p><strong>Opprett når:</strong> rapporten skal støtte økonomistyring som prosess, ikke bare analyse.</p>
+      </article>
+
+      <article class="idea-card">
+        <h3>Inspirasjonsnotat</h3>
+        <p>Idéene bygger på økonomirapportens egne behov og inspirasjon fra dashboardmønstre: enkeltverdier, trender, detaljerte visualiseringer, tabeller, metadata og interaksjon.</p>
+        <p>For interaktive detaljer bør drillthrough prioriteres fremfor små hover-sider, fordi hoverflater ikke egner seg for scroll, slicere eller annen brukerinteraksjon.</p>
+      </article>
+    </section>
+  </main>
+
+  <script>
+    function toggleOverlays() {
+      const body = document.body;
+      const button = document.querySelector(".controls button");
+      const hidden = body.classList.toggle("hidden-overlays");
+      button.textContent = hidden ? "Vis filtermenyer" : "Skjul filtermenyer";
+    }
+  </script>
+</body>
+</html>

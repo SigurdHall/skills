@@ -19,7 +19,7 @@ clear narrative, appropriate maturity checks, and reusable generation scripts.
    - hard challenge: `thinking-planning/grill-me`
    - Fabric documentation: `fabric/fabric-documentation`
    - BOTT/economy model: finance skills
-   - Power BI local artifacts: `powerbi-local/*`
+   - Power BI local artifacts: `reporting/powerbi/*`, `reporting/orchestration/*`
    - missing recurring workflow: create/update a focused skill with
      `skill-creator` or `thinking-planning/skill-design`
 4. Read [uit-visual-profile.md](references/uit-visual-profile.md) before

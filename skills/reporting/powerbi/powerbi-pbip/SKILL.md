@@ -90,7 +90,7 @@ if ($failed.Count -eq 0) { "OK all JSON files parsed" } else { $failed }
 For bookmark-driven filter panels or reset buttons, also validate that button actions do not jump to another page:
 
 ```powershell
-python C:\repos\skills\skills\powerbi-local\powerbi-pbip\scripts\validate_bookmark_actions.py C:\path\to\Report\definition
+python C:\repos\skills\skills\reporting\powerbi\powerbi-pbip\scripts\validate_bookmark_actions.py C:\path\to\Report\definition
 ```
 
 Use this after editing `definition/bookmarks/*.bookmark.json` or `definition/pages/**/visual.json` with `visualLink` bookmark actions. The script reports buttons whose bookmark target has an `explorationState.activeSection` different from the page where the button lives.

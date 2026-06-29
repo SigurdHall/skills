@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python C:\\repos\\skills\\scripts\\sync_agent_files.py",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -20,4 +20,4 @@ Useful adjacent skills:
 - [readable-python-code](../coding/readable-python-code/SKILL.md) for Python implementation quality.
 - [fabric-documentation](../fabric/fabric-documentation/SKILL.md) for Fabric documentation tasks.
 - [uit-bott-okonomimodell](../finance/uit-bott-okonomimodell/SKILL.md) for UiT/BOTT finance data.
-- [powerbi-pbip](../powerbi-local/powerbi-pbip/SKILL.md) for PBIP/TMDL/report JSON work.
+- [powerbi-pbip](../reporting/powerbi/powerbi-pbip/SKILL.md) for PBIP/TMDL/report JSON work.
