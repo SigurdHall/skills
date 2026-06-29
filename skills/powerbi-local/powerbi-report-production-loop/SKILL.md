@@ -9,6 +9,8 @@ Use this skill to run a concise Tableau-to-Power-BI migration loop from workbook
 
 **REQUIRED SUB-SKILLS:** Use `powerbi-pbip` before reading or editing PBIP/PBIR/TMDL/report JSON. Use `pbip-full-report` when creating or substantially adapting a complete report.
 
+**MECHANICS:** Delegate generic Power BI process to `skills-for-fabric`: `powerbi-report-planning` for page plan/spec, `powerbi-report-design` for chart/layout choices, and `powerbi-report-authoring`/`semantic-model-authoring` for live builds. This skill owns the migration loop and parity, not generic tooling.
+
 ## Loop
 
 1. Establish the parity contract: source workbook, target audience, required pages, certified totals, filters, refresh assumptions, and non-goals.
