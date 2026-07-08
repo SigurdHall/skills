@@ -51,7 +51,7 @@ class SkillSuggestionTests(unittest.TestCase):
         self.assertIn("fabric-documentation", catalog)
         self.assertEqual(
             catalog["fabric-documentation"]["path"],
-            Path("skills/fabric/fabric-documentation/SKILL.md"),
+            Path("skills/reporting/fabric/fabric-documentation/SKILL.md"),
         )
 
     def test_report_is_actionable_markdown(self) -> None:

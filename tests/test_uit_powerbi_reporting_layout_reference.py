@@ -7,7 +7,7 @@ SKILL_ROOT = Path(__file__).resolve().parents[1] / "skills" / "reporting" / "nor
 
 class UitPowerBiReportingLayoutReferenceTests(unittest.TestCase):
     def test_uit_powerbi_reporting_has_layout_catalog_reference(self) -> None:
-        reference = SKILL_ROOT / "references" / "okonomi-template-layouts-all.html"
+        reference = SKILL_ROOT / "references" / "public" / "okonomi-template-layouts-all.html"
 
         self.assertTrue(reference.exists())
         text = reference.read_text(encoding="utf-8")
@@ -18,7 +18,7 @@ class UitPowerBiReportingLayoutReferenceTests(unittest.TestCase):
     def test_uit_powerbi_reporting_skill_mentions_layout_catalog(self) -> None:
         skill_text = (SKILL_ROOT / "SKILL.md").read_text(encoding="utf-8")
 
-        self.assertIn("references/okonomi-template-layouts-all.html", skill_text)
+        self.assertIn("references/public/okonomi-template-layouts-all.html", skill_text)
         self.assertIn("layoutkatalog", skill_text.lower())
 
 

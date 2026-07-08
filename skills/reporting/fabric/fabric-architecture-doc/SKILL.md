@@ -8,7 +8,7 @@ description: Write Microsoft Fabric architecture, target architecture, decision 
 ## Arbeidsflyt
 
 1. Bruk `fabric-documentation` som hovedramme.
-2. Les `../fabric-documentation/references/microsoft-fabric-principles.md` og `../fabric-documentation/references/document-templates.md`.
+2. Les `../fabric-documentation/references/public/microsoft-fabric-principles.md` og `../fabric-documentation/references/public/document-templates.md`.
 3. Kartlegg mål: rapportering, data product, migrering, governance, ytelse eller forvaltning.
 4. Dokumenter minst tre lag når de finnes: datakilde, Fabric-lagring/transformasjon, semantic model/rapport.
 5. Skill beslutning fra alternativer. Beskriv trade-offs, ikke bare valgt løsning.

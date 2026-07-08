@@ -52,9 +52,10 @@ For finance and virksomhetsstyring, document the semantic boundary:
 
 Read only what is needed:
 
-- `references/fabric-dataflow-gen2-delta-sharing.md` for connector support and limitations.
-- `references/fabric-governed-ingestion-pattern.md` for the recommended governed architecture.
-- `references/source-links.md` for official documentation links used by this skill.
+- `references/public/fabric-dataflow-gen2-delta-sharing.md` for connector support and limitations.
+- `references/public/fabric-governed-ingestion-pattern.md` for the recommended governed architecture.
+- `references/public/source-links.md` for official documentation links used by this skill.
+- `references/private/local-source-links.md` when local UiT source notes are needed and the file exists.
 
 ## Use Other Skills
 

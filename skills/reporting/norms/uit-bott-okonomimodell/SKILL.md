@@ -9,7 +9,7 @@ description: Interpret, quality-check, or normalize the meaning of UiT finance d
 
 Bruk denne skillen til å tolke datasett fra UiT økonomi- og rapporteringsmiljø opp mot BOTT økonomimodell. Målet er å gjøre datasett forståelige, rapporterbare og kontrollerbare: hva hver kolonne betyr, hvilken dimensjon eller relasjon den tilhører, hvilke koblinger som bør finnes, og hvilke datakvalitetsrisikoer som må undersøkes.
 
-For detaljer om dimensjoner, relasjoner og UiT-spesifikke føringer, les `references/bott-uit-reference.md` når oppgaven handler om konkrete felt, datamodellering eller avvik.
+For detaljer om dimensjoner, relasjoner og UiT-spesifikke føringer, les `references/public/bott-uit-reference.md` når oppgaven handler om konkrete felt, datamodellering eller avvik.
 
 ## Arbeidsflyt
 
@@ -92,4 +92,4 @@ Bruk tabeller når datasettet har mange felt. Vær tydelig på usikkerhet, og sk
 
 ## Kilder
 
-Bruk `references/bott-uit-reference.md` for kondensert fagreferanse og kilde-URL-er. Ved presise regelspørsmål eller produksjonsnær dokumentasjon bør primærkildene kontrolleres på nytt, fordi UiT-relasjoner og rapporteringsbehov kan endres.
+Bruk `references/public/bott-uit-reference.md` for kondensert fagreferanse og kilde-URL-er. Ved presise regelspørsmål eller produksjonsnær dokumentasjon bør primærkildene kontrolleres på nytt, fordi UiT-relasjoner og rapporteringsbehov kan endres.

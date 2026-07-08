@@ -40,4 +40,4 @@ description: Write Markdown documentation that describes an existing Fabric/Powe
 
 ## Output
 
-Bruk `Semantic Model`-malen fra `../fabric-documentation/references/document-templates.md`. Ta med Mermaid ER-diagram når det gjør modellen lettere å kontrollere.
+Bruk `Semantic Model`-malen fra `../fabric-documentation/references/public/document-templates.md`. Ta med Mermaid ER-diagram når det gjør modellen lettere å kontrollere.

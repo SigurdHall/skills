@@ -1,11 +1,8 @@
 # UiT Template Inventory
 
-Known local template at skill creation time:
-
-`C:\repos\private\Vault\Topics\Fabric_og_okonomirapportering_UiT_mal.pptx`
-
-This file existed locally and used a UiT PowerPoint master with these layout
-names:
+This public inventory describes known UiT PowerPoint master layout names. Local
+template locations and output conventions, if any, belong in
+`references/private/local-template-inventory.md`.
 
 | Index | Layout |
 | --- | --- |

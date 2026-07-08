@@ -62,10 +62,10 @@ For produksjonsnære dokumenter, inkluder alltid eier, miljø, kilde, refresh, t
 
 Les bare det som trengs:
 
-- `references/microsoft-fabric-principles.md` for Microsoft-baserte prinsipper.
-- `references/document-templates.md` for konkrete Markdown-maler.
-- `references/existing-skill-integration.md` for når andre lokale skills skal brukes.
-- `references/quality-checklist.md` før ferdigstilling.
+- `references/public/microsoft-fabric-principles.md` for Microsoft-baserte prinsipper.
+- `references/public/document-templates.md` for konkrete Markdown-maler.
+- `references/public/existing-skill-integration.md` for når andre lokale skills skal brukes.
+- `references/public/quality-checklist.md` før ferdigstilling.
 
 ## Validering
 

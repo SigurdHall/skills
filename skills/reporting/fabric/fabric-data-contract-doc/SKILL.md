@@ -34,4 +34,4 @@ Bruk denne tabellen for viktige felt:
 
 ## Output
 
-Bruk `Data Contract`-malen fra `../fabric-documentation/references/document-templates.md`.
+Bruk `Data Contract`-malen fra `../fabric-documentation/references/public/document-templates.md`.

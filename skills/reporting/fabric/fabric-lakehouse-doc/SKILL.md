@@ -36,4 +36,4 @@ Dokumenter idempotens, duplikatregler, nullverdier, typekonvertering, avstemming
 
 ## Output
 
-Bruk `Lakehouse / Warehouse Data Product`-malen fra `../fabric-documentation/references/document-templates.md`.
+Bruk `Lakehouse / Warehouse Data Product`-malen fra `../fabric-documentation/references/public/document-templates.md`.

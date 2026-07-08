@@ -12,26 +12,25 @@ clear narrative, appropriate maturity checks, and reusable generation scripts.
 
 1. Locate the deck source: outline, markdown, notes, existing deck, or user
    brief.
-2. Read [content-maturity-and-skill-routing.md](references/public/content-maturity-and-skill-routing.md)
+2. Read [content-maturity-and-skill-routing.md](references/content-maturity-and-skill-routing.md)
    and classify maturity before generating slides.
 3. If the deck is not mature enough, use the routed skill first:
    - narrative/storyline: `thinking-planning/narrative-design`
    - hard challenge: `thinking-planning/grill-me`
-   - Fabric documentation: `reporting/fabric/fabric-documentation`
+   - Fabric documentation: `fabric/fabric-documentation`
    - BOTT/economy model: finance skills
    - Power BI local artifacts: `reporting/powerbi/*`, `reporting/orchestration/*`
    - missing recurring workflow: create/update a focused skill with
      `skill-creator` or `thinking-planning/skill-design`
-4. Read [uit-visual-profile.md](references/public/uit-visual-profile.md) before
+4. Read [uit-visual-profile.md](references/uit-visual-profile.md) before
    styling. Use official UiT template layouts first; do not invent logo
    variants.
-5. Read [uit-template-inventory.md](references/public/uit-template-inventory.md)
-   for known public layout names. If local template or output conventions are
-   needed and `references/private/local-template-inventory.md` exists, read it.
-   If no usable template is available, tell the user and ask for a template or
-   use the official UiT PowerPoint download source only with approval.
+5. Check for a local template. Current known local template:
+   `C:\repos\private\Vault\Topics\Fabric_og_okonomirapportering_UiT_mal.pptx`.
+   If it is missing, tell the user and ask for a template or use the official
+   UiT PowerPoint download source only with approval.
 6. Write or derive a JSON deck spec. Use
-   [deck-spec-schema.md](references/public/deck-spec-schema.md).
+   [deck-spec-schema.md](references/deck-spec-schema.md).
 7. Choose slide types deliberately:
    - `bullets` only for short support points
    - `process` for flows, pipelines, roadmaps, and "from-to-through" logic
@@ -51,9 +50,8 @@ python scripts/generate_uit_deck.py --spec deck.json --output output.pptx --temp
    - slide count and layout names match intent.
    - slides contain simple click animations where content is built up.
    - text does not obviously overflow dense slides.
-10. Save generated decks where the user asked. For local Vault conventions, use
-   `references/private/local-template-inventory.md` when available instead of
-   hardcoding private paths in public skill text.
+10. Save generated decks where the user asked. For vault PowerPoint work, prefer:
+   `private/Vault/PowerPoint-presentasjoner/<tema>/`.
 
 ## Script
 

@@ -10,7 +10,3 @@ Official sources used when creating this skill:
 - Microsoft Learn: [Secure and manage OneLake shortcuts](https://learn.microsoft.com/en-us/fabric/onelake/onelake-shortcut-security)
 - Databricks: [What is Delta Sharing?](https://docs.databricks.com/aws/en/delta-sharing)
 - Databricks: [Read data shared using Open ID Connect federation in a U2M flow](https://docs.databricks.com/aws/en/delta-sharing/sharing-over-oidc-u2m)
-
-Local UiT source:
-
-- `private/Vault/Resources/PowerBI/Delta Sharing fra Analyseplattformen til Power BI.md`

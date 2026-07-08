@@ -8,7 +8,7 @@ description: Document or design Fabric Git integration, CI/CD, deployment pipeli
 ## Arbeidsflyt
 
 1. Bruk `fabric-documentation` som hovedramme.
-2. Les `../fabric-documentation/references/microsoft-fabric-principles.md`.
+2. Les `../fabric-documentation/references/public/microsoft-fabric-principles.md`.
 3. Kartlegg repo, branch, Fabric workspace, miljøer og deployment pipeline.
 4. Dokumenter hvem som kan endre kildekode, hvem som kan deploye, og hvem som godkjenner.
 5. Skill utvikling, test, produksjon og nødretting.
@@ -36,4 +36,4 @@ description: Document or design Fabric Git integration, CI/CD, deployment pipeli
 
 ## Output
 
-Bruk `CI/CD And Governance`-malen fra `../fabric-documentation/references/document-templates.md`.
+Bruk `CI/CD And Governance`-malen fra `../fabric-documentation/references/public/document-templates.md`.

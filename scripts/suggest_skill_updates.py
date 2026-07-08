@@ -67,7 +67,7 @@ EDGE_CASE_PATTERNS = [
 ]
 
 DEFAULT_SCAN_GLOBS = ["*.md", "*.txt"]
-EXCLUDED_PARTS = {".git", "__pycache__", "reports", ".venv", "venv", "node_modules"}
+EXCLUDED_PARTS = {".git", "__pycache__", "reports", ".venv", "venv", "node_modules", ".tmp-tests"}
 NOOP_STOP_DECISION = {"continue": True, "suppressOutput": True}
 SKILL_USE_PATTERNS = [
     re.compile(pattern, re.IGNORECASE)
@@ -98,7 +98,10 @@ def parse_frontmatter(text: str) -> dict[str, str]:
 
 def discover_skill_catalog(repo_root: Path) -> dict[str, dict[str, Path | str]]:
     catalog: dict[str, dict[str, Path | str]] = {}
-    for skill_file in sorted((repo_root / "skills").glob("*/*/SKILL.md")):
+    for skill_file in sorted((repo_root / "skills").rglob("SKILL.md")):
+        relative_parts = skill_file.relative_to(repo_root).parts
+        if any(part in EXCLUDED_PARTS for part in relative_parts):
+            continue
         text = skill_file.read_text(encoding="utf-8")
         frontmatter = parse_frontmatter(text)
         name = frontmatter.get("name") or skill_file.parent.name

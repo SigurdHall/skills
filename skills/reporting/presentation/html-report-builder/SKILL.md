@@ -58,7 +58,7 @@ python -m html_report_toolkit check path\to\report.yaml
 
 ## Spec Details
 
-Read `references/spec-schemas.md` when creating or reviewing `report.yaml` or `data_contract.yaml`.
+Read `references/public/spec-schemas.md` when creating or reviewing `report.yaml` or `data_contract.yaml`.
 
 Minimum report contents:
 

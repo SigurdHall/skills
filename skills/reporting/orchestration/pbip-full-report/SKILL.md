@@ -14,7 +14,7 @@ Build Power BI reports as maintainable PBIP/PBIR projects. Treat the report as a
 **REQUIRED SUB-SKILL:** Use `powerbi-pbip` before reading or editing PBIP/PBIR/TMDL/report JSON files offline. Use `uit-powerbi-reporting` as well for UiT finance/reporting reports.
 
 When rebuilding from Tableau evidence, read
-`references/tableau-derived-templates.md` and use Tableau artifacts as design
+`references/public/tableau-derived-templates.md` and use Tableau artifacts as design
 evidence, not as an instruction to clone every visual.
 
 ## Report Workflow

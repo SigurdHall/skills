@@ -39,4 +39,4 @@ description: Write Markdown documentation that describes Power BI/Fabric reports
 
 ## Output
 
-Bruk `Power BI Report`-malen fra `../fabric-documentation/references/document-templates.md`.
+Bruk `Power BI Report`-malen fra `../fabric-documentation/references/public/document-templates.md`.

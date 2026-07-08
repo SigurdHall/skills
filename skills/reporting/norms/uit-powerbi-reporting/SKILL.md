@@ -22,15 +22,15 @@ Prefer Norwegian user-facing labels in reports. Use English for technical file n
 
 ## References
 
-For UiT økonomirapporter, budget/accounting DAX, kontorelasjon4 logic, BEVAAR budget versions, as-of dates, forecast logic, or result-area card filters, read:
+For UiT økonomirapporter, budget/accounting DAX, kontorelasjon4 logic, BEVAAR budget versions, as-of dates, forecast logic, or result-area card filters, read the private business reference when it exists:
 
-- `references/uit-okonomi-og-strategi-forretningslogikk.md`
+- `references/private/uit-okonomi-og-strategi-forretningslogikk.md`
 
-Use this reference as the business definition source before changing measures, page filters, visual filters, or explanatory documentation in `UiT/PowerBI/Okonomi`.
+Use this reference as the business definition source before changing measures, page filters, visual filters, or explanatory documentation in `UiT/PowerBI/Okonomi`. Do not copy private business content into committed skill files or public references.
 
 For UiT økonomirapport layout work, also read:
 
-- `references/okonomi-template-layouts-all.html`
+- `references/public/okonomi-template-layouts-all.html`
 
 Treat the file as the local layoutkatalog for report-page patterns. Use it to preserve the established UiT finance report chrome: `1600 x 900` canvas, header, title area, sidefilter/filtermeny pattern, card layout, graph layout, overlay filter menu, and full-canvas visual use. Do not treat the HTML file as report data or as a generated report product.
 
@@ -50,10 +50,12 @@ For UiT finance dashboards:
 1. Prefer generic base measures for `Regnskap`, `Budsjett`, `Avvik`, ratio, percent variance, and forecast logic. Use visual filters for result areas such as inntekter, kostnader, nettobidrag, and total instead of duplicating the same measure set per area.
 2. Never use raw `SUM(fak_okonomi[belop_budsjett])` in visible measures. Budget measures must explicitly select a budget basis/version, for example current `BEVAAR<år>` or approved `BEVAAR<år>_M1`.
 3. Apply excluded account logic consistently to both accounting and budget base measures when the report is about operating follow-up. Do not include balance, settlement, tax, bank, receivable/payable, or provision accounts in ordinary result follow-up unless the user asks for a balance/provision analysis.
-4. Use `dim_konto[kontorelasjon4]` or `dim_konto[kontorelasjon4_kode]` for result-area filters. Use `dim_prosjekt[prosjekttype_kode]` only when the business definition requires project type scope, such as the nettobidrag BOA/BEV view.
+4. Use `dim_konto[kontorelasjon4]` or `dim_konto[kontorelasjon4_kode]` for result-area filters. Use `dim_prosjekt[prosjekttype_kode]` only when the business definition requires project type scope, such as the nettobidrag BOA/BEV view. BEV (appropriation-funded) project types are `A1`/`A2`/`I1`/`I2`/`I3`; BOA (externally funded) project types share the `Z*` prefix — filter with `prosjekttype_kode IN {...}` for BEV and `LEFT(prosjekttype_kode, 1) = "Z"` for BOA rather than hardcoding the full list in more than one place (centralize as dimension flags if the same filter appears in many measures).
 5. Keep page-specific helper measures in a dedicated display folder with a clear numeric prefix, for example `Measures\08 Økonomiutvikling`.
 6. Put page-specific as-of assumptions in a small helper measure, for example `Økonomiutvikling as-of dager = 20`, so the assumption can be changed in one place.
 7. For disconnected axis, slicer, or legend tables, create separate TMDL table files and register them in `model.tmdl` with both `ref table` and query order when the model uses `PBI_QueryOrder`.
+8. `dim_koststed` typically carries the full org rollup as sibling text columns — `fakultet` → `institutt` → `seksjon` (seksjon is a faggruppe-level unit *under* institutt, not a peer of institutt) → `koststed`. Build a user hierarchy on these directly rather than assuming new columns are needed; pick the coded `koststed` column (code + name combined) as the leaf, not the plain name column, since the plain name is not always unique at full grain.
+9. "Hittil"-named measures commonly split into two families that look interchangeable but answer different questions: one follows whatever date filter the visual applies (`TOTALYTD`-style), the other is pinned to an explicit valgt år/valgt måned selection independent of visual context (built on a publiseringsdag/as-of cutoff). Disambiguate both families' descriptions explicitly — front-load which one to use in a visual vs. a KPI card — rather than relying on the name to carry the distinction; see `orchestration/semantic-model-migration`'s `ai-readiness.md` for the method.
 
 ## UiT Finance Report Patterns
 
@@ -78,13 +80,13 @@ For UiT finance reporting, a common mapping table is `Rapporteringsenheter`:
 
 Common rule pattern:
 
-```DAX
-LEFT(FORMAT([Koststed], "0"), 6) = "340320" -> 340320 / "BFE-fartøydrift"
-LEFT(FORMAT([Koststed], "0"), 4) = "2627" -> 2627 / "BEA"
-else -> [Fak] / [Fakultet_tekst]
-```
+- Match the longest approved `Koststed` prefix first.
+- Assign `Rapporteringsenhet` and `Rapporteringsenhet_tekst` from the local mapping table.
+- Fall back to `[Fak]` / `[Fakultet_tekst]` only when no specific reporting-unit mapping exists.
 
 Use prefix logic when the user says cost centers are "under" a code. Do not interpret that as `Fak = <code>` unless the user explicitly says the faculty field should drive it.
+
+Exact internal mapping examples, if needed locally, belong in `references/private/reporting-units.md`.
 
 ## KPI Icons
 

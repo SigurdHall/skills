@@ -14,13 +14,13 @@ Use this skill to run a concise Tableau-to-Power-BI migration loop from workbook
 ## Loop
 
 1. Establish the parity contract: source workbook, target audience, required pages, certified totals, filters, refresh assumptions, and non-goals.
-2. Run the four migration waves from [subagents.md](references/subagents.md):
+2. Run the four migration waves from [subagents.md](references/public/subagents.md):
    - Wave 1: inventory and parity contract.
    - Wave 2: table and semantic migration.
    - Wave 3: report production.
    - Wave 4: validation, governance, and release.
-3. Track deliverables with [output-artifacts.md](references/output-artifacts.md).
-4. Apply [table-migration.md](references/table-migration.md) for Tableau extract/logical table to Power BI table decisions.
+3. Track deliverables with [output-artifacts.md](references/public/output-artifacts.md).
+4. Apply [table-migration.md](references/public/table-migration.md) for Tableau extract/logical table to Power BI table decisions.
 5. Stop the loop only when parity evidence, known gaps, and release blockers are explicit.
 
 ## Operating Rules
@@ -33,6 +33,6 @@ Use this skill to run a concise Tableau-to-Power-BI migration loop from workbook
 
 ## References
 
-- [subagents.md](references/subagents.md): subagent definitions and four-wave migration loop.
-- [output-artifacts.md](references/output-artifacts.md): expected deliverables and completion gates.
-- [table-migration.md](references/table-migration.md): table, field, calculation, and relationship migration rules.
+- [subagents.md](references/public/subagents.md): subagent definitions and four-wave migration loop.
+- [output-artifacts.md](references/public/output-artifacts.md): expected deliverables and completion gates.
+- [table-migration.md](references/public/table-migration.md): table, field, calculation, and relationship migration rules.

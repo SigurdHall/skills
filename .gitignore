@@ -11,3 +11,4 @@ reports/
 
 # Sensitive per-skill business data under reporting skills
 skills/reporting/**/private/
+skills/reporting/**/references/private/
