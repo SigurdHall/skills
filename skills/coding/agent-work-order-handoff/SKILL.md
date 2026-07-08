@@ -1,6 +1,6 @@
 ---
 name: agent-work-order-handoff
-description: Use when delegating a complex, judgment-heavy task to a cheaper/different model, a background sub-agent, or a future session — writing a self-contained work order that preserves intent across the handoff, deciding what to background vs keep in the main thread, resuming an interrupted delegate, and receiving/consuming a handoff written by another agent or tool. Triggers: write a work order, delegate to a cheaper model, hand off to Sonnet/Haiku, spec for a subagent, background an independent task, resume an interrupted agent, cross-session handoff, multi-agent delegation, receive a handoff, locate a chat log/session transcript, cross-tool handoff (Claude Code/Codex/Copilot).
+description: Use when delegating a complex, judgment-heavy task to a cheaper/different model, a background sub-agent, or a future session — writing a self-contained work order that preserves intent across the handoff, deciding what to background vs keep in the main thread, resuming an interrupted delegate, and receiving/consuming a handoff written by another agent or tool. Triggers: write a work order, delegate to a cheaper model, hand off to Sonnet/Haiku, spec for a subagent, background an independent task, resume an interrupted agent, cross-session handoff, multi-agent delegation, receive a handoff, locate a chat log/session transcript, cross-tool handoff (Claude Code/Codex/Copilot), where to save a handover, persist a work order, handovers folder.
 ---
 
 # Agent Work-Order Handoff
@@ -39,16 +39,39 @@ self-contained document that survives the handoff.
    thread/chat title), and file path if known. Lets the receiver — another
    agent, a future session, or the human — locate the original conversation
    when the work order's summary doesn't cover something. See "Locating
-   source chat logs" below for where each tool stores these.
+   source chat logs" below for where each tool stores these, and where this
+   work order document itself is saved (see "Where a work order lives").
+
+## Where a work order lives
+
+A work order meant to outlive the current session — cross-session,
+cross-tool, or addressed to a human/other AI actively working on the same
+repo — should be saved as an actual file, not left to exist only in chat
+history. In-session subagent delegation that completes and reports back
+within the same conversation doesn't need this; only durable handoffs do.
+
+Save it under `C:\repos\handovers\` using the naming convention and template
+documented in `handovers/README.md` — don't restate that convention here,
+it drifts otherwise. Template:
+`skills/skills/coding/agent-work-order-handoff/assets/handover-template.md`.
+
+Project-specific technical detail (a migration's plan/spec/inventory
+sequence, for example) stays in that project's own docs — the saved handover
+links out to it rather than duplicating it.
+
+This saved file is the *primary* durable reference for the handoff. The raw
+chat-log source (below) is the *fallback* — useful when the written
+handover's summary doesn't cover something, not the first place to look.
 
 ## Locating source chat logs
 
-Every major agent tool persists its own session transcripts locally. Citing
-the source session in a work order lets anyone go back to the original
-conversation instead of re-deriving context from a summary alone. Don't read
-a full log into context to do this — these files commonly run into single-
-or double-digit MB — grep for a keyword/date, or use the lightweight index
-where one exists.
+Every major agent tool persists its own session transcripts locally. This is
+the fallback for context the written handover (above) doesn't cover — not
+the primary reference. Citing the source session lets anyone go back to the
+original conversation instead of re-deriving context from a summary alone.
+Don't read a full log into context to do this — these files commonly run
+into single- or double-digit MB — grep for a keyword/date, or use the
+lightweight index where one exists.
 
 - **Claude Code** —
   `%USERPROFILE%\.claude\projects\<sanitized-cwd>\<session-uuid>.jsonl`
@@ -116,6 +139,8 @@ not just executing the same task description in isolation.
 - If something in the work order conflicts with what the source log actually
   shows, say so explicitly rather than silently trusting either one — this is
   a deviation to log, per Guardrails below.
+- If the human refers to "the handover for X," check `C:\repos\handovers\`
+  (by project/date/slug) before falling back to raw chat-log search.
 
 ## Guardrails
 
@@ -131,3 +156,6 @@ not just executing the same task description in isolation.
 - Re-fetch live state at the start of delegated work even if an earlier
   phase already inventoried it — the resource may have changed since, and a
   stale inventory produces confidently wrong actions.
+- If the work is meant to outlive the session, save it under `handovers/`
+  per "Where a work order lives" above — a summary that only exists in chat
+  history isn't durable.
