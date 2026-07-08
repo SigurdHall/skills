@@ -2,6 +2,8 @@
 
 Operational supplements to `skills-for-fabric/semantic-model-authoring`. These are recurring traps when editing a live semantic model via the modeling MCP — things the generic mechanics docs do not warn about. Not a replacement for that skill.
 
+For general call-scoping discipline (avoid unfiltered `List`/`Export` calls blowing up context) see `coding/mcp-context-hygiene` — that rule applies to any MCP use, not just migration, so it is not repeated here.
+
 ## Persistence (the expensive one)
 - MCP edits the **in-memory** model in the running Desktop instance. Nothing is written to the project (`.pbip`/TMDL) until someone saves.
 - Closing/restarting Desktop without saving **loses all MCP work**; the on-disk model reverts to the last save. This can silently discard hours of edits.

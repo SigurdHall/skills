@@ -52,6 +52,8 @@ Current skills:
   (conventions) + `semantic-model-authoring` (edit).
 - Any DAX/measure write → pair `semantic-model-authoring` (mechanics) with
   `powerbi/semantic-model-metadata` (description/lineage standard).
+- Any MCP tool call (authoring, consumption, or otherwise) → pair with
+  `coding/mcp-context-hygiene` for call-scoping discipline; not duplicated here.
 - Any UiT finance/økonomi specifics → `norms/uit-powerbi-reporting`.
 - Finance/BOTT model semantics → `norms/uit-bott-okonomimodell`; star-schema →
   `norms/bott-semantic-model`; finance DAX → `norms/finance-bi-dax-patterns`.
