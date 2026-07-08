@@ -1,6 +1,6 @@
 ---
 name: agent-work-order-handoff
-description: Use when delegating a complex, judgment-heavy task to a cheaper/different model, a background sub-agent, or a future session — writing a self-contained work order that preserves intent across the handoff, deciding what to background vs keep in the main thread, and resuming an interrupted delegate. Triggers: write a work order, delegate to a cheaper model, hand off to Sonnet/Haiku, spec for a subagent, background an independent task, resume an interrupted agent, cross-session handoff, multi-agent delegation.
+description: Use when delegating a complex, judgment-heavy task to a cheaper/different model, a background sub-agent, or a future session — writing a self-contained work order that preserves intent across the handoff, deciding what to background vs keep in the main thread, resuming an interrupted delegate, and receiving/consuming a handoff written by another agent or tool. Triggers: write a work order, delegate to a cheaper model, hand off to Sonnet/Haiku, spec for a subagent, background an independent task, resume an interrupted agent, cross-session handoff, multi-agent delegation, receive a handoff, locate a chat log/session transcript, cross-tool handoff (Claude Code/Codex/Copilot).
 ---
 
 # Agent Work-Order Handoff
@@ -35,6 +35,41 @@ self-contained document that survives the handoff.
 7. **End procedure** — what "done" looks like: verification steps, what to
    remind the human of (e.g. persistence/save steps the delegate cannot do
    itself), and how to report deviations.
+8. **Source reference** — the originating tool, session id (or human-readable
+   thread/chat title), and file path if known. Lets the receiver — another
+   agent, a future session, or the human — locate the original conversation
+   when the work order's summary doesn't cover something. See "Locating
+   source chat logs" below for where each tool stores these.
+
+## Locating source chat logs
+
+Every major agent tool persists its own session transcripts locally. Citing
+the source session in a work order lets anyone go back to the original
+conversation instead of re-deriving context from a summary alone. Don't read
+a full log into context to do this — these files commonly run into single-
+or double-digit MB — grep for a keyword/date, or use the lightweight index
+where one exists.
+
+- **Claude Code** —
+  `%USERPROFILE%\.claude\projects\<sanitized-cwd>\<session-uuid>.jsonl`
+  (`<sanitized-cwd>` is the working directory path with separators/drive-colon
+  replaced by `-`, e.g. `C:\repos` → `c--repos`). One JSONL file per session,
+  named by session UUID. Large offloaded tool outputs live alongside it in
+  `<session-uuid>/tool-results/`. No separate title index — use file mtime,
+  or grep the first lines for the initial user message, to identify a
+  session.
+- **Codex CLI** —
+  `%USERPROFILE%\.codex\sessions\YYYY\MM\DD\rollout-<timestamp>-<session-id>.jsonl`.
+  Check the lightweight index at `%USERPROFILE%\.codex\session_index.jsonl`
+  first — one line per session with `id`, human-assigned `thread_name`, and
+  `updated_at` — to find the right session id/date before opening a rollout
+  file.
+- **GitHub Copilot Chat (VS Code)** —
+  `%APPDATA%\Code\User\workspaceStorage\<workspace-hash>\chatSessions\<session-uuid>.jsonl`.
+  Find `<workspace-hash>` by checking `workspace.json` in each
+  `workspaceStorage\*` folder for the target path (e.g.
+  `{"folder":"file:///c%3A/repos"}`). Each session file's first record has a
+  `customTitle` (the human-readable chat name) and `sessionId`.
 
 ## Deciding what to background vs. keep sequential
 
@@ -58,6 +93,29 @@ itself (a transient quota/session limit, an infra hiccup), resume it by
 messaging its existing identity rather than restarting fresh. A resumed agent
 keeps its transcript and partial progress; a fresh one re-derives everything
 already done and can silently duplicate or skip work.
+
+## Receiving a handoff
+
+The receiver's job is to end up talking about the same thing the sender was —
+not just executing the same task description in isolation.
+
+- Keep the source reference (tool, session id/title, path) as given — don't
+  discard it once work starts. If you produce your own handoff later
+  (chained delegation, or reporting back to the human), carry the same
+  reference forward instead of inventing a new one, so the chain stays
+  traceable back to the original conversation even across tools (e.g. a
+  Claude Code session handing off to Codex or Copilot).
+- If the work order's summary leaves a real question unanswered — a
+  decision's rationale, an exact value, why an option was rejected — look it
+  up in the referenced source log before guessing. Grep for a keyword or date
+  range rather than reading the whole file.
+- If the human refers to "that session" / "what we discussed earlier" by
+  title rather than id, resolve it via the relevant index (Codex's
+  `session_index.jsonl`, Copilot's `customTitle` field, Claude Code file
+  mtimes) before assuming it's inaccessible.
+- If something in the work order conflicts with what the source log actually
+  shows, say so explicitly rather than silently trusting either one — this is
+  a deviation to log, per Guardrails below.
 
 ## Guardrails
 
