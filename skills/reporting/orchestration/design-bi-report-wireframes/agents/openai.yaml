@@ -1,0 +1,4 @@
+interface:
+  display_name: "BI Report Wireframes"
+  short_description: "Design evidence-based cross-target report wireframes"
+  default_prompt: "Use $design-bi-report-wireframes to create a report wireframe for Power BI, React, or HTML."

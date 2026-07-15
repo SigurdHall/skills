@@ -1,0 +1,56 @@
+{
+  "schema_version": "1.0",
+  "captured_at": "2026-07-14",
+  "snapshot_reconstructible_from_repo": false,
+  "extraction_note": "Public text/metadata snapshot; no PBIX refresh or data-source connection.",
+  "sources": [
+    {
+      "directory": "Analysis-Services",
+      "label": "Analysis-Services",
+      "repository": "https://github.com/microsoft/Analysis-Services",
+      "commit": "d3ccb5032c9029b097276b88412f7b61df6e73b8",
+      "license": "MIT",
+      "content_sha256": "1cb58deab429ef2e2e89851b91baf8fe7143cee25defa863acfb1834a3b882b7"
+    },
+    {
+      "directory": "pbi-tools",
+      "label": "pbi-tools",
+      "repository": "https://github.com/pbi-tools/pbi-tools",
+      "commit": "71681a4542216decc1a4d647fa6c4c56a447990c",
+      "license": "AGPL-3.0",
+      "content_sha256": "ed3bba714bfaa8ec298425f4a49ff06495c517bae689deae7b901c73a0d75b38"
+    },
+    {
+      "directory": "power-bi-agentic-development",
+      "label": "power-bi-agentic-development",
+      "repository": "https://github.com/data-goblin/power-bi-agentic-development",
+      "commit": "7de813c1a531da4f62f3b2fcfaa68a096423be5b",
+      "license": "GPL-3.0 with conflicting README restrictions; aggregates only",
+      "content_sha256": "de352542d6c4ae7fb12a593c14cd41b917e7bd743fa456d8cd4d5e0bdb66108d"
+    },
+    {
+      "directory": "pbip-demo-agentic",
+      "label": "pbip-demo-agentic",
+      "repository": "https://github.com/RuiRomano/pbip-demo-agentic",
+      "commit": "2c573dfeb90a4d9983ebcbc340642a8126597605",
+      "license": "MIT",
+      "content_sha256": "fd600e594ae766a926c50606ef746d187a210fbbbfea311f316a68cba9f8ef5b"
+    },
+    {
+      "directory": "Agentic-PBIP-Template",
+      "label": "Agentic-PBIP-Template",
+      "repository": "https://github.com/Mofaji/Agentic-PBIP-Template",
+      "commit": "195760f4e863c45337b5fba04beadf46275256a1",
+      "license": "MIT",
+      "content_sha256": "59c601fc8cb1308f6392b3899170d75fe72c039a15202e214bd8528db40b6d3f"
+    },
+    {
+      "directory": "adventureworks-bi-dashboard",
+      "label": "adventureworks-bi-dashboard",
+      "repository": "https://github.com/SuperUser-Gump/adventureworks-bi-dashboard",
+      "commit": "c488693ee8ce7ccbccdf2779866cb9338d73a2ae",
+      "license": "MIT",
+      "content_sha256": "134a24e2d2c89d9eba3423702663e067492c8e8fcc64cd26fd3197d4457590cd"
+    }
+  ]
+}

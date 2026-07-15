@@ -1,0 +1,116 @@
+{
+  "schemaVersion": "1.0-draft",
+  "status": "illustrative-non-canonical",
+  "dataState": "synthetic",
+  "conventions": {
+    "varianceAmount": "actualMinusBudget",
+    "variancePercent": "varianceDividedByAbsoluteBudgetOrNull",
+    "favorableCost": "varianceLessThanOrEqualToZero",
+    "favorableRevenue": "varianceGreaterThanOrEqualToZero",
+    "driverResidual": "varianceMinusDriverContributionSum"
+  },
+  "cases": [
+    {
+      "caseId": "cost-over-budget",
+      "input": {
+        "actual": 120,
+        "budget": 100,
+        "measureDirection": "cost",
+        "periodStatus": "complete",
+        "driverContributions": [15, 5]
+      },
+      "expected": {
+        "varianceAmount": 20,
+        "variancePercent": 0.2,
+        "favorable": false,
+        "driverResidual": 0,
+        "comparisonStatus": "comparable"
+      }
+    },
+    {
+      "caseId": "revenue-over-budget",
+      "input": {
+        "actual": 120,
+        "budget": 100,
+        "measureDirection": "revenue",
+        "periodStatus": "complete",
+        "driverContributions": [20]
+      },
+      "expected": {
+        "varianceAmount": 20,
+        "variancePercent": 0.2,
+        "favorable": true,
+        "driverResidual": 0,
+        "comparisonStatus": "comparable"
+      }
+    },
+    {
+      "caseId": "zero-budget",
+      "input": {
+        "actual": 10,
+        "budget": 0,
+        "measureDirection": "cost",
+        "periodStatus": "complete",
+        "driverContributions": [10]
+      },
+      "expected": {
+        "varianceAmount": 10,
+        "variancePercent": null,
+        "favorable": false,
+        "driverResidual": 0,
+        "comparisonStatus": "zero-baseline"
+      }
+    },
+    {
+      "caseId": "incomplete-period",
+      "input": {
+        "actual": 50,
+        "budget": 100,
+        "measureDirection": "revenue",
+        "periodStatus": "incomplete",
+        "driverContributions": [-50]
+      },
+      "expected": {
+        "varianceAmount": -50,
+        "variancePercent": -0.5,
+        "favorable": false,
+        "driverResidual": 0,
+        "comparisonStatus": "incomplete-period-warning"
+      }
+    },
+    {
+      "caseId": "unexplained-driver-residual",
+      "input": {
+        "actual": 130,
+        "budget": 100,
+        "measureDirection": "cost",
+        "periodStatus": "complete",
+        "driverContributions": [20]
+      },
+      "expected": {
+        "varianceAmount": 30,
+        "variancePercent": 0.3,
+        "favorable": false,
+        "driverResidual": 10,
+        "comparisonStatus": "unreconciled-drivers"
+      }
+    },
+    {
+      "caseId": "missing-input",
+      "input": {
+        "actual": null,
+        "budget": 100,
+        "measureDirection": "cost",
+        "periodStatus": "complete",
+        "driverContributions": []
+      },
+      "expected": {
+        "varianceAmount": null,
+        "variancePercent": null,
+        "favorable": null,
+        "driverResidual": null,
+        "comparisonStatus": "missing-input"
+      }
+    }
+  ]
+}

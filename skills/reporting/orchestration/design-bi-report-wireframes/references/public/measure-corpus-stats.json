@@ -1,0 +1,1184 @@
+{
+  "schema_version": "1.1",
+  "provenance": {
+    "analyzer_sha256": "869217ad7c2ef8d5769e9eae7619a0b24c31a7a432c9f066cfab6f13378d4520",
+    "manifest_verified": true,
+    "manifest_sha256": "b58826c96ce8bc575c8b00fce10c3a1ed76280821b5e4a59b42391ba1e40ec3f",
+    "source_revisions": [
+      {
+        "label": "Analysis-Services",
+        "repository": "https://github.com/microsoft/Analysis-Services",
+        "commit": "d3ccb5032c9029b097276b88412f7b61df6e73b8",
+        "license": "MIT",
+        "content_sha256": "1cb58deab429ef2e2e89851b91baf8fe7143cee25defa863acfb1834a3b882b7"
+      },
+      {
+        "label": "pbi-tools",
+        "repository": "https://github.com/pbi-tools/pbi-tools",
+        "commit": "71681a4542216decc1a4d647fa6c4c56a447990c",
+        "license": "AGPL-3.0",
+        "content_sha256": "ed3bba714bfaa8ec298425f4a49ff06495c517bae689deae7b901c73a0d75b38"
+      },
+      {
+        "label": "power-bi-agentic-development",
+        "repository": "https://github.com/data-goblin/power-bi-agentic-development",
+        "commit": "7de813c1a531da4f62f3b2fcfaa68a096423be5b",
+        "license": "GPL-3.0 with conflicting README restrictions; aggregates only",
+        "content_sha256": "de352542d6c4ae7fb12a593c14cd41b917e7bd743fa456d8cd4d5e0bdb66108d"
+      },
+      {
+        "label": "pbip-demo-agentic",
+        "repository": "https://github.com/RuiRomano/pbip-demo-agentic",
+        "commit": "2c573dfeb90a4d9983ebcbc340642a8126597605",
+        "license": "MIT",
+        "content_sha256": "fd600e594ae766a926c50606ef746d187a210fbbbfea311f316a68cba9f8ef5b"
+      },
+      {
+        "label": "Agentic-PBIP-Template",
+        "repository": "https://github.com/Mofaji/Agentic-PBIP-Template",
+        "commit": "195760f4e863c45337b5fba04beadf46275256a1",
+        "license": "MIT",
+        "content_sha256": "59c601fc8cb1308f6392b3899170d75fe72c039a15202e214bd8528db40b6d3f"
+      },
+      {
+        "label": "adventureworks-bi-dashboard",
+        "repository": "https://github.com/SuperUser-Gump/adventureworks-bi-dashboard",
+        "commit": "c488693ee8ce7ccbccdf2779866cb9338d73a2ae",
+        "license": "MIT",
+        "content_sha256": "134a24e2d2c89d9eba3423702663e067492c8e8fcc64cd26fd3197d4457590cd"
+      }
+    ]
+  },
+  "corpus": {
+    "sources": 6,
+    "artifact_groups": 25,
+    "recognized_candidate_files": 149,
+    "measure_instances": 351,
+    "unique_expressions": 314,
+    "duplicate_instances": 37,
+    "calculation_items_excluded": 74,
+    "calculated_columns_excluded": 98,
+    "calculated_tables_excluded": 34,
+    "udf_definitions_excluded": 61,
+    "read_parse_errors": 0,
+    "parser_scope": "recognized BIM, TMDL, and pbi-tools/standalone measure candidates; not a full DAX grammar validator"
+  },
+  "sources": {
+    "Analysis-Services": {
+      "measure_instances": 70,
+      "unique_expressions": 56,
+      "artifact_groups": 3
+    },
+    "adventureworks-bi-dashboard": {
+      "measure_instances": 41,
+      "unique_expressions": 41,
+      "artifact_groups": 1
+    },
+    "pbi-tools": {
+      "measure_instances": 11,
+      "unique_expressions": 5,
+      "artifact_groups": 5
+    },
+    "pbip-demo-agentic": {
+      "measure_instances": 15,
+      "unique_expressions": 15,
+      "artifact_groups": 1
+    },
+    "power-bi-agentic-development": {
+      "measure_instances": 214,
+      "unique_expressions": 212,
+      "artifact_groups": 15
+    }
+  },
+  "functions": {
+    "CALCULATE": {
+      "measure_instances": 143,
+      "unique_expressions": 140,
+      "artifact_groups": 13,
+      "sources": 4,
+      "calls": 195
+    },
+    "MAX": {
+      "measure_instances": 73,
+      "unique_expressions": 71,
+      "artifact_groups": 14,
+      "sources": 4,
+      "calls": 130
+    },
+    "DIVIDE": {
+      "measure_instances": 59,
+      "unique_expressions": 58,
+      "artifact_groups": 15,
+      "sources": 4,
+      "calls": 76
+    },
+    "IF": {
+      "measure_instances": 55,
+      "unique_expressions": 52,
+      "artifact_groups": 18,
+      "sources": 4,
+      "calls": 82
+    },
+    "HASONEVALUE": {
+      "measure_instances": 36,
+      "unique_expressions": 36,
+      "artifact_groups": 15,
+      "sources": 3,
+      "calls": 41
+    },
+    "DATEADD": {
+      "measure_instances": 29,
+      "unique_expressions": 29,
+      "artifact_groups": 2,
+      "sources": 2,
+      "calls": 29
+    },
+    "SUMX": {
+      "measure_instances": 31,
+      "unique_expressions": 25,
+      "artifact_groups": 7,
+      "sources": 5,
+      "calls": 33
+    },
+    "ALL": {
+      "measure_instances": 24,
+      "unique_expressions": 24,
+      "artifact_groups": 4,
+      "sources": 2,
+      "calls": 31
+    },
+    "SUM": {
+      "measure_instances": 34,
+      "unique_expressions": 21,
+      "artifact_groups": 13,
+      "sources": 5,
+      "calls": 36
+    },
+    "COUNTROWS": {
+      "measure_instances": 23,
+      "unique_expressions": 20,
+      "artifact_groups": 6,
+      "sources": 3,
+      "calls": 25
+    },
+    "VALUES": {
+      "measure_instances": 23,
+      "unique_expressions": 20,
+      "artifact_groups": 4,
+      "sources": 3,
+      "calls": 23
+    },
+    "MIN": {
+      "measure_instances": 18,
+      "unique_expressions": 18,
+      "artifact_groups": 8,
+      "sources": 1,
+      "calls": 38
+    },
+    "SELECTEDVALUE": {
+      "measure_instances": 16,
+      "unique_expressions": 16,
+      "artifact_groups": 5,
+      "sources": 3,
+      "calls": 20
+    },
+    "DISTINCTCOUNT": {
+      "measure_instances": 18,
+      "unique_expressions": 14,
+      "artifact_groups": 6,
+      "sources": 4,
+      "calls": 18
+    },
+    "MAXX": {
+      "measure_instances": 14,
+      "unique_expressions": 14,
+      "artifact_groups": 11,
+      "sources": 2,
+      "calls": 23
+    },
+    "RELATED": {
+      "measure_instances": 14,
+      "unique_expressions": 14,
+      "artifact_groups": 2,
+      "sources": 2,
+      "calls": 14
+    },
+    "BLANK": {
+      "measure_instances": 15,
+      "unique_expressions": 13,
+      "artifact_groups": 8,
+      "sources": 2,
+      "calls": 15
+    },
+    "CALCULATETABLE": {
+      "measure_instances": 13,
+      "unique_expressions": 13,
+      "artifact_groups": 2,
+      "sources": 1,
+      "calls": 13
+    },
+    "ALLSELECTED": {
+      "measure_instances": 12,
+      "unique_expressions": 12,
+      "artifact_groups": 10,
+      "sources": 2,
+      "calls": 13
+    },
+    "FORMAT": {
+      "measure_instances": 12,
+      "unique_expressions": 12,
+      "artifact_groups": 9,
+      "sources": 1,
+      "calls": 30
+    },
+    "DATESBETWEEN": {
+      "measure_instances": 11,
+      "unique_expressions": 11,
+      "artifact_groups": 3,
+      "sources": 2,
+      "calls": 20
+    },
+    "REMOVEFILTERS": {
+      "measure_instances": 11,
+      "unique_expressions": 11,
+      "artifact_groups": 8,
+      "sources": 2,
+      "calls": 27
+    },
+    "DATESINPERIOD": {
+      "measure_instances": 11,
+      "unique_expressions": 9,
+      "artifact_groups": 5,
+      "sources": 4,
+      "calls": 11
+    },
+    "DATESYTD": {
+      "measure_instances": 9,
+      "unique_expressions": 9,
+      "artifact_groups": 5,
+      "sources": 3,
+      "calls": 9
+    },
+    "INT": {
+      "measure_instances": 9,
+      "unique_expressions": 9,
+      "artifact_groups": 2,
+      "sources": 1,
+      "calls": 11
+    },
+    "DATEDIFF": {
+      "measure_instances": 8,
+      "unique_expressions": 8,
+      "artifact_groups": 1,
+      "sources": 1,
+      "calls": 8
+    },
+    "IF.EAGER": {
+      "measure_instances": 8,
+      "unique_expressions": 8,
+      "artifact_groups": 1,
+      "sources": 1,
+      "calls": 8
+    },
+    "SWITCH": {
+      "measure_instances": 8,
+      "unique_expressions": 8,
+      "artifact_groups": 8,
+      "sources": 2,
+      "calls": 11
+    },
+    "ADDCOLUMNS": {
+      "measure_instances": 7,
+      "unique_expressions": 7,
+      "artifact_groups": 5,
+      "sources": 1,
+      "calls": 8
+    },
+    "DATESQTD": {
+      "measure_instances": 7,
+      "unique_expressions": 7,
+      "artifact_groups": 3,
+      "sources": 2,
+      "calls": 7
+    },
+    "POWER": {
+      "measure_instances": 7,
+      "unique_expressions": 7,
+      "artifact_groups": 1,
+      "sources": 1,
+      "calls": 13
+    },
+    "ABS": {
+      "measure_instances": 6,
+      "unique_expressions": 6,
+      "artifact_groups": 5,
+      "sources": 1,
+      "calls": 6
+    },
+    "CURRENCY": {
+      "measure_instances": 6,
+      "unique_expressions": 6,
+      "artifact_groups": 1,
+      "sources": 1,
+      "calls": 6
+    },
+    "DISTINCT": {
+      "measure_instances": 6,
+      "unique_expressions": 6,
+      "artifact_groups": 1,
+      "sources": 1,
+      "calls": 6
+    },
+    "ISBLANK": {
+      "measure_instances": 6,
+      "unique_expressions": 6,
+      "artifact_groups": 2,
+      "sources": 1,
+      "calls": 6
+    },
+    "MINX": {
+      "measure_instances": 8,
+      "unique_expressions": 6,
+      "artifact_groups": 5,
+      "sources": 3,
+      "calls": 9
+    },
+    "SAMEPERIODLASTYEAR": {
+      "measure_instances": 7,
+      "unique_expressions": 6,
+      "artifact_groups": 3,
+      "sources": 3,
+      "calls": 7
+    },
+    "TREATAS": {
+      "measure_instances": 6,
+      "unique_expressions": 6,
+      "artifact_groups": 1,
+      "sources": 1,
+      "calls": 6
+    },
+    "TRUE": {
+      "measure_instances": 6,
+      "unique_expressions": 6,
+      "artifact_groups": 6,
+      "sources": 1,
+      "calls": 8
+    },
+    "AVERAGEX": {
+      "measure_instances": 8,
+      "unique_expressions": 5,
+      "artifact_groups": 3,
+      "sources": 3,
+      "calls": 8
+    },
+    "PERCENTILE.INC": {
+      "measure_instances": 5,
+      "unique_expressions": 5,
+      "artifact_groups": 1,
+      "sources": 1,
+      "calls": 5
+    },
+    "PREVIOUSQUARTER": {
+      "measure_instances": 4,
+      "unique_expressions": 4,
+      "artifact_groups": 2,
+      "sources": 1,
+      "calls": 4
+    },
+    "TOTALQTD": {
+      "measure_instances": 4,
+      "unique_expressions": 4,
+      "artifact_groups": 2,
+      "sources": 1,
+      "calls": 4
+    },
+    "DATE": {
+      "measure_instances": 3,
+      "unique_expressions": 3,
+      "artifact_groups": 1,
+      "sources": 1,
+      "calls": 5
+    },
+    "FILTER": {
+      "measure_instances": 3,
+      "unique_expressions": 3,
+      "artifact_groups": 3,
+      "sources": 2,
+      "calls": 3
+    },
+    "LASTDATE": {
+      "measure_instances": 3,
+      "unique_expressions": 3,
+      "artifact_groups": 3,
+      "sources": 2,
+      "calls": 3
+    },
+    "MROUND": {
+      "measure_instances": 3,
+      "unique_expressions": 3,
+      "artifact_groups": 1,
+      "sources": 1,
+      "calls": 3
+    },
+    "ALLEXCEPT": {
+      "measure_instances": 2,
+      "unique_expressions": 2,
+      "artifact_groups": 1,
+      "sources": 1,
+      "calls": 4
+    },
+    "AND": {
+      "measure_instances": 2,
+      "unique_expressions": 2,
+      "artifact_groups": 1,
+      "sources": 1,
+      "calls": 2
+    },
+    "CONCATENATEX": {
+      "measure_instances": 2,
+      "unique_expressions": 2,
+      "artifact_groups": 2,
+      "sources": 1,
+      "calls": 2
+    },
+    "DATESMTD": {
+      "measure_instances": 2,
+      "unique_expressions": 2,
+      "artifact_groups": 1,
+      "sources": 1,
+      "calls": 2
+    },
+    "DAY": {
+      "measure_instances": 2,
+      "unique_expressions": 2,
+      "artifact_groups": 1,
+      "sources": 1,
+      "calls": 4
+    },
+    "ENDOFQUARTER": {
+      "measure_instances": 2,
+      "unique_expressions": 2,
+      "artifact_groups": 2,
+      "sources": 1,
+      "calls": 2
+    },
+    "MONTH": {
+      "measure_instances": 2,
+      "unique_expressions": 2,
+      "artifact_groups": 1,
+      "sources": 1,
+      "calls": 4
+    },
+    "STARTOFQUARTER": {
+      "measure_instances": 2,
+      "unique_expressions": 2,
+      "artifact_groups": 2,
+      "sources": 1,
+      "calls": 2
+    },
+    "SUMMARIZE": {
+      "measure_instances": 2,
+      "unique_expressions": 2,
+      "artifact_groups": 1,
+      "sources": 1,
+      "calls": 2
+    },
+    "YEAR": {
+      "measure_instances": 2,
+      "unique_expressions": 2,
+      "artifact_groups": 1,
+      "sources": 1,
+      "calls": 4
+    },
+    "AVERAGE": {
+      "measure_instances": 1,
+      "unique_expressions": 1,
+      "artifact_groups": 1,
+      "sources": 1,
+      "calls": 1
+    },
+    "COUNT": {
+      "measure_instances": 1,
+      "unique_expressions": 1,
+      "artifact_groups": 1,
+      "sources": 1,
+      "calls": 1
+    },
+    "COUNTA": {
+      "measure_instances": 2,
+      "unique_expressions": 1,
+      "artifact_groups": 2,
+      "sources": 1,
+      "calls": 2
+    },
+    "DATEVALUE": {
+      "measure_instances": 1,
+      "unique_expressions": 1,
+      "artifact_groups": 1,
+      "sources": 1,
+      "calls": 1
+    },
+    "FIRSTDATE": {
+      "measure_instances": 1,
+      "unique_expressions": 1,
+      "artifact_groups": 1,
+      "sources": 1,
+      "calls": 1
+    },
+    "FIRSTNONBLANK": {
+      "measure_instances": 1,
+      "unique_expressions": 1,
+      "artifact_groups": 1,
+      "sources": 1,
+      "calls": 1
+    },
+    "GENERATEALL": {
+      "measure_instances": 1,
+      "unique_expressions": 1,
+      "artifact_groups": 1,
+      "sources": 1,
+      "calls": 1
+    },
+    "IFERROR": {
+      "measure_instances": 2,
+      "unique_expressions": 1,
+      "artifact_groups": 2,
+      "sources": 1,
+      "calls": 2
+    },
+    "LOWER": {
+      "measure_instances": 1,
+      "unique_expressions": 1,
+      "artifact_groups": 1,
+      "sources": 1,
+      "calls": 1
+    },
+    "MOD": {
+      "measure_instances": 1,
+      "unique_expressions": 1,
+      "artifact_groups": 1,
+      "sources": 1,
+      "calls": 1
+    },
+    "OFFSET": {
+      "measure_instances": 1,
+      "unique_expressions": 1,
+      "artifact_groups": 1,
+      "sources": 1,
+      "calls": 1
+    },
+    "ORDERBY": {
+      "measure_instances": 1,
+      "unique_expressions": 1,
+      "artifact_groups": 1,
+      "sources": 1,
+      "calls": 1
+    },
+    "PERCENTILEX.INC": {
+      "measure_instances": 1,
+      "unique_expressions": 1,
+      "artifact_groups": 1,
+      "sources": 1,
+      "calls": 3
+    },
+    "RAND": {
+      "measure_instances": 1,
+      "unique_expressions": 1,
+      "artifact_groups": 1,
+      "sources": 1,
+      "calls": 1
+    },
+    "RANKX": {
+      "measure_instances": 1,
+      "unique_expressions": 1,
+      "artifact_groups": 1,
+      "sources": 1,
+      "calls": 1
+    },
+    "ROUND": {
+      "measure_instances": 1,
+      "unique_expressions": 1,
+      "artifact_groups": 1,
+      "sources": 1,
+      "calls": 1
+    },
+    "SELECTCOLUMNS": {
+      "measure_instances": 1,
+      "unique_expressions": 1,
+      "artifact_groups": 1,
+      "sources": 1,
+      "calls": 1
+    },
+    "TODAY": {
+      "measure_instances": 1,
+      "unique_expressions": 1,
+      "artifact_groups": 1,
+      "sources": 1,
+      "calls": 1
+    },
+    "TOTALYTD": {
+      "measure_instances": 1,
+      "unique_expressions": 1,
+      "artifact_groups": 1,
+      "sources": 1,
+      "calls": 1
+    },
+    "UPPER": {
+      "measure_instances": 1,
+      "unique_expressions": 1,
+      "artifact_groups": 1,
+      "sources": 1,
+      "calls": 1
+    },
+    "USERELATIONSHIP": {
+      "measure_instances": 1,
+      "unique_expressions": 1,
+      "artifact_groups": 1,
+      "sources": 1,
+      "calls": 1
+    }
+  },
+  "redacted_call_tokens": {
+    "unique_tokens": 43,
+    "occurrences": 64,
+    "unique_expressions": 27
+  },
+  "patterns": {
+    "context_filtering": {
+      "measure_instances": 149,
+      "unique_expressions": 146,
+      "artifact_groups": 17,
+      "sources": 4,
+      "calls": 149
+    },
+    "base_aggregation": {
+      "measure_instances": 167,
+      "unique_expressions": 137,
+      "artifact_groups": 23,
+      "sources": 5,
+      "calls": 167
+    },
+    "time_intelligence": {
+      "measure_instances": 85,
+      "unique_expressions": 82,
+      "artifact_groups": 8,
+      "sources": 4,
+      "calls": 85
+    },
+    "var_based": {
+      "measure_instances": 82,
+      "unique_expressions": 80,
+      "artifact_groups": 16,
+      "sources": 3,
+      "calls": 82
+    },
+    "safe_ratio": {
+      "measure_instances": 59,
+      "unique_expressions": 58,
+      "artifact_groups": 15,
+      "sources": 4,
+      "calls": 59
+    },
+    "conditional_logic": {
+      "measure_instances": 58,
+      "unique_expressions": 54,
+      "artifact_groups": 19,
+      "sources": 4,
+      "calls": 58
+    },
+    "iterator": {
+      "measure_instances": 52,
+      "unique_expressions": 43,
+      "artifact_groups": 16,
+      "sources": 5,
+      "calls": 52
+    },
+    "selection_state": {
+      "measure_instances": 42,
+      "unique_expressions": 42,
+      "artifact_groups": 15,
+      "sources": 3,
+      "calls": 42
+    },
+    "blank_error_handling": {
+      "measure_instances": 21,
+      "unique_expressions": 19,
+      "artifact_groups": 8,
+      "sources": 2,
+      "calls": 21
+    },
+    "text_display": {
+      "measure_instances": 14,
+      "unique_expressions": 14,
+      "artifact_groups": 11,
+      "sources": 1,
+      "calls": 14
+    },
+    "table_shaping": {
+      "measure_instances": 7,
+      "unique_expressions": 7,
+      "artifact_groups": 5,
+      "sources": 1,
+      "calls": 7
+    },
+    "virtual_relationship": {
+      "measure_instances": 7,
+      "unique_expressions": 7,
+      "artifact_groups": 2,
+      "sources": 2,
+      "calls": 7
+    },
+    "ranking_topn": {
+      "measure_instances": 1,
+      "unique_expressions": 1,
+      "artifact_groups": 1,
+      "sources": 1,
+      "calls": 1
+    },
+    "reference_only": {
+      "measure_instances": 1,
+      "unique_expressions": 1,
+      "artifact_groups": 1,
+      "sources": 1,
+      "calls": 1
+    }
+  },
+  "name_intent_proxies": {
+    "ratio_percent_margin": {
+      "measure_instances": 61,
+      "unique_expressions": 57,
+      "artifact_groups": 7,
+      "sources": 5,
+      "calls": 61
+    },
+    "ytd_mtd_qtd": {
+      "measure_instances": 54,
+      "unique_expressions": 54,
+      "artifact_groups": 5,
+      "sources": 3,
+      "calls": 54
+    },
+    "target_budget_forecast": {
+      "measure_instances": 50,
+      "unique_expressions": 50,
+      "artifact_groups": 2,
+      "sources": 2,
+      "calls": 50
+    },
+    "total_sum": {
+      "measure_instances": 31,
+      "unique_expressions": 28,
+      "artifact_groups": 9,
+      "sources": 3,
+      "calls": 31
+    },
+    "variance_change_growth": {
+      "measure_instances": 21,
+      "unique_expressions": 21,
+      "artifact_groups": 3,
+      "sources": 2,
+      "calls": 21
+    },
+    "previous_period": {
+      "measure_instances": 13,
+      "unique_expressions": 12,
+      "artifact_groups": 3,
+      "sources": 3,
+      "calls": 13
+    },
+    "average": {
+      "measure_instances": 10,
+      "unique_expressions": 7,
+      "artifact_groups": 3,
+      "sources": 3,
+      "calls": 10
+    },
+    "count_number": {
+      "measure_instances": 1,
+      "unique_expressions": 1,
+      "artifact_groups": 1,
+      "sources": 1,
+      "calls": 1
+    },
+    "quality_exception": {
+      "measure_instances": 1,
+      "unique_expressions": 1,
+      "artifact_groups": 1,
+      "sources": 1,
+      "calls": 1
+    },
+    "rank_topn": {
+      "measure_instances": 1,
+      "unique_expressions": 1,
+      "artifact_groups": 1,
+      "sources": 1,
+      "calls": 1
+    }
+  },
+  "function_co_occurrence": [
+    {
+      "functions": [
+        "CALCULATE",
+        "MAX"
+      ],
+      "unique_expressions": 50
+    },
+    {
+      "functions": [
+        "IF",
+        "MAX"
+      ],
+      "unique_expressions": 37
+    },
+    {
+      "functions": [
+        "HASONEVALUE",
+        "IF"
+      ],
+      "unique_expressions": 36
+    },
+    {
+      "functions": [
+        "CALCULATE",
+        "DATEADD"
+      ],
+      "unique_expressions": 29
+    },
+    {
+      "functions": [
+        "HASONEVALUE",
+        "MAX"
+      ],
+      "unique_expressions": 28
+    },
+    {
+      "functions": [
+        "CALCULATE",
+        "IF"
+      ],
+      "unique_expressions": 27
+    },
+    {
+      "functions": [
+        "ALL",
+        "CALCULATE"
+      ],
+      "unique_expressions": 24
+    },
+    {
+      "functions": [
+        "CALCULATE",
+        "DIVIDE"
+      ],
+      "unique_expressions": 24
+    },
+    {
+      "functions": [
+        "CALCULATE",
+        "HASONEVALUE"
+      ],
+      "unique_expressions": 20
+    },
+    {
+      "functions": [
+        "DIVIDE",
+        "MAX"
+      ],
+      "unique_expressions": 20
+    },
+    {
+      "functions": [
+        "MAX",
+        "MIN"
+      ],
+      "unique_expressions": 18
+    },
+    {
+      "functions": [
+        "ALL",
+        "MAX"
+      ],
+      "unique_expressions": 17
+    },
+    {
+      "functions": [
+        "DIVIDE",
+        "IF"
+      ],
+      "unique_expressions": 17
+    },
+    {
+      "functions": [
+        "DIVIDE",
+        "HASONEVALUE"
+      ],
+      "unique_expressions": 16
+    },
+    {
+      "functions": [
+        "MAX",
+        "SUMX"
+      ],
+      "unique_expressions": 15
+    },
+    {
+      "functions": [
+        "DIVIDE",
+        "MIN"
+      ],
+      "unique_expressions": 14
+    },
+    {
+      "functions": [
+        "IF",
+        "VALUES"
+      ],
+      "unique_expressions": 14
+    },
+    {
+      "functions": [
+        "MAX",
+        "VALUES"
+      ],
+      "unique_expressions": 14
+    },
+    {
+      "functions": [
+        "RELATED",
+        "SUMX"
+      ],
+      "unique_expressions": 14
+    },
+    {
+      "functions": [
+        "CALCULATE",
+        "MIN"
+      ],
+      "unique_expressions": 13
+    },
+    {
+      "functions": [
+        "CALCULATE",
+        "VALUES"
+      ],
+      "unique_expressions": 13
+    },
+    {
+      "functions": [
+        "DIVIDE",
+        "MAXX"
+      ],
+      "unique_expressions": 13
+    },
+    {
+      "functions": [
+        "IF",
+        "MAXX"
+      ],
+      "unique_expressions": 13
+    },
+    {
+      "functions": [
+        "IF",
+        "SELECTEDVALUE"
+      ],
+      "unique_expressions": 13
+    },
+    {
+      "functions": [
+        "ALL",
+        "IF"
+      ],
+      "unique_expressions": 12
+    },
+    {
+      "functions": [
+        "ALLSELECTED",
+        "DIVIDE"
+      ],
+      "unique_expressions": 12
+    },
+    {
+      "functions": [
+        "CALCULATE",
+        "CALCULATETABLE"
+      ],
+      "unique_expressions": 12
+    },
+    {
+      "functions": [
+        "HASONEVALUE",
+        "MAXX"
+      ],
+      "unique_expressions": 12
+    },
+    {
+      "functions": [
+        "HASONEVALUE",
+        "VALUES"
+      ],
+      "unique_expressions": 12
+    },
+    {
+      "functions": [
+        "MAX",
+        "RELATED"
+      ],
+      "unique_expressions": 12
+    },
+    {
+      "functions": [
+        "ALLSELECTED",
+        "IF"
+      ],
+      "unique_expressions": 11
+    },
+    {
+      "functions": [
+        "CALCULATE",
+        "REMOVEFILTERS"
+      ],
+      "unique_expressions": 11
+    },
+    {
+      "functions": [
+        "FORMAT",
+        "MAX"
+      ],
+      "unique_expressions": 11
+    },
+    {
+      "functions": [
+        "IF",
+        "MIN"
+      ],
+      "unique_expressions": 11
+    },
+    {
+      "functions": [
+        "MAX",
+        "MAXX"
+      ],
+      "unique_expressions": 11
+    },
+    {
+      "functions": [
+        "MAX",
+        "SELECTEDVALUE"
+      ],
+      "unique_expressions": 11
+    },
+    {
+      "functions": [
+        "ALLSELECTED",
+        "HASONEVALUE"
+      ],
+      "unique_expressions": 10
+    },
+    {
+      "functions": [
+        "ALLSELECTED",
+        "MAXX"
+      ],
+      "unique_expressions": 10
+    },
+    {
+      "functions": [
+        "CALCULATE",
+        "SELECTEDVALUE"
+      ],
+      "unique_expressions": 10
+    },
+    {
+      "functions": [
+        "DIVIDE",
+        "FORMAT"
+      ],
+      "unique_expressions": 10
+    },
+    {
+      "functions": [
+        "FORMAT",
+        "HASONEVALUE"
+      ],
+      "unique_expressions": 10
+    },
+    {
+      "functions": [
+        "FORMAT",
+        "IF"
+      ],
+      "unique_expressions": 10
+    },
+    {
+      "functions": [
+        "HASONEVALUE",
+        "SELECTEDVALUE"
+      ],
+      "unique_expressions": 10
+    },
+    {
+      "functions": [
+        "MAX",
+        "REMOVEFILTERS"
+      ],
+      "unique_expressions": 10
+    },
+    {
+      "functions": [
+        "ALLSELECTED",
+        "MAX"
+      ],
+      "unique_expressions": 9
+    },
+    {
+      "functions": [
+        "CALCULATE",
+        "DATESBETWEEN"
+      ],
+      "unique_expressions": 9
+    },
+    {
+      "functions": [
+        "CALCULATE",
+        "DATESYTD"
+      ],
+      "unique_expressions": 9
+    },
+    {
+      "functions": [
+        "CALCULATE",
+        "FORMAT"
+      ],
+      "unique_expressions": 9
+    },
+    {
+      "functions": [
+        "CALCULATE",
+        "MAXX"
+      ],
+      "unique_expressions": 9
+    },
+    {
+      "functions": [
+        "CALCULATE",
+        "SUMX"
+      ],
+      "unique_expressions": 9
+    }
+  ],
+  "complexity": {
+    "median_characters": 81,
+    "p90_characters": 543,
+    "median_lines": 4,
+    "p90_lines": 19,
+    "median_function_calls": 2,
+    "p90_function_calls": 13
+  },
+  "duplicate_frequency": {
+    "1": 281,
+    "2": 30,
+    "3": 2,
+    "4": 1
+  }
+}

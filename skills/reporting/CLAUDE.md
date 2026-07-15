@@ -20,7 +20,7 @@ Current skills:
 
 - powerbi: `powerbi-pbip`, `semantic-model-metadata`
 - presentation: `html-report-builder`, `presentation-factory`, `uit-deck-generator`
-- orchestration: `pbip-full-report`, `powerbi-report-production-loop`, `semantic-model-migration`
+- orchestration: `design-bi-report-wireframes`, `pbip-full-report`, `powerbi-report-production-loop`, `semantic-model-migration`
 - fabric: `fabric-documentation` (hub) + doc-type skills
 - norms: `uit-powerbi-reporting`, `uit-bott-okonomimodell`, `bott-semantic-model`, `finance-bi-dax-patterns`
 
@@ -45,6 +45,9 @@ Current skills:
 - Offline / no MCP, raw PBIP/PBIR/TMDL edit → `powerbi/powerbi-pbip` (fallback).
 - Build a complete report end to end → `orchestration/pbip-full-report`, pulling
   mechanics from Fabric skills.
+- Design or regenerate a report across Power BI, React, and/or HTML →
+  `orchestration/design-bi-report-wireframes`; share story/evidence semantics,
+  then compile separate target wireframes.
 - Tableau → Power BI **report/visual** migration → `orchestration/powerbi-report-production-loop`.
 - Legacy/Tableau-era **semantic model** cleanup (star-schema hygiene, natural keys, measure porting, AI/Copilot readiness) → `orchestration/semantic-model-migration`. Cross-agent or cross-session delegation of that process → `coding/agent-work-order-handoff`.
 - Static HTML report from YAML/SQL/Parquet → `presentation/html-report-builder`.

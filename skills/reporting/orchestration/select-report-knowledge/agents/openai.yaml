@@ -1,0 +1,4 @@
+interface:
+  display_name: "Select Report Knowledge"
+  short_description: "Select governed BI knowledge for report design"
+  default_prompt: "Use $select-report-knowledge to build a hash-locked knowledge selection for this report brief."

@@ -1,0 +1,54 @@
+{
+  "contract": "StoryFrameV1-draft",
+  "status": "exploratory-pending-evidence",
+  "dataState": "synthetic",
+  "canonicalStatus": "illustrative-non-canonical",
+  "sourceRefs": {
+    "storyBrief": "brief:finance-variance:v1",
+    "narrativeEvidence": "evidence:finance-variance:v1",
+    "contentHash": "sha256:replace-with-project-hash",
+    "brandIntentRef": "brand:public-sector-calm:v1",
+    "tasteProfileRef": "taste:decision-dense-accessible:v1"
+  },
+  "frames": [
+    {
+      "frameId": "overview",
+      "order": 1,
+      "decisionQuestion": "Where is intervention needed now?",
+      "keyClaimRef": "claim:variance-concentration:pending",
+      "evidenceNeeds": [
+        {
+          "intent": "compare_actual_to_baseline",
+          "priority": "primary",
+          "semanticRoleRefs": [
+            "measure:actual",
+            "measure:baseline",
+            "measure:variance"
+          ],
+          "factRefs": [
+            "fact:certified-total:pending",
+            "fact:material-drivers:pending"
+          ]
+        }
+      ],
+      "comparisonContext": {
+        "baseline": "approved-plan",
+        "period": "current-reporting-period",
+        "population": "in-scope-organizational-units"
+      },
+      "driverStatus": "required",
+      "caveats": [
+        "Incomplete periods must be visibly marked."
+      ],
+      "freshnessRequirement": "show-source-timestamp-and-sla",
+      "nextAction": "open-the-highest-material-exception",
+      "traceRefs": [
+        "brief:finance-variance:v1",
+        "evidence:finance-variance:v1",
+        "sha256:replace-with-project-hash",
+        "brand:public-sector-calm:v1",
+        "taste:decision-dense-accessible:v1"
+      ]
+    }
+  ]
+}

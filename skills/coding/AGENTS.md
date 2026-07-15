@@ -6,6 +6,6 @@ model-assisted development workflows.
 Current skills:
 
 - `agent-work-order-handoff`
+- `present-complex-results`
 - `prompt-engineering`
 - `readable-python-code`
-

@@ -1,12 +1,14 @@
 ---
 name: grill-me
-description: Use when the user asks to be grilled, challenged, sanity-checked, pressure-tested, red-teamed, criticized, poked holes in, asked "what am I missing?", "does this make sense?", "any concerns?", or wants sharper thinking, hidden risks, better trade-offs, stronger questions, or a more defensible idea, plan, prompt, architecture, analysis, roadmap, scope, assumption, or decision.
+description: Use when the user asks to be grilled, challenged, sanity-checked, pressure-tested, red-teamed, criticized, poked holes in, asked "what am I missing?", "does this make sense?", "any concerns?", or wants sharper thinking, hidden risks, better trade-offs, stronger questions, or a more defensible idea, plan, prompt, architecture, analysis, roadmap, scope, assumption, or decision. Also triggers on Norwegian phrasing: grill meg, vær kritisk, finn svakhetene, gi meg motforestillinger, still spørsmål til dette, holder dette vann, hva mangler, hva er jeg blind for, test denne planen/ideen. Requires an existing plan, claim, or decision to test — use interview-me instead when the user only has a rough, unformed idea and needs help drawing out goals and constraints before there is anything to critique.
 ---
 
 # Grill Me
 
 Use this when the user wants to be grilled on an idea, plan, prompt,
-architecture, roadmap, scope, analysis, or decision.
+architecture, roadmap, scope, analysis, or decision that already exists in
+some form. If there is nothing concrete yet to grill, use
+[interview-me](../interview-me/SKILL.md) first to draw one out.
 
 Your job is not to give a normal review first. Interview the user until the
 plan is clear enough to defend, change, or abandon.
@@ -49,7 +51,8 @@ Use domain-specific skills in addition when the topic involves finance, BOTT,
 Fabric, Power BI, Tableau, Python, or prompt engineering. Use this skill as a
 critical lens, not as a replacement for domain rules.
 
-Related skills: [skill-design](../skill-design/SKILL.md),
+Related skills: [interview-me](../interview-me/SKILL.md) when there is no
+plan yet to grill, [skill-design](../skill-design/SKILL.md),
 [prompt-engineering](../../coding/prompt-engineering/SKILL.md),
 [readable-python-code](../../coding/readable-python-code/SKILL.md),
 [fabric-documentation](../../reporting/fabric/fabric-documentation/SKILL.md),

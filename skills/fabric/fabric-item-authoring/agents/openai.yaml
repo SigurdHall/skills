@@ -1,0 +1,4 @@
+interface:
+  display_name: "Fabric Item Authoring"
+  short_description: "Route safe Fabric item creation and updates"
+  default_prompt: "Use $fabric-item-authoring to plan and execute a safe Fabric item change."

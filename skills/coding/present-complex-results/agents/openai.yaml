@@ -1,0 +1,7 @@
+interface:
+  display_name: "Present Complex Results"
+  short_description: "Fjernstyringsvennlig sluttresultat med veivalg"
+  default_prompt: "Bruk $present-complex-results til å presentere denne komplekse leveransen med status, verifikasjon og anbefalte neste steg."
+
+policy:
+  allow_implicit_invocation: true
