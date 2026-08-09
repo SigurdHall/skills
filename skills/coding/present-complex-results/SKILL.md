@@ -45,13 +45,52 @@ Choose and state one primary status before drafting the rest:
 Distinguish `implemented`, `inspected`, `tested`, `live-verified`, and `not
 verified`. Never collapse these into a generic claim that the work is done.
 
+## Translate evidence for a chat interface
+
+Assume the user sees the final response before any evidence file, test log, or
+earlier commentary. Make technical status understandable in ordinary language
+before presenting labels, counts, hashes, or gate names.
+
+Use this sequence whenever the result contains dense verification language:
+
+1. **Plain-language meaning** — say what works, where it works, and why the
+   user should care.
+2. **Practical boundary** — say what has not happened in the real system.
+3. **Technical evidence** — then give test counts, digests, commands, and gate
+   status.
+4. **Consequence** — state whether the user can use, test, approve, or must
+   wait for the result.
+
+Translate a term on first use when a reasonable user could otherwise
+misinterpret it. For example:
+
+- `offline smoke passed` means the package worked locally without connecting
+  to the provider;
+- `live smoke not run` means no real sandbox or service request was made;
+- `parent gate pending` means an independent final review has not accepted the
+  candidate yet.
+
+Prefer a short “What this means in practice” sentence over expecting the user
+to infer meaning from `158 passed`, `replayed_identical`, or
+`overallRelease=not_authorized`. Treat numbers as supporting evidence, not the
+main explanation. Use a compact analogy only when it materially clarifies the
+boundary, such as “bench-tested, not road-tested.”
+
+For unfamiliar systems, explicitly answer:
+
+- What goes in?
+- What comes out?
+- What is automatic?
+- What still needs a person, permission, or live connection?
+
 ## Meet the output contract
 
 Use headings appropriate to the user's language. Preserve this information
 order even when combining small sections:
 
-1. **Result and status** — lead with what the user now has, its practical
-   effect, and the primary status. Use two to four concrete sentences.
+1. **Result, meaning, and status** — lead with what the user now has, explain
+   its practical meaning in ordinary language, and then state the primary
+   status. Use two to four concrete sentences.
 2. **Delivered or changed** — summarize each material workstream and why it
    matters. Describe behavior and decisions, not only filenames or activity.
 3. **Important artifacts** — when files exist, link the important ones and
@@ -113,6 +152,8 @@ Confirm that the final response lets the user answer all of these without
 opening a file:
 
 - What changed, and why does it matter?
+- Can a non-specialist understand the practical meaning before reading the
+  technical evidence?
 - What is the honest completion status?
 - What evidence supports the claims?
 - What remains uncertain, unverified, blocked, or out of scope?

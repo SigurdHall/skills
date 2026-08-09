@@ -52,6 +52,15 @@ When a verified Report Knowledge Base selection is used, add one closed
 traceability metadata, never
 target geometry or a substitute for evidence.
 
+When the intent is `explain_change`, keep the verified `DiagnosticReportPlanV1`
+as a separate companion contract. Map its ordered frames and measure roles into
+StoryFrame decision/evidence semantics, and carry its plan ID/hash in the delivery
+record and typed source refs. Do not add visual families or page-composition rules
+to StoryFrame: apply them in each target adapter. Stop before target compilation
+when the plan or a required measure role is blocked, a required planned frame has no safe
+or conditional visual recommendation, or any plan gap has `blocking: true`.
+Carry non-blocking conditions and advisories into the exploratory handoff.
+
 Do not include:
 
 - `x`, `y`, width, height, canvas size, or breakpoints
@@ -87,6 +96,7 @@ For the strict metadata-only Report Knowledge Base workflow, use
 - semantic bindings and measure dependencies
 - slicers, filters, cross-highlighting, tooltips, bookmarks, and drillthrough
 - accessibility order, mobile layout, theme/taste rules, and fallback visuals
+- diagnostic frame-to-measure-role bindings plus satisfied visual and page conditions
 
 ### React
 
@@ -95,6 +105,7 @@ For the strict metadata-only Report Knowledge Base workflow, use
 - query/cache boundary and semantic-role binding
 - CSS grid/flex hierarchy by breakpoint, tokens, keyboard behavior, and ARIA
 - interaction state, URL/state persistence, observability, and export behavior
+- diagnostic frame-to-view-model bindings plus satisfied visual and page conditions
 
 ### HTML
 
@@ -103,6 +114,7 @@ For the strict metadata-only Report Knowledge Base workflow, use
 - chart-to-table fallback, no-JavaScript behavior, and print/PDF layout
 - CSS grid hierarchy, responsive order, accessibility, and provenance notes
 - trace attributes for frames, claims, facts, and generated timestamp
+- diagnostic frame-to-block bindings plus satisfied visual and page conditions
 
 ## Gates
 

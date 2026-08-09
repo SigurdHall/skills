@@ -7,7 +7,7 @@ design, generated files, and render evidence.
 
 - status: `exploratory-pending-evidence`, `target-request-ready`,
   `approved-for-authoring`, or `implemented`
-- data state: `synthetic`, `connected-sampled`, or `connected-live`
+- data state: `knowledge_only_no_values`, `synthetic`, `connected-sampled`, or `connected-live`
 - audience, decision cadence, targets, data/model readiness, constraints
 - explicit assumptions and decisions still required
 
@@ -28,6 +28,12 @@ date/filter behavior, baseline, direction, blank/zero policy, format, quality
 test, owner, and target bindings. Separate proposed, implemented, and certified
 measures.
 
+For an explain-change request, attach the verified diagnostic plan as a
+companion contract. Record `planId`, `planSha256`, `diagnosticPatternRef`, status,
+gaps, and plan path. Preserve each gap's `severity` and `blocking` fields. Preserve
+the plan's complete measure-role bundle and usage
+conditions; do not promote a conditional or blocked role in the delivery text.
+
 ## 4. Target requests
 
 Create a separate block for Power BI, React, and HTML as applicable:
@@ -35,6 +41,7 @@ Create a separate block for Power BI, React, and HTML as applicable:
 - target/version and capability assumptions
 - frame-to-page/route/section mapping
 - component/visual/block roles and semantic bindings
+- diagnostic frame, measure-role, visual-condition, and page-composition trace
 - geometry/responsive/print rules owned by that target
 - interactions and loading/empty/error/stale/partial states
 - accessibility and fallback behavior

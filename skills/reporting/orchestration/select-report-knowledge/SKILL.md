@@ -1,6 +1,6 @@
 ---
 name: select-report-knowledge
-description: Use when a BI report, dashboard, StoryFrame, measure design, or Power BI/React/HTML wireframe needs a governed subset of the internal Report Knowledge Base. Builds and verifies a deterministic, hash-locked KnowledgeSelectionV1 containing only definitions, source metadata, empirical report-pattern evidence, and structural references; never report values or datasets.
+description: Use when a BI report, dashboard, StoryFrame, measure design, diagnostic explain-change request, or Power BI/React/HTML wireframe needs a governed subset of the internal Report Knowledge Base. Builds and verifies a deterministic, hash-locked DiagnosticReportPlanV1 and/or KnowledgeSelectionV1 containing only definitions, source metadata, empirical report-pattern evidence, and structural references; never report values or datasets.
 ---
 
 # Select Report Knowledge
@@ -25,21 +25,46 @@ change definitions, provenance, or empirical evidence.
    ```
 
    Both commands must return a valid status. The policy must be `knowledge_only_no_values`.
-4. Write a `SelectionRequestV1` outside the canonical `catalog/` directory. Start with
+4. For an explain-change request (for example, why receivables or FTE increased, or why sales
+   decreased), write a `DiagnosticReportRequestV1` outside `catalog/`. Preserve the user's
+   question and set the requested subject, direction, comparison, audience, domains, and targets.
+   Read the canonical request and plan schemas under the product's `contracts/` directory; do not
+   reconstruct their fields from memory. If the requested subject is not supported by the current
+   request schema, return an explicit coverage gap instead of mapping it to the nearest subject.
+   Build and immediately verify the plan before selecting records:
+
+   ```powershell
+   uv run --project C:\repos\bi-konsulent\leveranse\report-knowledge-base --python 3.12 report-knowledge-base plan-diagnostic --request <diagnostic-request.json> --output <diagnostic-plan.json>
+   uv run --project C:\repos\bi-konsulent\leveranse\report-knowledge-base --python 3.12 report-knowledge-base verify-diagnostic-plan --plan <diagnostic-plan.json>
+   ```
+
+   Read the verified plan's measure roles, ordered frames, visual conditions, page-composition
+   rules, evidence refs, and gaps. Stop before selection or wireframing when the plan status is
+   `blocked`, any required measure role is `blocked`, a required planned frame has no safe or conditional
+   visual recommendation, any gap has `blocking: true`, or verification fails. Treat a mismatch
+   between the aggregate plan status and a blocking detail as a contract error. Preserve
+   `severity: condition` and `severity: advisory` gaps with `blocking: false`, but do not let them
+   trigger a hard stop. Return the exact gap reason and remediation; do not
+   replace a blocked role or evidence link from memory. Treat a `conditional` plan as exploratory
+   only and preserve every condition downstream.
+5. Write a `SelectionRequestV1` outside the canonical `catalog/` directory. Start with
    `measure_definition`, `pattern_definition`, `report_definition`, and `decision_trace`.
-   Include `pattern_observation` when the task needs to inspect the empirical basis, and include
-   `benchmark_definition` only for definition metadata.
-5. Build and immediately verify the bundle:
+   For a verified diagnostic plan, also request `diagnostic_pattern` and
+   `pattern_observation`; use its exact domains and pattern trace rather than broadening the scope.
+   Include `benchmark_definition` only for definition metadata.
+6. Build and immediately verify the bundle:
 
    ```powershell
    uv run --project C:\repos\bi-konsulent\leveranse\report-knowledge-base --python 3.12 report-knowledge-base select --request <request.json> --output <selection.json>
    uv run --project C:\repos\bi-konsulent\leveranse\report-knowledge-base --python 3.12 report-knowledge-base verify-selection --bundle <selection.json> --require-ready
    ```
 
-6. Fail closed when the selection is incomplete, has unresolved requirements, uses an unknown
+7. Fail closed when the selection is incomplete, has unresolved requirements, uses an unknown
    schema version, or no longer matches the current registry snapshot. Never hand-edit hashes.
-7. Hand the verified bundle downstream with `selectionId`, `selectionSha256`,
+8. Hand the verified bundle downstream with `selectionId`, `selectionSha256`,
    `registrySnapshotSha256`, selected domain/target scope, unresolved gaps, and the request path.
+   For an explain-change request, also hand off the verified `planId`, `planSha256`,
+   `diagnosticPatternRef`, plan status, complete gap list, and plan path as a companion contract.
 
 ## Selection Rules
 
@@ -51,6 +76,12 @@ change definitions, provenance, or empirical evidence.
 - Treat `pattern_observation` as evidence. A `pattern_definition` is canonical only when its own
   evidence references satisfy the register's promotion gate.
 - Treat `report_definition` as structural guidance. Text placeholders are roles, not values.
+- Treat `DiagnosticReportPlanV1` as the authority for diagnostic measure bundles, usage
+  conditions, ordered analysis steps, visual conditions, and page composition. Do not cherry-pick
+  a visually convenient subset or invent a missing dependency.
+- Treat `blocked` as a hard stop. A `conditional` plan may support an exploratory handoff, but it
+  is never authoring-ready and every condition must remain visible.
+- Preserve non-blocking condition and advisory gaps without promoting them to hard blockers.
 - Keep a no-data StoryFrame exploratory and mark unsupported claims `pending-evidence`.
 - If a task needs observed values, stop this skill at the selection handoff. A separate,
   explicitly authorized data workflow must supply them.

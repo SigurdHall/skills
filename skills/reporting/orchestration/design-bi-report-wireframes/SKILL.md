@@ -1,6 +1,6 @@
 ---
 name: design-bi-report-wireframes
-description: Use when designing or regenerating a BI report, dashboard, or analytical page for Power BI, React, or HTML from business questions, semantic-model knowledge, measure patterns, and visual references. Produces an evidence-led StoryFrame plus target-specific wireframes without forcing shared geometry across targets.
+description: Use when designing or regenerating a BI report, diagnostic explain-change report, dashboard, or analytical page for Power BI, React, or HTML from business questions, semantic-model knowledge, measure patterns, and visual references. Produces an evidence-led StoryFrame plus target-specific wireframes that preserve verified measure bundles, visual conditions, and page composition without forcing shared geometry across targets.
 ---
 
 # Design BI Report Wireframes
@@ -17,29 +17,56 @@ physical bindings target-specific.
    data. A no-data output is an exploratory draft: mark claims
    `pending-evidence` and never write data-driven titles or conclusions as facts.
 2. Invoke `select-report-knowledge` when the internal Report Knowledge Base is
-   available. Build and verify a `KnowledgeSelectionV1` for the requested
-   domains and targets. Carry the selection ID, both selection and registry
-   hashes, selected domains, unresolved requirements, and evidence advisories
-   in the StoryFrame `knowledgeContext` block. Fail closed on a stale, incomplete,
-   unknown-version, or hash-invalid selection.
-3. Select at most three relevant inspiration sources from the verified
+   available. For an explain-change request, make the selector build and verify
+   `DiagnosticReportPlanV1` before it builds the knowledge selection. Then build
+   and verify a `KnowledgeSelectionV1` for the requested domains and targets.
+   Carry the selection ID, both selection and registry hashes, selected domains,
+   unresolved requirements, and evidence advisories in the StoryFrame
+   `knowledgeContext` block. Fail closed on a stale, incomplete, unknown-version,
+   or hash-invalid selection.
+3. For an explain-change request, require the selector's verified
+   `DiagnosticReportPlanV1` before drafting the StoryFrame. Stop when the plan is
+   `blocked`, a required measure role is `blocked`, or a required planned frame has only
+   blocked visual recommendations, or any gap has `blocking: true`. Treat an
+   inconsistent aggregate plan status as a contract error. Preserve gaps with
+   `blocking: false` as conditions or advisories without overblocking the design.
+   Return blocked gaps and remediation instead of drawing a diagnostic page. A `conditional`
+   plan may produce only an
+   `exploratory-pending-evidence` wireframe; carry every condition and never send
+   it to an authoring skill as approved work.
+4. Select at most three relevant inspiration sources from the verified
    selection, supplementing it only when an explicit evidence gap remains. Use
    [gallery-catalog.md](references/public/gallery-catalog.md). Record source, license,
    borrowed principle, and what must not be copied.
-4. Build a candidate measure set using business questions first, verified
-   canonical definitions from the selection second, and
+5. Build the measure set using business questions first and verified canonical
+   definitions from the selection second. For an explain-change request, start
+   from the plan's complete `measureRoles`: preserve required roles, measure
+   families, record refs, usage conditions, status, and reason codes as one
+   diagnostic bundle. Do not replace a blocked required role with a convenient
+   proxy or omit it to make the page appear complete. For other requests, use
    [measure-pattern-library.md](references/public/measure-pattern-library.md) only as a
    fallback or inspiration prior.
    Use corpus prevalence only as an inspiration prior. Validate definition,
    grain, filter context, additivity, direction, baseline, format, and owner.
-5. Draft `StoryFrameV1` from
+6. Draft `StoryFrameV1` from
    [story-frame-and-adapters.md](references/public/story-frame-and-adapters.md). Include
    ordered decisions, claims, evidence needs, caveats, freshness, and next
    actions. Use typed global source refs for brief/evidence/hash and optional
    brand/taste intent, then repeat every applicable ref in each frame's
    `traceRefs`. Exclude coordinates, visual types, CSS, DAX, SQL, and physical
    field names.
-6. Compile a separate target request and wireframe for each requested target:
+   For a diagnostic plan, map its ordered frames to StoryFrame decisions and
+   evidence needs, keep every claim `pending-evidence` in the no-data state, and
+   retain the verified plan ID/hash in the delivery record. Keep visual families
+   and page rules out of StoryFrame; apply them only in target adapters.
+7. Compile a separate target request and wireframe for each requested target.
+   For a diagnostic plan, bind each target visual to a frame and its measure-role
+   bundle. Choose a visual family only when its `useWhen` conditions hold, reject
+   it when an `avoidWhen` condition holds, preserve its encoding principle, and
+   use its stated fallback. Combine frames on one page only when the plan's
+   `combineWhen` rules hold for the same decision question, population, period,
+   baseline, and filter context; split them when any `splitWhen` rule holds.
+   Preserve the plan's reading order and never add a visual merely to fill space:
    - Power BI: for a conceptual wireframe, stop at the target request. After
      audience, page scope, filter depth, required evidence, and model readiness
      are locked, use `powerbi-report-design`; invoke `powerbi-report-authoring`
@@ -54,13 +81,13 @@ physical bindings target-specific.
      identified/available data source or an approved synthetic fixture exists;
      that downstream skill owns creation and validation of report YAML, data
      contract, and SQL/query inputs.
-7. Apply the seven gates in the adapter reference: contract, evidence,
+8. Apply the seven gates in the adapter reference: contract, evidence,
    capability/fallback, target-static, semantic parity, actual render, and
    interaction/human review. Validate the draft envelope with
    `scripts/validate_story_frame.py` and use the shared synthetic cases in
    [semantic-parity.md](references/public/semantic-parity.md) for cross-target
    calculation tests.
-8. Deliver the StoryFrame, target wireframes, measure decisions, inspiration
+9. Deliver the StoryFrame, verified diagnostic plan when applicable, target wireframes, measure decisions, inspiration
    ledger, validation evidence, and explicit gaps. Require semantic parity, not
    pixel parity, across targets. Use
    [delivery-template.md](references/public/delivery-template.md) for the handoff.
@@ -79,6 +106,13 @@ physical bindings target-specific.
   known. Common is not the same as correct.
 - Never advance an exploratory draft to authoring while required audience,
   scope, filter-depth, evidence, or model decisions remain unresolved.
+- Never claim a cause from a visual association. Use an additive reconciliation
+  only when the selected measures form a validated identity; otherwise describe
+  concentration or co-movement and keep the causal claim pending.
+- Never break a diagnostic measure bundle, ignore a plan usage condition, or
+  combine frames whose page-composition conditions do not match.
+- Never promote a non-blocking condition or advisory to a hard stop; carry it into
+  the exploratory handoff and gate table.
 - Keep report traceability through stable frame, claim, fact, and semantic-role
   IDs; bind those IDs differently in each target adapter.
 

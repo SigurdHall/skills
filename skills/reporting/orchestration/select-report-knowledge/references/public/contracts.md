@@ -24,6 +24,24 @@ candidate evidence or partial target adapters without pretending that the source
 `ready_for_authoring` means the deterministic selection succeeded; it does not assert that a
 semantic model, real evidence, or target capability is ready.
 
+## DiagnosticReportPlanV1
+
+Use this companion contract first when the intent is `explain_change`. Build it from a
+`DiagnosticReportRequestV1`, then verify its hash before selecting knowledge or designing a page.
+It binds one empirical diagnostic pattern to measure roles, ordered frames, conditional visual
+families, page-composition rules, an exploratory story, and explicit gaps. It contains no observed
+values.
+
+Stop when `status` is `blocked`, a required measure role is `blocked`, a required planned frame has no safe
+or conditional visual recommendation, any gap has `blocking: true`, or plan verification fails.
+Treat any mismatch between the aggregate status and a blocking detail as a contract error.
+Preserve gaps with `blocking: false`: `severity: condition` constrains an exploratory handoff and
+`severity: advisory` documents remaining scope, but neither is a hard stop.
+Keep a `conditional` plan exploratory and preserve its complete `gaps` list. Only
+`ready_for_wireframing` may proceed as a diagnostic wireframe input without a knowledge blocker.
+`frame.required` and `page.required` distinguish the minimum diagnostic path from optional
+branches that may be omitted when their measures are not ready.
+
 ## Downstream record
 
 Every StoryFrame or target request grounded by the bundle should retain one
@@ -40,3 +58,19 @@ evidenceAdvisories
 
 Do not embed the bundle as target geometry. Power BI, React, and HTML adapters own physical layout
 and field binding independently.
+
+For an explain-change handoff, keep the verified plan as a separate companion and retain:
+
+```text
+planId
+planSha256
+registrySnapshotSha256
+diagnosticPatternRef
+status
+gaps
+planPath
+```
+
+Do not add these fields to the closed `knowledgeContext` block. Reference the plan through the
+StoryFrame source refs and delivery record until the StoryFrame draft contract is versioned to
+carry a dedicated diagnostic context.

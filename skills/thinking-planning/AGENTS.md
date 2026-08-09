@@ -9,6 +9,7 @@ planning quality before implementation.
 
 Current skills:
 
+- [bro](bro/SKILL.md) — user-invoked only (`/bro`), restates the last message in plain language
 - [grill-me](grill-me/SKILL.md)
 - [narrative-design](narrative-design/SKILL.md)
 - [skill-design](skill-design/SKILL.md)
