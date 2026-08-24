@@ -7,14 +7,19 @@ Fill or update the embedded images in an existing plan `.html` file. Pick the su
 | Create | The prompt asks to generate, fill, or add the plan's images from scratch (empty `{{...IMAGE` slots) |
 | Update | The prompt asks to change, refine, regenerate, or replace images that already exist in the plan |
 
-If `OPENAI_API_KEY` is not set (env or `.env` in the project cwd), skip this workflow entirely: leave the commented `{{...IMAGE}}` placeholders in place and note in the report that images were skipped. Do not fail the plan on missing images. The Codex subscription login does not cover these scripts; they call the OpenAI API directly.
+Primary path - Codex built-in `image_gen` (runs on the ChatGPT subscription, no API key):
+- Create image: `codex exec --skip-git-repo-check "Use your built-in image_gen tool to generate: <prompt>. Save the image to <absolute output path>. Reply only with the saved path."`
+- Edit image: `codex exec --skip-git-repo-check -i <input.png> "Use your built-in image_gen tool to edit the attached image: <instruction>. Save the result to <absolute output path>. Reply only with the saved path."`
+- Always pass absolute output paths. If Codex cannot write the file (its sandbox may fail to initialize inside a container), the generated PNG still lands in `~/.codex/generated_images/<session>/` - copy the newest PNG from there to the output path yourself. Verify the output file exists and is non-empty before embedding.
 
-Scripts (run with `uv run`, needs `OPENAI_API_KEY`):
+Fallback - direct OpenAI API scripts, only when `OPENAI_API_KEY` is set (env or `.env` in the project cwd):
 - Create image: `uv run scripts/generate_gpt_image.py "<prompt>" <output.png> --size 1536x1024 --quality high`
 - Edit image: `uv run scripts/edit_gpt_image.py "<instruction>" <output.png> <input.png> --size 1536x1024 --quality high`
 
+If neither path is available, skip this workflow: leave the commented `{{...IMAGE}}` placeholders in place and note in the report that images were skipped. Do not fail the plan on missing images.
+
 Shared rules for every image prompt:
-- always generate in wide format (`--size 1536x1024`) at high quality (`--quality high`)
+- always generate in wide format at high quality: ask for "wide 1536x1024 landscape" in the codex prompt, or pass `--size 1536x1024 --quality high` to the scripts
 - convey the one or two core ideas of that section for a professional software engineer
 - match the plan's synced visual identity (professional, focused, minimal)
 - keep total words shown in the image under 10

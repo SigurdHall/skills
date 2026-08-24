@@ -12,7 +12,7 @@ Current skills:
 - [bro](bro/SKILL.md) — user-invoked only (`/bro`), restates the last message in plain language
 - [grill-me](grill-me/SKILL.md)
 - [narrative-design](narrative-design/SKILL.md)
-- [planf3](planf3/SKILL.md) — `/planf3 "<prompt>"`, HTML-first implementation plans saved to `specs/`, images via gpt-image-2 (needs `OPENAI_API_KEY`), mandatory Codex adversarial review at `gpt-5.6-sol` xhigh
+- [planf3](planf3/SKILL.md) — `/planf3 "<prompt>"`, HTML-first implementation plans saved to `specs/`, images via gpt-image-2 through Codex `image_gen` on the ChatGPT subscription, mandatory Codex adversarial review at `gpt-5.6-sol` xhigh
 - [skill-design](skill-design/SKILL.md)
 - [small-council](small-council/SKILL.md)
 
