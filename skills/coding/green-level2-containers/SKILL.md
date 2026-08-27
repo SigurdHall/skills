@@ -20,16 +20,19 @@ or Pi on a narrowed slice of the workspace, or on nothing at all.
 ## Start a level-2 container
 
     green claude                 Claude Code TUI; asks which repos to mount
-    green claude -r skills       mount ~/repos/skills, no question
-    green claude -r bi,uit-po    several repos, comma-separated; prefixes
+    green claude -r bi-kons      mount that repo too, no question
+    green claude -r x,y          several repos, comma-separated; prefixes
                                  work when unique; -r a mounts all
-    green claude -r none "p"     headless one-shot: claude -p "p", no repos
+    green claude -r none "p"     headless one-shot: claude -p "p"
+    green claude -r bare         nothing mounted, not even the defaults
     green codex | green pi       same flags, other agents
     green shell                  plain bash at level 2
 
-Repo choice is the whole point: mount the least the task needs. Default is
-none. A repo mounted into level 2 is the same directory level 1 and WSL see,
-so commits made there are immediately real — push still happens from WSL.
+`skills`, `skills-for-fabric` and `workflows` are ALWAYS mounted (except
+`-r bare`), so skill and workflow tooling resolves in every session. Beyond
+those, mount the least the task needs. A repo mounted into level 2 is the
+same directory level 1 and WSL see, so commits made there are immediately
+real — pushing happens from level 1 or WSL.
 
 ## Manage
 
