@@ -63,7 +63,10 @@ drop files in `~/green-exchange/req/` before launching.
 
 - Level 2 runs as container root mapped to the vscode user; that is expected
   (single-uid podman, the WSL kernel allows nothing else).
-- No credentials besides the running agent's own config dir are present.
+- No credentials besides the running agent's own config dir are present —
+  with one exception: `green claude` also mounts the codex auth, so Claude
+  can run codex CLI reviews (Sol/Terra) inside level 2. A review-heavy
+  session should mount the skills repo too: `-r skills,<target-repo>`.
 - Everything outside mounted repos and `/green-exchange` dies with the
   container.
 - Egress rides level 1's firewall; private networks are blocked.
