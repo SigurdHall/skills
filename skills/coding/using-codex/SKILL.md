@@ -1,11 +1,11 @@
 ---
-name: using-codex-plugin
-description: Decide when to hand work to Codex (gpt-5.6-sol) from Claude Code, pick the right Codex operation, and know whether Claude should run it directly or leave it to the user. Use when stuck after repeated failed attempts, when a diff is ready for review before commit, when the approach or architecture is in doubt, when a bug resists diagnosis, when an independent or second opinion would help, or when the user mentions codex, sol, rescue, review, adversarial review, second opinion. Also Norwegian triggers: bruk codex, spør codex, hva sier codex, hva mener codex, gi meg en ny vurdering, se over dette, dobbeltsjekk dette, jeg står fast, dette funker ikke, kan noen andre se på det, er dette riktig tilnærming, andre øyne på dette.
+name: using-codex
+description: Decide when to hand work to Codex (gpt-5.6-sol) from Claude Code, pick the right model, effort and operation, and know whether Claude should run it directly or leave it to the user. Use when stuck after repeated failed attempts, when a diff is ready for review before commit, when the approach or architecture is in doubt, when a bug resists diagnosis, when an independent or second opinion would help, or when the user mentions codex, sol, rescue, review, adversarial review, second opinion. Also Norwegian triggers: bruk codex, spør codex, hva sier codex, hva mener codex, gi meg en ny vurdering, se over dette, dobbeltsjekk dette, jeg står fast, dette funker ikke, kan noen andre se på det, er dette riktig tilnærming, andre øyne på dette.
 ---
 
-# Using the Codex plugin
+# Using Codex
 
-Codex is a tool inside Claude Code, not a second driver. Claude stays
+Codex is a tool Claude drives from the terminal, not a second driver. Claude stays
 responsible for the work and for reporting the outcome.
 
 ## Default delivery: direct `codex exec`
@@ -26,11 +26,12 @@ cd <repo> && codex exec -m <model> -c model_reasoning_effort=<effort> \
 
 Codex refuses to start outside a trusted directory, so `cd` into the repo first.
 
-## What Claude can actually run
+## The plugin, when you still want it
 
-`disable-model-invocation: true` on most `/codex:` commands blocks the **slash
-command**, not the capability. The companion script is plain Bash and Claude
-can call every operation directly:
+The Claude Code plugin is no longer the default path — see above — but its
+operations remain useful for backgrounded jobs. `disable-model-invocation: true`
+on most `/codex:` commands blocks the **slash command**, not the capability. The
+companion script is plain Bash and Claude can call every operation directly:
 
 ```bash
 node "$CODEX_PLUGIN/scripts/codex-companion.mjs" <op> [flags]
