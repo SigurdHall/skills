@@ -38,6 +38,12 @@ so commits made there are immediately real — push still happens from WSL.
     green help                   print the user guide
     podman ps | logs | exec      raw podman works for everything else
 
+Every `green` call starts a NEW level-2 container. To open another shell in
+one that is already running (for example beside a running Claude session):
+
+    podman ps                            find its name (green-claude-<pid>)
+    podman exec -it <name> bash          second shell, same container
+
 ## Getting results out
 
 Work committed in a mounted repo is already out. For anything else the
