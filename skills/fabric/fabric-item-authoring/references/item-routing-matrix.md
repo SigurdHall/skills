@@ -17,12 +17,14 @@ run.
 Two versioned `skills-for-fabric` sources exist. Select one per run and record
 its version and commit in the handoff.
 
-- Claude Code (local and cloud): the `fabric-collection` marketplace declared in
-  this repo's `.claude/settings.json`, pinned to upstream tag `v0.3.14`
-  (`714ea2f...`). The `fabric-skills` bundle (22 skills) and the
-  `powerbi-authoring` bundle (5 skills) install at session start. Skills are
-  namespaced `fabric-skills:<skill>` and `powerbi-authoring:<skill>`;
-  `semantic-model-authoring` ships in both bundles, so name the bundle you used.
+- Claude Code (local and cloud): the vendored copy under `.claude/skills/`
+  (26 skills, unprefixed names) with shared references under `.claude/common/`,
+  pinned by `.claude/skills-for-fabric.vendor.json` (tag `v0.3.14`, commit
+  `714ea2f...`). Refresh with `scripts/vendor_skills_for_fabric.py --tag <tag>`.
+  The `fabric-collection` marketplace is declared in `.claude/settings.json`
+  for on-demand plugin installs only; do not enable the plugins next to the
+  vendored copy, because Claude Code loads the prefixed
+  (`fabric-skills:<skill>`) and unprefixed skills side by side.
 - Codex on Windows: the `C:\repos\skills-for-fabric` checkout exposed through
   `.agents/skills` junctions. Last recorded at `0.3.5` (`a2332f...`). Update it
   deliberately to the same tag before mixing outputs across tools.
@@ -33,7 +35,7 @@ removed `check-updates` and `semantic-model-consumption`, and added skills for
 SQL Database, Variable Library, Event Schema Set, deployment pipelines, and Git
 integration. The names below are the `v0.3.14` names.
 
-| Fabric item or task | Primary skill (bundle) | Coverage note |
+| Fabric item or task | Primary skill (plugin bundle) | Coverage note |
 |---|---|---|
 | Power BI report | `powerbi-report-planning`, `powerbi-report-design`, `powerbi-report-authoring`, `powerbi-report-management` (`powerbi-authoring`) | PBIR/PBIP file mechanics need the `powerbi-report-author` and `powerbi-desktop` CLIs; report item CRUD uses `az rest` |
 | Semantic model | `semantic-model-authoring` (both bundles); `fabriciq` (`fabric-skills`) for read-only DAX and natural-language questions | Model changes via the modeling MCP or TMDL; read-back via DAX `INFO` functions |
@@ -81,12 +83,12 @@ contract. Keep the router small.
 
 ## Namespace hygiene
 
-Plugin bundles namespace their skills (`fabric-skills:spark-cli`), while a
-loose checkout or junction exposes the unprefixed name. Both bundles carry
+Plugin bundles namespace their skills (`fabric-skills:spark-cli`), while the
+vendored copy, a loose checkout, or a junction exposes the unprefixed name.
+Claude Code does not deduplicate across these, and both bundles carry
 `semantic-model-authoring`. Select one versioned source per run and record its
-Git commit or plugin version; duplicate discovery names are not additional
-capability. When availability is uncertain, run
-`scripts/inventory_fabric_skills.py` against the active source: pass the
-checkout or marketplace clone as the root, every agent/Claude discovery root
-with `--junction-root`, and any plugin's direct `skills` folder with
-`--additional-skills-root`.
+tag or commit; duplicate discovery names are not additional capability. When
+availability is uncertain, run `scripts/inventory_fabric_skills.py` against the
+active source: pass an upstream checkout as the root, every agent/Claude
+discovery root with `--junction-root`, and the vendored `.claude/skills` folder
+or a plugin cache with `--additional-skills-root`.

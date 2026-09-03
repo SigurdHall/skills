@@ -17,10 +17,11 @@ payloads, REST endpoints, or specialist mechanics from `skills-for-fabric`.
 2. Read [item-routing-matrix.md](references/item-routing-matrix.md) and confirm
    which `skills-for-fabric` source is active in this session:
 
-   - Claude Code (local or cloud): the `fabric-collection` plugins declared in
-     this repo's `.claude/settings.json`, pinned to one upstream tag. Confirm
-     with `claude plugin list`; skills appear as `fabric-skills:<skill>` and
-     `powerbi-authoring:<skill>`.
+   - Claude Code (local or cloud): the vendored copy under `.claude/skills/`,
+     pinned by `.claude/skills-for-fabric.vendor.json`. Read the tag there;
+     refresh with `python scripts/vendor_skills_for_fabric.py --tag <tag>`.
+     Skills appear unprefixed (`spark-cli`). A plugin install adds prefixed
+     duplicates (`fabric-skills:spark-cli`); pick one source per run.
    - Codex on Windows: the `C:\repos\skills-for-fabric` checkout and its
      junctions. When availability is uncertain, run:
 
@@ -32,13 +33,13 @@ payloads, REST endpoints, or specialist mechanics from `skills-for-fabric`.
      --junction-root C:\repos\.claude\skills
    ```
 
-   For the plugin route, point the same script at the marketplace clone and
-   the installed bundle's `skills` folder:
+   For the Claude Code route, point the same script at an upstream checkout on
+   the manifest tag and at the vendored folder:
 
    ```bash
    python skills/fabric/fabric-item-authoring/scripts/inventory_fabric_skills.py \
-     ~/.claude/plugins/marketplaces/fabric-collection \
-     --additional-skills-root ~/.claude/plugins/cache/fabric-collection/fabric-skills/<version>/skills
+     <skills-for-fabric checkout at the manifest tag> \
+     --additional-skills-root .claude/skills
    ```
 
    Record the selected Git commit, dirty state, package version, and duplicate

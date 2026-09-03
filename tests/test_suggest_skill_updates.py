@@ -12,6 +12,7 @@ from suggest_skill_updates import (
     build_stop_self_review_decision,
     discover_skill_catalog,
     generate_markdown_report,
+    iter_scan_files,
     scan_text_for_suggestions,
 )
 
@@ -44,6 +45,23 @@ class SkillSuggestionTests(unittest.TestCase):
         )
         self.assertEqual(suggestions[1].matched_skill, "fabric-documentation")
         self.assertEqual(suggestions[2].matched_skill, "fabric-documentation")
+
+    def test_scan_skips_vendored_claude_folder(self) -> None:
+        import tempfile
+
+        temp_root = REPO_ROOT / ".tmp-tests"
+        temp_root.mkdir(exist_ok=True)
+        with tempfile.TemporaryDirectory(dir=temp_root) as tmpdir:
+            root = Path(tmpdir)
+            (root / ".claude" / "skills" / "spark-cli").mkdir(parents=True)
+            (root / ".claude" / "skills" / "spark-cli" / "notes.md").write_text("vendored\n", encoding="utf-8")
+            (root / ".claude" / "common").mkdir()
+            (root / ".claude" / "common" / "CORE.md").write_text("vendored\n", encoding="utf-8")
+            (root / "notes.md").write_text("mine\n", encoding="utf-8")
+
+            found = sorted(path.relative_to(root).as_posix() for path in iter_scan_files(root, None))
+
+        self.assertEqual(found, ["notes.md"])
 
     def test_discovers_skill_catalog_from_repo(self) -> None:
         catalog = discover_skill_catalog(REPO_ROOT)

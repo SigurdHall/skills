@@ -67,7 +67,7 @@ EDGE_CASE_PATTERNS = [
 ]
 
 DEFAULT_SCAN_GLOBS = ["*.md", "*.txt"]
-EXCLUDED_PARTS = {".git", "__pycache__", "reports", ".venv", "venv", "node_modules", ".tmp-tests"}
+EXCLUDED_PARTS = {".git", ".claude", "__pycache__", "reports", ".venv", "venv", "node_modules", ".tmp-tests"}
 NOOP_STOP_DECISION = {"continue": True, "suppressOutput": True}
 SKILL_USE_PATTERNS = [
     re.compile(pattern, re.IGNORECASE)
