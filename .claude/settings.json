@@ -12,5 +12,18 @@
         ]
       }
     ]
+  },
+  "extraKnownMarketplaces": {
+    "fabric-collection": {
+      "source": {
+        "source": "github",
+        "repo": "microsoft/skills-for-fabric",
+        "ref": "v0.3.14"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "fabric-skills@fabric-collection": true,
+    "powerbi-authoring@fabric-collection": true
   }
 }

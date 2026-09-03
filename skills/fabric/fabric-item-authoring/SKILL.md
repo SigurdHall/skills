@@ -14,8 +14,15 @@ payloads, REST endpoints, or specialist mechanics from `skills-for-fabric`.
 1. Identify the exact item type, operation, workspace, environment, target
    identity, dependencies, and success check. Treat "object" as ambiguous until
    the Fabric item type is known.
-2. Read [item-routing-matrix.md](references/item-routing-matrix.md). When local
-   skill availability is uncertain, run:
+2. Read [item-routing-matrix.md](references/item-routing-matrix.md) and confirm
+   which `skills-for-fabric` source is active in this session:
+
+   - Claude Code (local or cloud): the `fabric-collection` plugins declared in
+     this repo's `.claude/settings.json`, pinned to one upstream tag. Confirm
+     with `claude plugin list`; skills appear as `fabric-skills:<skill>` and
+     `powerbi-authoring:<skill>`.
+   - Codex on Windows: the `C:\repos\skills-for-fabric` checkout and its
+     junctions. When availability is uncertain, run:
 
    ```powershell
    $env:UV_CACHE_DIR = 'C:\repos\skills\.uv-cache'
@@ -25,9 +32,17 @@ payloads, REST endpoints, or specialist mechanics from `skills-for-fabric`.
      --junction-root C:\repos\.claude\skills
    ```
 
-   When a plugin bundle exposes overlapping skills, also pass its direct
-   `skills` folder with `--additional-skills-root`. Record the selected Git
-   commit, dirty state, package version, and duplicate names.
+   For the plugin route, point the same script at the marketplace clone and
+   the installed bundle's `skills` folder:
+
+   ```bash
+   python skills/fabric/fabric-item-authoring/scripts/inventory_fabric_skills.py \
+     ~/.claude/plugins/marketplaces/fabric-collection \
+     --additional-skills-root ~/.claude/plugins/cache/fabric-collection/fabric-skills/<version>/skills
+   ```
+
+   Record the selected Git commit, dirty state, package version, and duplicate
+   names.
 
 3. Check the current Microsoft item-management matrix and the item-specific
    definition documentation. A definition-format reference is not proof that

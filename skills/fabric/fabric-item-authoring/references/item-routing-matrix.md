@@ -12,29 +12,48 @@ run.
 - `reporting/fabric/*`: documentation artifacts, not live authoring.
 - `reporting/orchestration/*`: report-domain workflows that compose mechanics.
 
-## Coverage snapshot (2026-07-14)
+## Coverage snapshot (2026-09-03)
 
-The local `C:\repos\skills-for-fabric` checkout is package version `0.3.5`
-(`a2332f...`). A read-only fetch showed upstream `main` at `0.3.7`
-(`b961296...`), nine commits ahead. Version `0.3.7` adds the SQL Database skill
-family and updates Power BI authoring/design. Update deliberately; do not mix
-files from two versions in one run.
+Two versioned `skills-for-fabric` sources exist. Select one per run and record
+its version and commit in the handoff.
 
-| Fabric item or task | Primary skill family | Coverage note |
+- Claude Code (local and cloud): the `fabric-collection` marketplace declared in
+  this repo's `.claude/settings.json`, pinned to upstream tag `v0.3.14`
+  (`714ea2f...`). The `fabric-skills` bundle (22 skills) and the
+  `powerbi-authoring` bundle (5 skills) install at session start. Skills are
+  namespaced `fabric-skills:<skill>` and `powerbi-authoring:<skill>`;
+  `semantic-model-authoring` ships in both bundles, so name the bundle you used.
+- Codex on Windows: the `C:\repos\skills-for-fabric` checkout exposed through
+  `.agents/skills` junctions. Last recorded at `0.3.5` (`a2332f...`). Update it
+  deliberately to the same tag before mixing outputs across tools.
+
+Since `0.3.5`, upstream merged the separate authoring, consumption, and
+operations skills into one `{item}-cli` skill per item with internal modes,
+removed `check-updates` and `semantic-model-consumption`, and added skills for
+SQL Database, Variable Library, Event Schema Set, deployment pipelines, and Git
+integration. The names below are the `v0.3.14` names.
+
+| Fabric item or task | Primary skill (bundle) | Coverage note |
 |---|---|---|
-| Power BI report | `powerbi-report-authoring`, `powerbi-report-management` | PBIR/PBIP mechanics and workspace lifecycle |
-| Semantic model | `semantic-model-authoring`, `semantic-model-consumption` | Model changes and DAX/metadata read-back |
-| Notebook, Spark, Lakehouse engineering | `spark-authoring-cli`, `spark-consumption-cli`, `spark-operations-cli` | Authoring, query, and diagnosis are separate |
-| Data Pipeline for Notebook/Spark orchestration | `spark-authoring-cli` plus `ITEM-DEFINITIONS-CORE.md` | Partial mutation route only for a bounded, documented `TridentNotebook` orchestration (and documented Variable Library references); other activity families remain plan-only until a dedicated skill exists |
-| Warehouse / SQL endpoint | `sqldw-authoring-cli`, `sqldw-consumption-cli`, `sqldw-operations-cli` | Use the authoring skill only for write operations |
-| SQL Database item | `sqldb-*` in upstream `0.3.7+` | Not present in the local `0.3.5` checkout |
-| Dataflow Gen2 | `dataflows-authoring-cli`, `dataflows-consumption-cli` | Includes definitions, connections, and refresh monitoring |
-| Eventstream | `eventstream-authoring-cli`, `eventstream-consumption-cli` | Graph topology requires item-specific validation |
-| Eventhouse / KQL Database | `eventhouse-authoring-cli`, `eventhouse-consumption-cli` | KQL commands and queries have different mutation boundaries |
-| Activator / Reflex | `activator-authoring-cli`, `activator-consumption-cli` | Human confirmation is required for external notifications/actions |
-| Fabric IQ ontology | `fabriciq-ontology-authoring-cli`, `fabriciq-ontology-consumption-cli` | Preview capability; verify current limits |
-| Materialized Lake View operations | `mlv-operations-cli` | Schedule and job operations, not a generic item builder |
+| Power BI report | `powerbi-report-planning`, `powerbi-report-design`, `powerbi-report-authoring`, `powerbi-report-management` (`powerbi-authoring`) | PBIR/PBIP file mechanics need the `powerbi-report-author` and `powerbi-desktop` CLIs; report item CRUD uses `az rest` |
+| Semantic model | `semantic-model-authoring` (both bundles); `fabriciq` (`fabric-skills`) for read-only DAX and natural-language questions | Model changes via the modeling MCP or TMDL; read-back via DAX `INFO` functions |
+| Notebook, Spark, Lakehouse engineering, Materialized Lake Views | `spark-cli` (authoring, consumption, operations modes) | MLV lifecycle is folded in; `mlv-operations-cli` no longer exists |
+| Data Pipeline for Notebook/Spark orchestration | `spark-cli` plus `ITEM-DEFINITIONS-CORE.md` | Partial mutation route only for a bounded, documented `TridentNotebook` orchestration (and documented Variable Library references); other activity families remain plan-only until a dedicated skill exists |
+| Warehouse, Lakehouse SQL analytics endpoint, Mirrored Database queries | `sqldw-cli` (authoring, consumption, operations modes) | Use the authoring mode only for write operations |
+| SQL Database item | `sqldb-cli` (authoring, consumption, operations modes) | OLTP engine; distinct from Warehouse |
+| Dataflow Gen2 | `dataflows-cli` (authoring, consumption, save-as upgrade modes) | Includes definitions, connections, and refresh monitoring |
+| Eventstream | `eventstream-cli` (authoring, consumption modes) | Graph topology requires item-specific validation |
+| Eventhouse / KQL Database | `eventhouse-cli` (authoring, consumption modes) | KQL commands and queries have different mutation boundaries |
+| Event Schema Set | `eventschemaset-cli` | Preview delegated-identity constraints apply |
+| Activator / Reflex | `activator-cli` (authoring, consumption modes) | Human confirmation is required for external notifications/actions |
+| Fabric IQ ontology | `fabriciq-ontology-cli` (authoring, consumption modes) | Preview capability; verify current limits |
+| Variable Library | `variable-library-cli` | Definitions, value sets, active value set |
+| Deployment pipelines | `deployment-pipelines-authoring-cli` | Stage deploys are long-running operations; one operation per pipeline at a time |
+| Workspace Git integration | `git-integration-operations-cli` | Connect, commit, update, status, conflicts; not `fabric-cicd` |
 | Cross-workspace discovery | `search-consumption-cli` | Read-only discovery before routing |
+| Azure Monitor telemetry into Fabric | `azmon-mirroredcatalogs-operations-cli` | Operations onboarding, not a generic item builder |
+| Migration into Fabric (Databricks, Synapse, HDInsight, ADF pipelines) | `databricks-migration`, `synapse-migration`, `hdinsight-migration`, `pipeline-migration` | Not for Tableau to Power BI; use `reporting/orchestration/*` |
+| Platform planning | `e2e-medallion-architecture`, `e2e-fabric-cost-estimation` | Planning skills, not item mutation |
 
 ## Definition references are not authoring skills
 
@@ -50,22 +69,24 @@ As of this snapshot, treat these as capability-gated gaps rather than generic
 REST work:
 
 - Data Pipeline beyond Notebook/Spark orchestration, and Copy Job end-to-end authoring
-- Environment and Variable Library lifecycle
+- Environment item lifecycle
 - KQL Dashboard and KQL Queryset authoring
-- Event Schema Set lifecycle
 - Mirrored database setup and validation
 - GraphQL API and Graph Model lifecycle
 - Machine learning and Data Agent items
-- workspace, capacity, tenant-admin, deployment-pipeline, and Git orchestration
+- workspace, capacity, and tenant-admin orchestration
 
 Create a narrow skill only when a recurring gap has an official, testable
 contract. Keep the router small.
 
 ## Namespace hygiene
 
-The Power BI authoring plugin cache and `skills-for-fabric` checkout may expose
-the same skill both prefixed and unprefixed. Pass the active plugin's direct
-`skills` folder to `inventory_fabric_skills.py --additional-skills-root`, and
-pass every relevant agent/Claude discovery root with `--junction-root`. Select
-one versioned source per run and record its Git commit/dirty state; duplicate
-discovery names are not additional capability.
+Plugin bundles namespace their skills (`fabric-skills:spark-cli`), while a
+loose checkout or junction exposes the unprefixed name. Both bundles carry
+`semantic-model-authoring`. Select one versioned source per run and record its
+Git commit or plugin version; duplicate discovery names are not additional
+capability. When availability is uncertain, run
+`scripts/inventory_fabric_skills.py` against the active source: pass the
+checkout or marketplace clone as the root, every agent/Claude discovery root
+with `--junction-root`, and any plugin's direct `skills` folder with
+`--additional-skills-root`.
