@@ -1,3 +1,4 @@
-display_name: Readable Python Code
-short_description: Write and simplify Python code with PEP 8, PEP 257, clear names, section headers, comments, and smoke-test structure.
-default_prompt: Use this when writing, simplifying, reviewing, or explaining Python code for readability, maintainability, beginners, code section headers, or small .env-driven test scripts.
+interface:
+  display_name: "Readable Python Code"
+  short_description: "Simple data code with clear names and direct comments"
+  default_prompt: "Use $readable-python-code to simplify this Python notebook with familiar technical names and short, direct Norwegian comments while preserving behavior."
