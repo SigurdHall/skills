@@ -1,6 +1,6 @@
 ---
 name: readable-python-code
-description: Write, simplify, review, or explain readable Python scripts and notebooks for data and statistics work. Use for clear data flow, familiar variable names, short direct comments, simpler ETL or smoke tests, and removing unnecessary abstraction or premature optimization while preserving behavior.
+description: Write, simplify, review, or explain Python scripts and notebooks for data and statistics work. Use to prevent unnecessary complexity growth in new code and rewrites, keep data flow visible, and preserve behavior with familiar names and short direct comments. Not a mandate to redesign application or library architecture.
 ---
 
 # Readable Python Code
@@ -10,25 +10,38 @@ without a software engineering background. Prefer visible data flow over clever
 or compact code. Follow the user's language and the target project's conventions;
 use the Norwegian examples below for Norwegian data work.
 
-## Sources To Apply
+## Complexity Contract
 
-Use the principles from:
+Apply these rules to code added or changed for the task. Preserve required existing
+interfaces and project conventions; do not redesign unrelated code to satisfy this
+skill. Explicit task requirements take precedence. Identify any required exception
+and its reason in the final response; do not silently relax a rule.
 
-- PEP 8: readability and consistency, naming, layout, comments, imports.
-- PEP 257: docstrings for modules, scripts, functions, and classes.
+- Handle the stated inputs and existing documented contracts. Do not invent new input cases, optional modes, configuration options, or fallbacks. Missing information is not a non-null or uniqueness guarantee. Ask only when an unresolved assumption changes the result or write behavior; otherwise state the assumption and proceed without speculative branches.
+- Do not introduce classes, factories, registries, decorators, configuration frameworks, or generic wrappers unless a current requirement or existing interface needs them. A possible future use is not a requirement.
+- Keep a new standalone analysis in one script or notebook. Do not introduce a package, module split, or new dependency unless the task cannot be completed clearly with the existing environment. Preserve existing module boundaries during rewrites.
+- Do not introduce custom retry loops, caching, concurrency, or optimization infrastructure without a stated operational requirement or measured bottleneck. Use straightforward efficient library operations; bounded network timeouts are allowed.
+- Let unexpected errors propagate. Catch a specific exception only for required recovery, actionable context, or cleanup that a context manager cannot provide. Do not add custom exception classes, catch-all handlers, silent defaults, or logging setup to a standalone analysis. Preserve required existing logging and recovery.
+- Keep adjustable non-secret settings as plain constants near the top. Keep secrets outside the code. Do not add a CLI, settings object, or `main()` wrapper unless required by the invocation or existing interface. Notebook cells do not need an entry-point guard.
 
-Do not treat style rules as a substitute for clarity. Prefer the simplest code that makes the data flow obvious.
+## Functions And Complexity Budgets
 
-## Rewrite Workflow
+- Extract a function only to remove repeated logic, isolate a calculation that needs independent testing, or name a distinct transformation stage. State which purpose any new helper serves. A wrapper that only renames a library call does not qualify without an interface requirement.
+- Pass dependencies explicitly. A parameter is valid even when one call site passes one value; do not move inputs into globals to reduce the parameter count. A call inside a loop or callback can provide real reuse.
+- Add optional parameters, defaults, `*args`, or `**kwargs` only for required call patterns or existing interfaces. Do not generalize a helper for hypothetical callers.
+- Budget for new or changed functions: at most four parameters and cyclomatic complexity eight. Use existing lint tooling to measure complexity when available. Keep at most three nested control-flow suites; the function body does not count, and `elif` is at the same level as `if`.
+- Treat 120 source lines as a review threshold for a standalone script or notebook, not a reason to stop a valid task. Count with `splitlines()`, including comments and blank lines; for notebooks count only code-cell source, summed across cells.
+- When a budget is exceeded, first simplify without changing behavior. If required logic still exceeds it, retain the clear implementation and report the measure and concrete reason. Do not increase an already over-budget function's complexity unless required by the task and explained.
+- Never meet a budget by removing useful names or spacing, packing statements onto one line, bundling unrelated parameters into a dict, duplicating logic, or moving branches out of functions to evade measurement. Inspect top-level and notebook control flow too.
 
-1. Read the existing code before editing.
-2. Identify the main user-facing story: what inputs are read, what work is done, what output is printed.
-3. Keep simple scripts and notebooks sequential. Extract a function when it removes real repetition or makes a difficult step easier to understand.
-4. Use descriptive names over clever abbreviations.
-5. Keep secrets and environment-specific values outside the code.
-6. Add short, direct comments where they help the reader find a step or understand a reason or assumption.
-7. Preserve behavior during readability edits, including table selection, metadata, and append versus overwrite. Treat a functional fix as a separate, explicit change.
-8. Validate with a no-write syntax check if `__pycache__` writes are undesirable.
+## Work Sequence
+
+1. Read the existing code and applicable project instructions. Identify inputs, required transformations, outputs, and write semantics. For rewrites, note the original source-line count and relevant complexity measures available from existing tools.
+2. Implement the smallest change that satisfies the task. Keep data flow sequential and visible. Preserve table selection, types, null semantics, keys, ordering, metadata, and append versus overwrite unless the task explicitly changes them.
+3. Validate assumptions where they become relevant. Check input contracts at reads; check transformation invariants after the operation that can break them. A join may need a cardinality or total reconciliation check even when inputs were validated. Do not add checks unrelated to the required result.
+4. Keep writes explicit and easy to find near the end, with destination and write mode visible. Do not force multiple required outputs into one write or remove staging needed for correctness. Rewrites preserve existing side-effect order.
+5. Verify the requested result with the relevant existing checks or a small controlled fixture. Then make a removal pass for unused code, speculative branches, duplicate checks, wrappers, and redundant comments. Preserve required invariants and explanations. Removing nothing is a valid outcome.
+6. Re-run relevant verification after the final edit, including deletions. If a removal breaks correctness, restore what is needed and verify again. Do not run writes against live destinations merely to validate a readability edit.
 
 ## Style Rules
 
@@ -41,10 +54,10 @@ Do not treat style rules as a substitute for clarity. Prefer the simplest code t
 - Prefer explicit return values from functions.
 - Prefer `pathlib.Path` for local paths.
 - Prefer `with` statements for files and network responses.
-- Add error handling where it gives a useful next step or necessary cleanup. Preserve the original cause when wrapping an error; avoid catch-all wrappers around every operation.
+- Follow the Complexity Contract for error handling; preserve the original cause when adding context.
 - Keep line length reasonable; break long expressions where it improves scanning.
 - Shared variables between notebook cells are normal. Do not introduce classes, configuration frameworks, or one-line helper functions just to hide those variables.
-- Optimize a demonstrated bottleneck. Do not add caching, concurrency, or extra layers without a concrete need.
+- Follow the function rules and budgets above. Fewer lines or functions alone do not establish improved readability.
 
 ## Notebook And Script Structure
 
@@ -113,10 +126,11 @@ A short comment can label a useful block. Avoid narrating each statement or
 turning simple code into a tutorial. Brevity must not hide a meaningful
 condition, unit, side effect, or reason for a workaround.
 
-Use a brief docstring for a function or script when it adds useful context about
-inputs, outputs, setup, or side effects. Skip obvious docstrings and decorative
-comment banners. Type hints should clarify an interface, not overwhelm simple
-data handling.
+Use a brief docstring when it explains a non-obvious contract, setup requirement,
+or side effect; skip boilerplate module headers and obvious docstrings. Follow
+PEP 8 and PEP 257 where applicable. Prefer type hints at function boundaries when
+they clarify inputs and outputs. Preserve useful existing hints; do not introduce
+generic type machinery without an interface requirement.
 
 ## Validation Commands
 
@@ -132,7 +146,17 @@ Run script without writing bytecode:
 python -B script.py
 ```
 
-If a repo uses Ruff, Black, or pytest, prefer its existing commands instead of adding new tooling.
+If a repo uses Ruff, Black, or pytest, prefer its existing commands instead of adding
+new tooling or changing repository-wide settings. Report unmeasured complexity as
+unmeasured, not as a passing lint check. Syntax and style checks do not prove that
+filtering, grouping, joins, totals, or output order are correct.
+
+When a behavioral check is needed, use representative controlled data and assert
+the requested result on the same artifact that was linted. For a monthly account
+summary, include multiple accounts, repeated rows per account, and another period;
+check filtering, sums, and descending order. Do not accept a token scan or the
+presence of `print` as evidence that the task is solved. Say when the target runtime
+or data was unavailable and which behavior remains unverified.
 
 ## Review Checklist
 
@@ -145,3 +169,15 @@ If a repo uses Ruff, Black, or pytest, prefer its existing commands instead of a
 - Is necessary meaning preserved without restating obvious syntax?
 - Are data contracts and write behavior unchanged unless the task calls for a change?
 - Is the code runnable with minimal setup?
+
+## Completion Report
+
+Keep the response proportional to the change. For code writes and rewrites, report:
+
+- Verification actually run and any remaining runtime or data limitation.
+- Source lines before and after a rewrite; for new code, before and after the removal pass. List what was removed, or say nothing unnecessary remained.
+- Added files, dependencies, helpers, and input-handling branches, with the current requirement or function purpose for each addition. If none were added, say so briefly.
+- Any budget exceedance or contract exception, including its reason. Do not label manual inspection or self-reported compliance as automated enforcement.
+
+For explanation-only or review-only tasks, report findings directly without claiming
+an implementation, removal pass, or execution that did not happen.
