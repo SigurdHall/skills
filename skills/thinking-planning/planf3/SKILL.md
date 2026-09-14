@@ -1,6 +1,6 @@
 ---
 name: planf3
-description: Creates a concise engineering implementation plan based on user requirements and saves it to specs directory
+description: "Default for every plan or spec deliverable. Creates an HTML-first engineering implementation plan in specs/ with phases, task checklists, status markers, validation commands and built-in Codex adversarial review. Use whenever the user asks for a plan or a spec for concrete work, whether or not /planf3 is typed, and whether the work is code, data platform, report or process. Triggers: plan, spec, specification, implementation plan, lag en plan, lag en spec, skriv en spec, plan/spec, gjennomføringsplan, utbyggingsplan, arbeidsplan, bølgeplan, tiltaksplan, roadmap, 'hvordan bygger vi X', 'sett opp en plan for X', 'hva skal vi gjøre med X'. Check for an existing specs/ directory in the target repo before choosing any other location. Not for pure analysis, decision memos, investigations or documentation with nothing to execute - those are docs; see fabric-documentation. When a task produces both, write the analysis as docs and the buildable part as a planf3 plan."
 argument-hint: "[user-prompt] [questionable]"
 ---
 
