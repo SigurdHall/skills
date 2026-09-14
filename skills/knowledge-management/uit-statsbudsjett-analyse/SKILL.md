@@ -18,7 +18,9 @@ relevans og harmonisering av beløp; ikke overlat dette til nøkkelord alene.
 
 ## Arbeidsdeling og varig læring
 
-Les [agentarbeidsflyten](references/agent-workflow.md) før delegering.
+Les [agentarbeidsflyten](references/agent-workflow.md) før delegering. I
+Claude Code kjøres hele løpet med workflow-skriptet som er beskrevet i
+[kjøringsbeskrivelsen](references/claude-orchestration.md).
 
 1. Finn årets eller nærmeste historiske dokument «Arbeidsdeling og søkeord».
    Bevar fagområdene og prioriteringene. Bruk stabile fagroller som kan eie
@@ -53,12 +55,15 @@ reasoning effort. Gjenbruk lagrede målinger og faglige erfaringer; start nye
 tester bare ved konkret behov eller bestilling. En raskere profil må fortsatt
 oppfylle samme krav til tall, kilder, perioder, vilkår og kritisk temadekning.
 
-Foreløpig utgangspunkt fra piloten: Sol-high til raske førsteutkast og
-sammenlignende kontroll; Luna-xhigh som uavhengig analyse av ramme/KD og
-KUD; Luna-max ved HODs sammensatte tilskudd og overgangsvilkår. Luna-high
-er ikke validert som erstatning for ferdig faganalyse. Bruk rolleminnets
-konkrete erfaringer og kontrolliste; dette er oppgavespesifikke utgangspunkt,
-ikke garantier. Revider profilene når nye målinger tilsier det.
+Ingen modellprofil er validert per departement. Pilotens 24 blindvurderte
+svar (Codex CLI, OpenAI-profiler, én observasjon per celle) gir bare to
+holdbare regler: laveste effort ga utelatte vilkår og en enhetsfeil, og to
+uavhengige utkast fanget ulike hull. Bruk sesjonens ordinære modell med
+minst ordinær effort for alle fagdeler, aldri redusert effort for deler med
+sammensatte vilkår, og to uavhengige utkast for rammen og andre kritiske
+deler. Profilnavnene i modelltestingen er historiske observasjoner;
+fullkohort-tallene ligger i analyseprosjektets
+`reviews/continuation-01/profil-fullkohort.md`.
 
 For vesentlige oppgaver: la to modeller lese samme fagminne og analysere
 uavhengig før de ser hverandres svar. La kontrollen deretter få begge svar
@@ -131,8 +136,9 @@ og lesbart uttrekk i oppdragets mappe.
   funn**, inklusive beløp, mottaker og nødvendige vilkår. Lag markert PDF,
   sidebilde og lesbart tekstuttrekk med `build_evidence.py`. Hele original-
   siden beholdes. Kontroller at markeringen treffer riktig forekomst;
-  «ordet finnes et sted» er ikke tilstrekkelig. Bruk et ekstra funn/kilde-
-  utdrag når vilkår eller tabelloverskrift står på en annen side.
+  «ordet finnes et sted» er ikke tilstrekkelig, og ankeret skal inneholde
+  funnets eget beløp, ikke bare et sammenligningstall. Bruk et ekstra
+  funn/kildeutdrag når vilkår eller tabelloverskrift står på en annen side.
 - Søk spesielt etter endringer uten UiT-navn: finansieringsmodell,
   resultatindikatorer, forskningsprogrammer, studentvilkår og generelle kutt.
   «Ikke funnet» skal angi hvilke dokumenter/områder som er undersøkt.

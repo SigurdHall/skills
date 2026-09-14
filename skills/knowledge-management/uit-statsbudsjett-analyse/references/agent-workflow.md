@@ -108,6 +108,13 @@ Arbeidsnotatet skal også dokumentere søk uten treff og avviste treff med
 grunn. Et negativt resultat har ikke et oppdiktet positivt tekstanker.
 Tom funnliste får et eksplisitt tomt kildeuttrekk, ikke en falsk PDF.
 
+Ankeret skal inneholde funnets eget beløp og helst mottaker. Når bare et
+sammenligningstall (for eksempel fjorårets bevilgning) kan markeres
+entydig, skal `claim` si hvilket tall som er markert, og et ekstra anker
+for årets beløp legges til selv om det gir flere rektangler. Kortere
+anker for å tilfredsstille markeringsskriptet er ikke grunn til å
+markere et annet tall enn påstandens.
+
 ## Redaksjon og videreformidling
 
 Sammenstill hovedtall, uventede endringer, navngitte UiT-tilskudd,

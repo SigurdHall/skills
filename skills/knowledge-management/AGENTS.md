@@ -10,6 +10,7 @@ Current skills:
 - `strategic-plan-analysis`
 - `vault-forvalter`
 - `weekly-production-review`
+- `uit-statsbudsjett-analyse`
 
 ## Ownership boundary (avoid two truths)
 
@@ -22,4 +23,8 @@ Current skills:
 - `weekly-production-review` → weekly meta-summary of the two above. Not a
   full-career summary (that's `accomplishment-log` Mode 2).
 - `strategic-plan-analysis` → governance/strategy document critique.
+- `uit-statsbudsjett-analyse` → UiT's annual state budget analysis against
+  the preliminary allocation: sources, role memories, departmental reports,
+  reconciliation, evidence pack, presentation spec, forwarding draft. Year
+  data and results live in the local `uit-statsbudsjett` project, not here.
 

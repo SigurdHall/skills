@@ -1,5 +1,12 @@
 # Modellvalg, fan-out og målt responstid
 
+**Avgrensning (14.09.2026).** Dette dokumentet beskriver Codex CLI-kjøringer
+med OpenAI-profiler fra piloten. Målingene er historiske observasjoner med
+én kjøring per celle og gjelder ikke andre modellfamilier. Profilanbefalingene
+i pilotrapporten er ikke dekket av hele datasettet; se analyseprosjektets
+`reviews/continuation-01/profil-fullkohort.md`. Kjøring i Claude Code er
+beskrevet i [kjøringsbeskrivelsen](claude-orchestration.md).
+
 Bruk dette når oppgavene fordeles mellom modeller eller når modellenes
 hastighet/kvalitet skal prøves. En testet rolle-/promptkombinasjon er mer
 informativ enn en generell rangering av modellnavn.

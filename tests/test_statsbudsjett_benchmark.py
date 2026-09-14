@@ -28,8 +28,8 @@ def benchmark():
 def fake_codex(tmp_path, benchmark):
     executable = tmp_path / "fake-codex"
     executable.write_text(
-        """#!/opt/az/bin/python3
-import json
+        f"#!{sys.executable}\n"
+        """import json
 from pathlib import Path
 import sys
 import time
@@ -331,7 +331,7 @@ def test_failed_process_with_answer_never_counts_as_completed(tmp_path, benchmar
 
 def test_timeout_also_bounds_sending_a_large_prompt(tmp_path, benchmark):
     executable = tmp_path / "never-reads-stdin"
-    executable.write_text("#!/opt/az/bin/python3\nimport time\ntime.sleep(2)\n")
+    executable.write_text(f"#!{sys.executable}\nimport time\ntime.sleep(2)\n")
     executable.chmod(0o755)
     benchmark.CODEX_BINARY = str(executable)
     suite = write_suite(
@@ -349,7 +349,7 @@ def test_timeout_also_bounds_sending_a_large_prompt(tmp_path, benchmark):
 def test_truncated_prompt_is_a_failure_even_with_zero_exit_and_answer(tmp_path, benchmark):
     executable = tmp_path / "reads-only-one-character"
     executable.write_text(
-        "#!/opt/az/bin/python3\n"
+        f"#!{sys.executable}\n"
         "import json, sys\nfrom pathlib import Path\n"
         "sys.stdin.read(1)\n"
         "answer = Path(sys.argv[sys.argv.index('--output-last-message') + 1])\n"
@@ -464,7 +464,7 @@ def test_cleanup_stops_own_descendant_holding_stdout_but_not_other_processes(
         "print('child_ready', flush=True); time.sleep(2)"
     )
     executable.write_text(
-        "#!/opt/az/bin/python3\n"
+        f"#!{sys.executable}\n"
         "import subprocess, sys, time\n"
         f"subprocess.Popen([sys.executable, '-c', {child_code!r}])\n"
         + ("time.sleep(0.1)\n" if parent_exits else "time.sleep(2)\n")
