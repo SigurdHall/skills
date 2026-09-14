@@ -25,6 +25,21 @@ notater/rapporter/funn, samsvarende markerte utdrag og redaktørleveransene.
 Returkode 2 betyr ufullstendig leveranse. Filkontrollen erstatter ikke
 faglig lesing eller visuell kontroll.
 
+## Finn årets kilder og sjekk publisering
+
+```bash
+python scripts/discover_sources.py check --year 2027 --output /path/to/kildesjekk.json
+python scripts/discover_sources.py write --from /path/to/kildesjekk.json --output /path/to/kilder-input.json --uit-output /path/to/uit-kilder-input.json
+```
+
+`check` slår opp blått hefte, årets dokumentside og dokumentsøk på
+regjeringen.no, hver fagproposisjons PDF, Prop. 1 LS og UiTs styresak
+«Foreløpig fordeling av budsjett for Y» i Elements-portalen. Returkode 0
+betyr alt funnet, 2 ikke publisert (blått hefte eller KD mangler), 3
+delvis. `write` lager input til `fetch_sources.py`; UiT-dokumentene går
+til en egen fil fordi de hører til `analyse/kilder/uit-forutsetninger-Y/`.
+Bare standardbiblioteket brukes. Mønstrene står i [kildekartet](kildekart.md).
+
 ## Hent allerede identifiserte kilder
 
 ```bash

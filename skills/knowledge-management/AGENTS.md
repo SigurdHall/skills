@@ -11,6 +11,7 @@ Current skills:
 - `vault-forvalter`
 - `weekly-production-review`
 - `uit-statsbudsjett-analyse`
+- `uit-statsbudsjett-proeve`
 
 ## Ownership boundary (avoid two truths)
 
@@ -27,4 +28,7 @@ Current skills:
   the preliminary allocation: sources, role memories, departmental reports,
   reconciliation, evidence pack, presentation spec, forwarding draft. Year
   data and results live in the local `uit-statsbudsjett` project, not here.
+- `uit-statsbudsjett-proeve` → user-invoked launcher (`/uit-statsbudsjett-proeve`):
+  prompt form, publication check and source discovery, then starts the
+  workflow. Holds no domain knowledge of its own.
 

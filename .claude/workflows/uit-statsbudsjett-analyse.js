@@ -1,7 +1,7 @@
 export const meta = {
   name: 'uit-statsbudsjett-analyse',
   description: 'Run the UiT state budget analysis: sources, role memories, five specialist roles, editor, deterministic checks',
-  whenToUse: 'When a new Norwegian state budget proposal (Prop. 1 S) is published and UiT needs the annual analysis against its preliminary allocation',
+  whenToUse: 'Started by the user-invoked skill /uit-statsbudsjett-proeve after the publication check has passed; runs one budget year end to end',
   phases: [
     { title: 'Forbered', detail: 'fetch sources, extract text, prepare work orders, open exposure log' },
     { title: 'Forutsetninger', detail: 'locate and document UiT preliminary allocation for the year' },
@@ -12,24 +12,25 @@ export const meta = {
 }
 
 // ---------------------------------------------------------------------------
-// Arguments. Pass as a JSON object in Workflow({args}). Paths are POSIX paths
-// as seen from the shell that runs the commands; shell_prefix wraps every
-// command when Claude runs on Windows and the project lives in WSL.
+// Arguments. Pass as a JSON object in Workflow({args}). Script arguments use
+// POSIX paths (the project lives in WSL). When Claude runs on Windows, files
+// are read and written through the UNC path in unc_project, and scripts run
+// through python_cmd, e.g. "wsl.exe -e /home/<user>/.venvs/statsbudsjett/bin/python".
 // ---------------------------------------------------------------------------
 const a = args || {}
 const PROJECT = a.project || '/home/sihal7953/repos/uit-statsbudsjett'
+const UNC = a.unc_project || null
 const SKILL = a.skill || '/home/sihal7953/repos/skills/skills/knowledge-management/uit-statsbudsjett-analyse'
-const PYTHON = a.python || '/home/sihal7953/.venvs/statsbudsjett/bin/python'
+const PY = a.python_cmd || a.python || '/home/sihal7953/.venvs/statsbudsjett/bin/python'
 const CONFIG = a.config || 'arbeidsflyt/arbeidsdeling-2025.json'
 const YEAR = a.budget_year || 2025
 const RUN_ID = a.run_id || `${YEAR}-claude-v1`
 const STAGE = a.stage || 'regjeringens opprinnelige forslag'
 const SOURCES_INPUT = a.sources_input || `analyse/kilder/${YEAR}/kilder-input.json`
-const DUPLICATE_PARTS = Array.isArray(a.duplicate_parts) ? a.duplicate_parts : ['ramme']
+const DUPLICATE_PARTS = Array.isArray(a.duplicate_parts) ? a.duplicate_parts.filter(p => p && p !== 'ingen') : ['ramme']
 const TEMPLATE = a.template || null
 const LIBREOFFICE = a.libreoffice || null
 const STARTED = a.run_started_utc || 'unknown (pass run_started_utc)'
-const SHELL_PREFIX = a.shell_prefix || ''
 const ROLES = Array.isArray(a.roles) ? a.roles : [
   { id: 'kd_ramme', parts: ['ramme', 'kd', 'fin'] },
   { id: 'helse_miljo', parts: ['hod', 'kld'] },
@@ -42,9 +43,13 @@ const FORBIDDEN = Array.isArray(a.forbidden_dirs) ? a.forbidden_dirs : [`${YEAR}
 const RUN = `${PROJECT}/leveranser/${RUN_ID}`
 const SCRIPTS = `${SKILL}/scripts`
 
+const ENV = UNC
+  ? `Miljø: prosjektet ligger i WSL. Les og skriv filer med Read/Write/Glob på UNC-stien ${UNC} + samme relative sti som POSIX-stien. Kjør skript uten shell med PowerShell-verktøyet: ${PY} <skript> <argumenter>, eller Bash med MSYS_NO_PATHCONV=1 foran. Bruk POSIX-stier i alle skriptargumenter. Ikke bruk heredoc gjennom wsl.exe.`
+  : `Miljø: kjør skript med ${PY} <skript> <argumenter>. Les og skriv filer direkte på POSIX-stiene.`
+
 const COMMON = `
-Prosjekt: ${PROJECT}. Skill: ${SKILL}. Python: ${PYTHON}. Kjøring: ${RUN_ID}, budsjettår ${YEAR}, stadium: ${STAGE}. Startet ${STARTED} UTC.
-${SHELL_PREFIX ? `Alle shell-kommandoer må kjøres som: ${SHELL_PREFIX} '<kommando>'.` : ''}
+Prosjekt: ${PROJECT}. Skill: ${SKILL}. Kjøring: ${RUN_ID}, budsjettår ${YEAR}, stadium: ${STAGE}. Startet ${STARTED} UTC.
+${ENV}
 Les først ${SKILL}/SKILL.md, ${SKILL}/references/agent-workflow.md og ${PROJECT}/arbeidsflyt/leveransekontrakt.md.
 Forbudt å åpne eller liste: ${FORBIDDEN.map(d => `${PROJECT}/${d}`).join(', ')} og alle UiT-dokumenter om ${YEAR} datert etter framleggelsen. Alle lesinger av UiT-materiale skal noteres i ${RUN}/eksponeringslogg.md.
 Prioritet 1 er korrekt informasjon, prioritet 2 ferdig leveranse. Aldri gjett et tall; skriv null og forklar. Skriv norsk i alle leveransefiler.
@@ -69,11 +74,11 @@ const PREP_SCHEMA = {
 
 const prep = await agent(`${COMMON}
 Oppgave: forbered kjøringen uten å analysere innholdet.
-1. Hvis ${PROJECT}/${SOURCES_INPUT} finnes: kjør "${PYTHON} ${SCRIPTS}/fetch_sources.py ${PROJECT}/${SOURCES_INPUT} ${PROJECT}/analyse/kilder/${YEAR}". Avvikende eksisterende filer skal ikke overskrives; rapporter dem.
-2. For hver PDF i ${PROJECT}/analyse/kilder/${YEAR}/ uten tilhørende .txt: kjør "${PYTHON} ${SCRIPTS}/extract_documents.py <pdf> --output <samme navn>.txt".
-3. Kjør "${PYTHON} ${SCRIPTS}/manage_workflow.py prepare ${PROJECT}/${CONFIG} --project ${PROJECT}".
-4. Opprett ${RUN}/eksponeringslogg.md med: forbudte mapper, dato ${STARTED}, kjøring ${RUN_ID}, og en tom seksjon "Lest UiT-materiale" som senere agenter fyller ut.
-5. List hva som mangler for full analyse: kilder for departementer uten PDF (sammenlign med rollenes deler: ${ROLES.map(r => r.parts.join('/')).join(', ')}), manglende ${PROJECT}/analyse/uit-forutsetninger-${YEAR}.md, mal (${TEMPLATE || 'ikke oppgitt'}) og renderer (${LIBREOFFICE || 'ikke oppgitt'}).`,
+1. Hvis ${PROJECT}/${SOURCES_INPUT} finnes: kjør ${PY} ${SCRIPTS}/fetch_sources.py ${PROJECT}/${SOURCES_INPUT} ${PROJECT}/analyse/kilder/${YEAR}. Avvikende eksisterende filer skal ikke overskrives; rapporter dem.
+2. For hver PDF i ${PROJECT}/analyse/kilder/${YEAR}/ uten tilhørende .txt: kjør ${PY} ${SCRIPTS}/extract_documents.py <pdf> --output <samme navn>.txt.
+3. Kjør ${PY} ${SCRIPTS}/manage_workflow.py prepare ${PROJECT}/${CONFIG} --project ${PROJECT}.
+4. Opprett eller utvid ${RUN}/eksponeringslogg.md med: forbudte mapper, dato ${STARTED}, kjøring ${RUN_ID}, og en seksjon "Lest UiT-materiale" som senere agenter fyller ut.
+5. List hva som mangler for full analyse: kilder for departementer uten PDF (rollenes deler: ${ROLES.map(r => r.parts.join('/')).join(', ')}), manglende ${PROJECT}/analyse/uit-forutsetninger-${YEAR}.md, mal (${TEMPLATE || 'ikke oppgitt'}) og renderer (${LIBREOFFICE || 'ikke oppgitt'}).`,
   { label: 'forbered', phase: 'Forbered', effort: 'low', schema: PREP_SCHEMA })
 
 if (!prep) throw new Error('Forberedelsen feilet; ingen agentresultat')
@@ -99,7 +104,7 @@ const ASSUMPTIONS_SCHEMA = {
 const assumptions = await agent(`${COMMON}
 Oppgave: dokumenter UiTs forhåndsforutsetninger for budsjettåret ${YEAR}.
 Hvis ${PROJECT}/analyse/uit-forutsetninger-${YEAR}.md allerede finnes og har KD-ramme med kilde: les den, kontroller kildene og returner uten å skrive om.
-Ellers: bruk ${SKILL}/references/kildekart.md. Finn universitetsstyrets foreløpige fordeling for ${YEAR} (normalt junimøtet ${YEAR - 1}) i UiTs møteportal: saksframlegg, vedlegg og protokoll. Hent dokumentene med fetch_sources.py til ${PROJECT}/analyse/kilder/uit-forutsetninger-${YEAR}/ (lag en kilder-input.json der først). Lag tekstuttrekk. Skriv ${PROJECT}/analyse/uit-forutsetninger-${YEAR}.md med samme struktur som ${PROJECT}/analyse/uit-forutsetninger-2024.md: kilder og versjon, bro fra saldert ${YEAR - 1} til foreløpig ${YEAR} i 1 000 kroner, forutsetninger som skal prøves, resultatgrunnlag, planleggingsår, UiT-spesifikke forhold. Skriv også ${PROJECT}/analyse/${YEAR}-rammebro-input.json med UiT-siden fylt ut og forslagssiden null.
+Ellers: bruk ${SKILL}/references/kildekart.md. Finn universitetsstyrets foreløpige fordeling for ${YEAR} (normalt junimøtet ${YEAR - 1}). Start med ${RUN}/kildesjekk.json hvis den finnes; den kan inneholde treff fra UiTs styreportal. Hent dokumentene med ${PY} ${SCRIPTS}/fetch_sources.py til ${PROJECT}/analyse/kilder/uit-forutsetninger-${YEAR}/ (lag en kilder-input.json der først). Lag tekstuttrekk med extract_documents.py. Skriv ${PROJECT}/analyse/uit-forutsetninger-${YEAR}.md med samme struktur som ${PROJECT}/analyse/uit-forutsetninger-2024.md: kilder og versjon, bro fra saldert ${YEAR - 1} til foreløpig ${YEAR} i 1 000 kroner, forutsetninger som skal prøves, resultatgrunnlag, planleggingsår, UiT-spesifikke forhold. Skriv også ${PROJECT}/analyse/${YEAR}-rammebro-input.json med UiT-siden fylt ut og forslagssiden null.
 Ikke åpne UiTs analyse av statsbudsjettet ${YEAR}, endelig fordeling ${YEAR} eller tildelingsbrev. Noter alle åpnede UiT-dokumenter i ${RUN}/eksponeringslogg.md.`,
   { label: 'uit-forutsetninger', phase: 'Forutsetninger', schema: ASSUMPTIONS_SCHEMA })
 
@@ -154,10 +159,10 @@ function rolePrompt(role, mode) {
     : `Ikke endre andre rollers filer.`
   return `${COMMON}
 Du er fagrollen ${role.id} med delene ${parts}. Les oppdraget ${RUN}/oppdrag/${role.id}.md.
-Før du åpner årets kilder: les ${PROJECT}/arbeidsminne/${role.id}/erfaringer-2018-2023.md og alle ${PROJECT}/arbeidsminne/${role.id}/erfaringer-*-proeve.md. Beregn SHA-256 av den historiske minnefilen og skriv ${outDir}/minne-lest.json med feltene role, sha256, read_at_utc (bruk ${STARTED} og klokkeslett fra shell) og memory.
+Før du åpner årets kilder: les ${PROJECT}/arbeidsminne/${role.id}/erfaringer-2018-2023.md og alle ${PROJECT}/arbeidsminne/${role.id}/erfaringer-*-proeve.md og erfaringer-review-*.md. Beregn SHA-256 av den historiske minnefilen (for eksempel med ${PY} -c) og skriv ${outDir}/minne-lest.json med feltene role, sha256, read_at_utc og memory.
 Bruk ${PROJECT}/analyse/uit-forutsetninger-${YEAR}.md som UiT-side når den finnes. Kilder ligger i ${PROJECT}/analyse/kilder/${YEAR}/ (PDF og .txt med "=== PDF-side N ===").
-For hver del: skriv ${outDir}/<del>/notater.md (søkeord, treff, avviste treff med grunn, kildehull), ${outDir}/<del>/rapport.md og ${outDir}/<del>/funn.json i formatet fra agent-workflow.md. Ankeret skal inneholde funnets eget beløp; hvis bare et sammenligningstall kan markeres entydig, skal claim si det og et eget anker for beløpet legges til. Kjør "${PYTHON} ${SCRIPTS}/build_evidence.py ${outDir}/<del>/funn.json --project ${PROJECT} --output ${outDir}/<del>/belegg" og rett ankere til skriptet godtar dem. Tom funnliste gir et dokumentert negativt resultat, ikke en falsk kilde.
-Rollen kd_ramme skal i tillegg fylle forslagssiden i ${PROJECT}/analyse/${YEAR}-rammebro-input.json og kjøre "${PYTHON} ${SCRIPTS}/reconcile_budget.py ${PROJECT}/analyse/${YEAR}-rammebro-input.json --output ${outDir}/ramme/rammebro-kontroll.json"; resten må være null.
+For hver del: skriv ${outDir}/<del>/notater.md (søkeord, treff, avviste treff med grunn, kildehull), ${outDir}/<del>/rapport.md og ${outDir}/<del>/funn.json i formatet fra agent-workflow.md. Ankeret skal inneholde funnets eget beløp; hvis bare et sammenligningstall kan markeres entydig, skal claim si det og et eget anker for beløpet legges til. Kjør ${PY} ${SCRIPTS}/build_evidence.py ${outDir}/<del>/funn.json --project ${PROJECT} --output ${outDir}/<del>/belegg og rett ankere til skriptet godtar dem. Tom funnliste gir et dokumentert negativt resultat, ikke en falsk kilde.
+Rollen kd_ramme skal i tillegg fylle forslagssiden i ${PROJECT}/analyse/${YEAR}-rammebro-input.json og kjøre ${PY} ${SCRIPTS}/reconcile_budget.py ${PROJECT}/analyse/${YEAR}-rammebro-input.json --output ${outDir}/ramme/rammebro-kontroll.json; resten må være null.
 ${mode === 'duplicate' ? '' : `Etterpå: skriv ${PROJECT}/arbeidsminne/${role.id}/erfaringer-${YEAR}-proeve.md, merket prøve uten fasit, med dato, modell og effort du kjørte med. Ikke endre historiske minnefiler.`}
 ${isolation} Noter hvert åpnet UiT-dokument i ${RUN}/eksponeringslogg.md.`
 }
@@ -203,12 +208,12 @@ const EDITOR_SCHEMA = {
 }
 
 const editor = await agent(`${COMMON}
-Du er redaktøren. Les ${PROJECT}/arbeidsminne/redaktor/erfaringer-2018-2023.md og erfaringer-*-proeve.md først og skriv ${RUN}/minne-lest-redaktor.json med role, sha256, read_at_utc.
+Du er redaktøren. Les ${PROJECT}/arbeidsminne/redaktor/erfaringer-2018-2023.md, erfaringer-*-proeve.md og erfaringer-review-*.md først og skriv ${RUN}/minne-lest-redaktor.json med role, sha256, read_at_utc.
 Delrapportene ligger i ${RUN}/deler/<rolle>/<del>/. Roller uten leveranse: ${ROLES.filter(r => !delivered.find(d => d.role === r.id)).map(r => r.id).join(', ') || 'ingen'}. Rapporter manglende deler som manglende.
 Skriv ${RUN}/samlet-rapport.md etter mønsteret i ${PROJECT}/leveranser/2024-v2/samlet-rapport.md: hovedvurdering, avvikstabell fra ${RUN}/deler/kd_ramme/ramme/rammebro-kontroll.json, prioriterte funn med kilde, samordning av kryssende tiltak (samme beløp i to departementer telles én gang), arbeidsdeling med lenker, erfaringer, videre arbeid. Skill rammetildeling, navngitt tilskudd, fellespott, kostnad og politisk føring.
 Skriv ${RUN}/presentasjon.json etter ${PROJECT}/leveranser/2024-v2/presentasjon.json og ${RUN}/videreformidling.md som tydelig usendt utkast med emne, mottakergruppe, hovedfunn, dokumentstatus og vedlegg.
-Kjør "${PYTHON} ${SCRIPTS}/assemble_evidence.py ${PROJECT}/${CONFIG} --project ${PROJECT} --output ${RUN}/kildepakke.pdf".
-${TEMPLATE ? `Kjør "${PYTHON} ${SCRIPTS}/build_presentation.py ${RUN}/presentasjon.json --template ${TEMPLATE} --output ${RUN}/statsbudsjettet-${YEAR}.pptx${LIBREOFFICE ? ` --libreoffice ${LIBREOFFICE}` : ''}" og kontroller renderingen visuelt hvis den finnes.` : 'Ingen mal er oppgitt: lag ikke PowerPoint; skriv i rapporten at presentasjonen ikke er produsert.'}
+Kjør ${PY} ${SCRIPTS}/assemble_evidence.py ${PROJECT}/${CONFIG} --project ${PROJECT} --output ${RUN}/kildepakke.pdf.
+${TEMPLATE ? `Kjør ${PY} ${SCRIPTS}/build_presentation.py ${RUN}/presentasjon.json --template ${TEMPLATE} --output ${RUN}/statsbudsjettet-${YEAR}.pptx${LIBREOFFICE ? ` --libreoffice ${LIBREOFFICE}` : ''} og kontroller renderingen visuelt hvis den finnes.` : 'Ingen mal er oppgitt: lag ikke PowerPoint; skriv i rapporten at presentasjonen ikke er produsert.'}
 Skriv ${PROJECT}/arbeidsminne/redaktor/erfaringer-${YEAR}-proeve.md. Send ingenting til noen.`,
   { label: 'redaktor', phase: 'Redaktør', schema: EDITOR_SCHEMA })
 
@@ -232,10 +237,10 @@ const CHECK_SCHEMA = {
 
 const check = await agent(`${COMMON}
 Sluttkontroll uten faglig omskriving.
-1. Kjør "${PYTHON} ${SCRIPTS}/manage_workflow.py check ${PROJECT}/${CONFIG} --project ${PROJECT} --output ${RUN}/kontroll.json". Returkode 2 betyr ufullstendig; list hver issue.
+1. Kjør ${PY} ${SCRIPTS}/manage_workflow.py check ${PROJECT}/${CONFIG} --project ${PROJECT} --output ${RUN}/kontroll.json. Returkode 2 betyr ufullstendig; list hver issue.
 2. Les ${RUN}/deler/kd_ramme/ramme/rammebro-kontroll.json og oppgi status og rest. Hvis filen mangler, si det.
 3. Kontroller at alle relative Markdown-lenker i ${RUN}/*.md og ${RUN}/deler/**/rapport.md peker til eksisterende filer.
-4. Skriv ${RUN}/manifest.json med SHA-256 for alle filer under ${RUN} og for ${SKILL}/SKILL.md, med created_at_utc fra shell.
+4. Skriv ${RUN}/manifest.json med SHA-256 for alle filer under ${RUN} og for ${SKILL}/SKILL.md, med created_at_utc.
 5. Kontroller at ${RUN}/eksponeringslogg.md har oppføringer fra alle roller og redaktør og at ingen forbudt mappe er nevnt som lest. Legg til en avsluttende linje om at loggen er fryst før fasit.
 6. Skriv ${RUN}/verifikasjon.md med kjørte kommandoer, resultater og hva kontrollen ikke beviser (faglig riktighet, visuell kvalitet).`,
   { label: 'kontroll', phase: 'Kontroll', effort: 'low', schema: CHECK_SCHEMA })
