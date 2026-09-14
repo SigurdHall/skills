@@ -1,6 +1,6 @@
 ---
 name: present-complex-results
-description: "Present complex work in a remote-control-friendly final response with a minimum information and detail floor. Use before the final response for every multi-step, tool-heavy, file-producing, high-impact, high-risk, partially complete, blocked, or decision-bearing process or delivery, even when the user did not explicitly request a detailed summary. Also trigger when the user asks what changed, whether something is fixed or ready, for a delivery summary, or for next-step choices. Do not use for simple factual answers, trivial edits, or one-step commands."
+description: "Shapes the final response for complex work, in the same communication form as planf3. Use before the final response for every multi-step, tool-heavy, file-producing, high-impact, high-risk, partially complete, blocked, or decision-bearing process or delivery, even when the user did not explicitly request a summary. Also trigger when the user asks what changed, whether something is fixed or ready, for a delivery summary, or for next-step choices. Carries planf3's vocabulary into chat: purpose/problem/solution framing, phases with status markers, validation commands with what they prove, and questionables surfaced rather than silently decided. Do not use for simple factual answers, trivial edits, or one-step commands."
 ---
 
 # Present Complex Results
@@ -9,14 +9,19 @@ Treat the final response as the user's remote control for the work. Make the
 material outcome, evidence, limits, and next decision understandable without
 requiring the user to open every file.
 
-Use this as the presentation layer after completing the domain workflow. Do
-not replace fresh verification, a domain-specific skill, or a durable handoff
-when one is required.
+This is the presentation layer after the domain workflow. It does not replace
+fresh verification, a domain skill, or a durable handoff.
+
+**It is the conversational counterpart of a [planf3](../../thinking-planning/planf3/SKILL.md)
+plan.** A planf3 plan is what gets built; this is how the build gets reported.
+The two share one vocabulary so a reader moves between the HTML plan and the
+chat response without re-learning terms. When a planf3 plan exists for the
+work, report against its phases and reuse its names verbatim.
 
 ## Decide whether the result is complex
 
-Apply this skill when either one high-risk condition or at least two of these
-signals are present:
+Apply this skill when one high-risk condition or at least two of these signals
+are present:
 
 - Complete several substantive steps or workstreams.
 - Change multiple files, components, repositories, or live objects.
@@ -30,96 +35,110 @@ signals are present:
 Do not invoke it for a simple answer, a trivial one-file edit, or a single
 command whose outcome is self-explanatory.
 
+## Use planf3's status markers
+
+Report work with the same four markers the plan template uses, so a phase reads
+identically in the plan and in chat:
+
+- `[x]` complete — done and checked
+- `[wip]` in progress — started, not finished
+- `[]` idle — not started
+- `[f]` failed or not possible — state the cause, then move on
+
+Use them for phases and tasks, not for prose. A marker replaces a vague verb:
+`[f] live-kjøring i Fabric` is honest where "mostly working" is not.
+
+Alongside the markers, keep the distinctions that matter: `implemented`,
+`inspected`, `tested`, `live-verified`, `not verified`. Never collapse these
+into a generic claim that the work is done.
+
 ## Establish the actual status
 
 Choose and state one primary status before drafting the rest:
 
-- **Complete** — finish the requested scope and pass the relevant checks.
-- **Partial** — deliver useful work, but leave requested scope or meaningful
-  verification unfinished.
-- **Blocked** — stop on a specific missing input, authority, dependency, or
+- **Complete** — the requested scope is finished and the relevant checks pass.
+- **Partial** — useful work delivered, but requested scope or meaningful
+  verification is unfinished.
+- **Blocked** — stopped on a specific missing input, authority, dependency, or
   external-state change.
-- **Decision required** — reach a genuine fork where different choices change
-  scope, risk, cost, or implementation.
-
-Distinguish `implemented`, `inspected`, `tested`, `live-verified`, and `not
-verified`. Never collapse these into a generic claim that the work is done.
+- **Decision required** — a genuine fork where different choices change scope,
+  risk, cost, or implementation.
 
 ## Translate evidence for a chat interface
 
-Assume the user sees the final response before any evidence file, test log, or
-earlier commentary. Make technical status understandable in ordinary language
-before presenting labels, counts, hashes, or gate names.
+The user sees the final response before any evidence file, test log, or earlier
+commentary. Make technical status understandable in ordinary language before
+presenting labels, counts, hashes, or gate names.
 
-Use this sequence whenever the result contains dense verification language:
+Whenever the result contains dense verification language:
 
-1. **Plain-language meaning** — say what works, where it works, and why the
-   user should care.
-2. **Practical boundary** — say what has not happened in the real system.
-3. **Technical evidence** — then give test counts, digests, commands, and gate
-   status.
-4. **Consequence** — state whether the user can use, test, approve, or must
-   wait for the result.
+1. **Plain-language meaning** — what works, where, and why it matters.
+2. **Practical boundary** — what has not happened in the real system.
+3. **Technical evidence** — test counts, digests, commands, gate status.
+4. **Consequence** — whether the user can use, test, approve, or must wait.
 
-Translate a term on first use when a reasonable user could otherwise
-misinterpret it. For example:
+Translate a term on first use when a reasonable user could misread it:
+`offline smoke passed` means the package worked locally without contacting the
+provider; `live smoke not run` means no real request was made; `parent gate
+pending` means an independent review has not accepted the candidate.
 
-- `offline smoke passed` means the package worked locally without connecting
-  to the provider;
-- `live smoke not run` means no real sandbox or service request was made;
-- `parent gate pending` means an independent final review has not accepted the
-  candidate yet.
+Prefer a short "hva dette betyr i praksis" sentence over expecting the user to
+infer meaning from `158 passed` or `overallRelease=not_authorized`. Treat
+numbers as supporting evidence, not the explanation. Use a compact analogy only
+when it clarifies the boundary, such as "benkprøvd, ikke kjørt på vei".
 
-Prefer a short “What this means in practice” sentence over expecting the user
-to infer meaning from `158 passed`, `replayed_identical`, or
-`overallRelease=not_authorized`. Treat numbers as supporting evidence, not the
-main explanation. Use a compact analogy only when it materially clarifies the
-boundary, such as “bench-tested, not road-tested.”
-
-For unfamiliar systems, explicitly answer:
-
-- What goes in?
-- What comes out?
-- What is automatic?
-- What still needs a person, permission, or live connection?
+For unfamiliar systems, answer explicitly: what goes in, what comes out, what
+is automatic, and what still needs a person, permission, or live connection.
 
 ## Meet the output contract
 
-Use headings appropriate to the user's language. Preserve this information
-order even when combining small sections:
+Mirror the planf3 section order. Write in the user's language, with headings to
+match. Combine small sections when the work is light, but preserve this order.
 
-1. **Result, meaning, and status** — lead with what the user now has, explain
-   its practical meaning in ordinary language, and then state the primary
-   status. Use two to four concrete sentences.
-2. **Delivered or changed** — summarize each material workstream and why it
-   matters. Describe behavior and decisions, not only filenames or activity.
-3. **Important artifacts** — when files exist, link the important ones and
-   give each a one-sentence role. Identify the source of truth when several
-   artifacts overlap.
-4. **Verification and evidence** — name each relevant command or manual check,
-   its result, and what it proves. State what was not run and why. Do not imply
-   live success from syntax, schema, or static inspection alone.
-5. **Decisions, limitations, and remaining work** — expose consequential
-   assumptions, deviations, risks, out-of-scope items, blockers, and manual
-   checks. Do not omit a category merely because it weakens the success story.
-6. **Next step** — recommend the most useful action. If no action remains, say
-   so explicitly.
+1. **Result and status** — what the user now has, what it means in ordinary
+   language, then the one primary status. Two to four concrete sentences. This
+   is planf3's *Purpose* and *Solution* compressed into the lead.
+2. **Problem** — only when the result is not self-explanatory: what was wrong,
+   or what the work was for. Skip it when the user already knows.
+3. **Phases and tasks** — each substantive workstream with its status marker,
+   what it changed, and why that matters. Describe behaviour and decisions, not
+   filenames and activity. When a planf3 plan governs the work, use its phase
+   numbers and names.
+4. **Artifacts** — tag each as `new` or `existing`, link the important ones,
+   give each a one-sentence role. Name the source of truth when several
+   overlap. Link only what matters; never dump a file inventory.
+5. **Validation** — each command or manual check, its result, and **what it
+   proves**. State what was not run and why. Never imply live success from
+   syntax, schema, or static inspection alone.
+6. **Questionables** — consequential assumptions, deviations, risks,
+   out-of-scope items, blockers, and open faglige questions. Surface them
+   rather than deciding silently. Do not omit a category because it weakens the
+   success story. Number them when the user will need to answer them.
+7. **Next step** — the most useful action. If none remains, say so explicitly.
 
-When the user asks whether something is fixed, separate the answer into the
-diagnosis, the implemented change, and the remaining verification.
+When the user asks whether something is fixed, split the answer into diagnosis,
+implemented change, and remaining verification.
+
+## Honour the loop rule
+
+planf3 says a phase is not complete until every box is checked. The reporting
+equivalent: **do not present a phase as `[x]` while any of its validation
+commands is unrun or failing.** If a check cannot be run in this environment,
+mark it `[f]`, say why, and say what would make it runnable. An unrun check is
+never silent.
 
 ## Keep a meaningful depth floor
 
-Use information coverage as the hard floor and word count as a diagnostic:
+Information coverage is the hard floor; word count is a diagnostic.
 
 - Default to roughly 350–700 words for a complex result.
-- Expand toward 700–1,200 words for multi-repository, high-risk, partial,
-  blocked, or decision-heavy work when the extra detail helps steering.
-- Go below 350 words only when the user explicitly requests brevity or every
-  required fact genuinely fits. Preserve the output contract even then.
+- Expand toward 700–1,200 for multi-repository, high-risk, partial, blocked, or
+  decision-heavy work when the detail helps steering.
+- Go below 350 only when the user asks for brevity or every required fact
+  genuinely fits. Preserve the output contract even then.
 
-Do not pad the response with a tool diary, obvious implementation chronology,
-or repeated claims. Prefer impact, evidence, decisions, and consequences.
+Do not pad with a tool diary, implementation chronology, or repeated claims.
+Prefer impact, evidence, decisions, consequences.
 
 ## Present useful next-step choices
 
@@ -127,35 +146,31 @@ When one natural action remains, recommend it directly instead of inventing a
 menu. When a real fork exists:
 
 1. Present two or three mutually distinct options.
-2. Put the recommended option first and explain why it is recommended.
+2. Put the recommended one first and say why.
 3. State the main consequence, trade-off, prerequisite, or risk for each.
-4. State exactly what the user needs to decide or authorize.
-5. Include stopping with the current result when that is a reasonable choice.
+4. State exactly what the user must decide or authorize.
+5. Include stopping with the current result when that is reasonable.
 
-Never end a complex delivery with only "What do you want to do next?"
+Never end a complex delivery with only "what do you want to do next?".
 
 ## Enforce the remote-control rule
 
-- Keep decision-relevant content in the conversation. Use files for durable
-  detail and evidence, not as a substitute for the result summary.
-- Never write only "details are in the files." Surface the important findings,
-  changes, risks, and choices, then link the supporting artifact.
-- Link only the important files; do not dump generated-file inventories.
-- Report deviations from the requested scope explicitly and explain why they
-  occurred.
-- Avoid generic offers for more help. End on the recommendation, bounded
-  options, required decision, or a clear statement that no action remains.
+- Keep decision-relevant content in the conversation. Files hold durable detail
+  and evidence, not the result summary.
+- Never write only "details are in the files". Surface the findings, changes,
+  risks, and choices, then link the artifact.
+- Report deviations from the requested scope explicitly, and why they happened.
+- Avoid generic offers of further help. End on the recommendation, the bounded
+  options, the required decision, or a clear statement that nothing remains.
 
 ## Check before sending
 
-Confirm that the final response lets the user answer all of these without
-opening a file:
+The final response must let the user answer all of these without opening a file:
 
 - What changed, and why does it matter?
-- Can a non-specialist understand the practical meaning before reading the
-  technical evidence?
-- What is the honest completion status?
-- What evidence supports the claims?
+- Can a non-specialist grasp the practical meaning before the technical evidence?
+- What is the honest completion status, marker by marker?
+- What evidence supports the claims, and what proves what?
 - What remains uncertain, unverified, blocked, or out of scope?
 - Which artifacts matter, and what is each for?
 - What should happen next, and what choice or authority is needed?
