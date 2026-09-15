@@ -1,8 +1,8 @@
 ---
 name: uit-statsbudsjett-proeve
-description: Brukerstartet kjøring av UiTs statsbudsjettanalyse for ett budsjettår i Claude Code. Sjekker først om blått hefte, KD Prop. 1 S og fagproposisjonene er publisert på regjeringen.no og om UiTs foreløpige fordeling finnes, skriver kildelisten, og starter workflowen uit-statsbudsjett-analyse med fem faser. Startes bare med /uit-statsbudsjett-proeve og en promptform med år.
+description: Brukerstartet kjøring av UiTs statsbudsjettanalyse for ett budsjettår i Claude Code. Sjekker først om blått hefte, KD Prop. 1 S og fagproposisjonene er publisert på regjeringen.no og om UiTs foreløpige fordeling finnes, skriver kildelisten, og starter workflowen uit-statsbudsjett-analyse med fem faser og en modellplan (opus medium på avgjørende roller, sonnet på resten). Startes bare med /uit-statsbudsjett-proeve og en promptform med år.
 disable-model-invocation: true
-argument-hint: "år: 2025 [stadium: forslag] [modus: prøve] [kun-sjekk: ja]"
+argument-hint: "år: 2025 [profil: rask] [kun-sjekk: ja]"
 ---
 
 # Kjør UiTs statsbudsjettanalyse for ett år
@@ -24,7 +24,22 @@ tomt, vis promptformens tabell, forrige kjørings verdier fra
 Les hvert `felt: verdi`. Fyll standardverdier fra promptformen. Krev `år`.
 Avvis ugyldige verdier med én setning og stopp. Vis den tolkede formen som
 tabell i chatten før neste steg. I `prøve`-modus skal `<år>/` alltid være i
-`forbudt`. Sjekk at `leveranser/<kjøring>/` ikke finnes.
+`forbudt`.
+
+Hver kjøring starter fra tom tilstand; ingenting fra et tidligere forsøk
+gjenbrukes. Kjør ryddesjekken:
+
+```text
+check_clean_state.py --project <prosjekt> --year <år> --run-id <kjøring> --output <prosjekt>/reviews/rydd-<kjøring>.json
+```
+
+Returkode 3 betyr rester: leveransemappen, hentede kilder for året, UiTs
+forutsetningsnotat, rammebro-filer eller årets erfaringsnotater. Med
+`rydd: ja` kjør samme kommando med `--archive`; restene flyttes til
+`arkiv/avbrutt/<tidsstempel>-<kjøring>/` med samme relative sti, og du
+oppgir stien i chatten. Med `rydd: nei` stopp og be om nytt `kjøring`-navn
+eller opprydding. Skriptet rører aldri `<år>/`, arbeidsdelingen eller de
+historiske minnene.
 
 ## 2. Miljø
 
@@ -42,7 +57,7 @@ Hvis venv-et mangler, følg runbooken `docs/agent-continuation.md` i prosjektet.
 ## 3. Publiseringssjekk
 
 ```text
-discover_sources.py check --year <år> --stage <stadium> --project <prosjekt> --output <prosjekt>/leveranser/<kjøring>/kildesjekk.json
+discover_sources.py check --year <år> --stage <stadium> --output <prosjekt>/leveranser/<kjøring>/kildesjekk.json
 ```
 
 Skriptet slår opp blått hefte for året, årets dokumentside på
@@ -61,7 +76,7 @@ statsbudsjettet legges fram i oktober, blått hefte samme dag.
 ## 4. Kildeliste og arbeidsdeling
 
 ```text
-discover_sources.py write --year <år> --stage <stadium> --from <kildesjekk.json> --output <prosjekt>/analyse/kilder/<år>/kilder-input.json
+discover_sources.py write --year <år> --from <kildesjekk.json> --output <prosjekt>/analyse/kilder/<år>/kilder-input.json --uit-output <prosjekt>/analyse/kilder/uit-forutsetninger-<år>/kilder-input.json
 ```
 
 Mangler `arbeidsflyt/arbeidsdeling-<år>.json`, kopier forrige års fil,
@@ -70,9 +85,10 @@ en eksisterende arbeidsdeling for et år som allerede er kjørt.
 
 ## 5. Start workflowen
 
-Denne skillen er brukerens bestilling av flertrinns agentkjøring. Kall
-Workflow-verktøyet med
-`scriptPath: /home/sihal7953/repos/skills/.claude/workflows/uit-statsbudsjett-analyse.js`
+Denne skillen er brukerens bestilling av flertrinns agentkjøring. Minn
+brukeren om at `/fast` må være slått på i sesjonen på forhånd hvis rask
+Opus-utdata er ønsket; skriptet kan ikke slå det på. Kall Workflow-verktøyet
+med `scriptPath: /home/sihal7953/repos/skills/.claude/workflows/uit-statsbudsjett-analyse.js`
 (fra Windows: `C:\repos\skills\.claude\workflows\uit-statsbudsjett-analyse.js`)
 og disse argumentene fra formen:
 
@@ -89,18 +105,24 @@ og disse argumentene fra formen:
   "sources_input": "analyse/kilder/<år>/kilder-input.json",
   "duplicate_parts": ["<dupliser>"],
   "forbidden_dirs": ["<forbudt>"],
+  "profile": "<profil>",
   "template": null,
   "libreoffice": null,
   "run_started_utc": "<nå, ISO 8601>"
 }
 ```
 
-Sett `template` og `libreoffice` bare når formen oppgir stier som finnes.
-Ikke start workflowen to ganger for samme `kjøring`.
+`profil: rask` gir modellplanen i promptformen (opus medium på
+forutsetninger, kd_ramme, helse_miljo, naring_arbeid_kultur, review og
+redaktør; sonnet på forbered, øvrige roller, andreutkast og kontroll).
+`profil: sesjon` arver sesjonens modell for alle agenter. Enkeltfaser
+overstyres med `"models": {"role_other": {"model": "opus"}}` når formen
+oppgir `modeller:`. Sett `template` og `libreoffice` bare når formen oppgir
+stier som finnes. Ikke start workflowen to ganger for samme `kjøring`.
 
 ## 6. Sluttrapport
 
-Bruk `present-complex-results`. Oppgi status per fase, leveransemappen,
-rammeavviket hvis beregnet, roller uten leveranse, og at fasit først legges
-inn etter at `manifest.json` og `eksponeringslogg.md` er fryst. Ingen
-melding sendes til mottakere.
+Bruk `present-complex-results`. Oppgi status per fase, modellplanen som
+ble brukt, leveransemappen, rammeavviket hvis beregnet, roller uten
+leveranse, og at fasit først legges inn etter at `manifest.json` og
+`eksponeringslogg.md` er fryst. Ingen melding sendes til mottakere.

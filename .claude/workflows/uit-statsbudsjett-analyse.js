@@ -3,11 +3,11 @@ export const meta = {
   description: 'Run the UiT state budget analysis: sources, role memories, five specialist roles, editor, deterministic checks',
   whenToUse: 'Started by the user-invoked skill /uit-statsbudsjett-proeve after the publication check has passed; runs one budget year end to end',
   phases: [
-    { title: 'Forbered', detail: 'fetch sources, extract text, prepare work orders, open exposure log' },
-    { title: 'Forutsetninger', detail: 'locate and document UiT preliminary allocation for the year' },
-    { title: 'Fagroller', detail: 'one agent per role; optional independent duplicate and review per critical part' },
-    { title: 'Redaktør', detail: 'consolidated report, presentation spec, forwarding draft' },
-    { title: 'Kontroll', detail: 'structural check, bridge recomputation, manifest, exposure log' },
+    { title: 'Forbered', detail: 'fetch sources, extract text, prepare work orders, open exposure log', model: 'sonnet' },
+    { title: 'Forutsetninger', detail: 'locate and document UiT preliminary allocation for the year', model: 'opus' },
+    { title: 'Fagroller', detail: 'one agent per role; critical roles on opus, others on sonnet; optional duplicate and review', model: 'opus' },
+    { title: 'Redaktør', detail: 'consolidated report, presentation spec, forwarding draft', model: 'opus' },
+    { title: 'Kontroll', detail: 'structural check, bridge recomputation, manifest, exposure log', model: 'sonnet' },
   ],
 }
 
@@ -40,6 +40,38 @@ const ROLES = Array.isArray(a.roles) ? a.roles : [
 ]
 const FORBIDDEN = Array.isArray(a.forbidden_dirs) ? a.forbidden_dirs : [`${YEAR}/`]
 
+// ---------------------------------------------------------------------------
+// Model plan. Correctness on the few decisive items (frame bridge, named UiT
+// grants with conditions, funding moves) and speed are the priorities, so the
+// roles that own those items and every judging step run on opus at medium
+// effort; mechanical stages and the remaining roles run on sonnet. Enable
+// /fast in the session before starting if faster opus output is wanted; the
+// script cannot toggle it. profile 'sesjon' inherits the session model instead.
+// Override any stage with args.models, e.g. {"role_other": {"model": "opus"}}.
+// ---------------------------------------------------------------------------
+const PROFILE = a.profile || 'rask'
+const PLAN_RASK = {
+  prep: { model: 'sonnet', effort: 'low' },
+  assumptions: { model: 'opus', effort: 'medium' },
+  role_critical: { model: 'opus', effort: 'medium' },
+  role_other: { model: 'sonnet', effort: 'medium' },
+  duplicate: { model: 'sonnet', effort: 'medium' },
+  review: { model: 'opus', effort: 'medium' },
+  editor: { model: 'opus', effort: 'medium' },
+  check: { model: 'sonnet', effort: 'low' },
+}
+const PLAN_SESJON = {
+  prep: { effort: 'low' }, assumptions: {}, role_critical: {}, role_other: {}, duplicate: {}, review: {}, editor: {}, check: { effort: 'low' },
+}
+const PLAN = Object.assign({}, PROFILE === 'sesjon' ? PLAN_SESJON : PLAN_RASK, a.models || {})
+const CRITICAL_ROLES = Array.isArray(a.critical_roles) ? a.critical_roles : ['kd_ramme', 'helse_miljo', 'naring_arbeid_kultur']
+
+function opts(stage, extra) { return Object.assign({}, PLAN[stage], extra) }
+function describe(stage) {
+  const p = PLAN[stage] || {}
+  return `${p.model || 'sesjonens modell'}, effort ${p.effort || 'sesjonens'}`
+}
+
 const RUN = `${PROJECT}/leveranser/${RUN_ID}`
 const SCRIPTS = `${SKILL}/scripts`
 
@@ -52,8 +84,10 @@ Prosjekt: ${PROJECT}. Skill: ${SKILL}. Kjøring: ${RUN_ID}, budsjettår ${YEAR},
 ${ENV}
 Les først ${SKILL}/SKILL.md, ${SKILL}/references/agent-workflow.md og ${PROJECT}/arbeidsflyt/leveransekontrakt.md.
 Forbudt å åpne eller liste: ${FORBIDDEN.map(d => `${PROJECT}/${d}`).join(', ')} og alle UiT-dokumenter om ${YEAR} datert etter framleggelsen. Alle lesinger av UiT-materiale skal noteres i ${RUN}/eksponeringslogg.md.
-Prioritet 1 er korrekt informasjon, prioritet 2 ferdig leveranse. Aldri gjett et tall; skriv null og forklar. Skriv norsk i alle leveransefiler.
+Prioritet 1 er korrekt informasjon på de avgjørende punktene: eksakte beløp med enhet, mottaker, år/stadium, nødvendige vilkår og riktig PDF-side. Prioritet 2 er rask, ferdig leveranse: skriv kort, ikke gjenta kildene, og bruk skriptene til alt som kan regnes eller kontrolleres maskinelt. Aldri gjett et tall; skriv null og forklar. Skriv norsk i alle leveransefiler.
 Returner bare det strukturerte resultatet; ikke skriv en melding til et menneske.`
+
+log(`Modellplan (${PROFILE}): forbered ${describe('prep')}; forutsetninger ${describe('assumptions')}; kritiske roller ${describe('role_critical')}; øvrige roller ${describe('role_other')}; andreutkast ${describe('duplicate')}; review ${describe('review')}; redaktør ${describe('editor')}; kontroll ${describe('check')}`)
 
 // ---------------------------------------------------------------------------
 phase('Forbered')
@@ -73,13 +107,13 @@ const PREP_SCHEMA = {
 }
 
 const prep = await agent(`${COMMON}
-Oppgave: forbered kjøringen uten å analysere innholdet.
+Oppgave: forbered kjøringen uten å analysere innholdet. Kjøringen starter fra tom tilstand; launcheren har arkivert rester fra tidligere forsøk. Finner du likevel filer for ${YEAR} under ${PROJECT}/analyse/kilder eller ${RUN}, rapporter dem i missing som "uventet rest" og fortsett uten å bruke dem.
 1. Hvis ${PROJECT}/${SOURCES_INPUT} finnes: kjør ${PY} ${SCRIPTS}/fetch_sources.py ${PROJECT}/${SOURCES_INPUT} ${PROJECT}/analyse/kilder/${YEAR}. Avvikende eksisterende filer skal ikke overskrives; rapporter dem.
 2. For hver PDF i ${PROJECT}/analyse/kilder/${YEAR}/ uten tilhørende .txt: kjør ${PY} ${SCRIPTS}/extract_documents.py <pdf> --output <samme navn>.txt.
 3. Kjør ${PY} ${SCRIPTS}/manage_workflow.py prepare ${PROJECT}/${CONFIG} --project ${PROJECT}.
 4. Opprett eller utvid ${RUN}/eksponeringslogg.md med: forbudte mapper, dato ${STARTED}, kjøring ${RUN_ID}, og en seksjon "Lest UiT-materiale" som senere agenter fyller ut.
 5. List hva som mangler for full analyse: kilder for departementer uten PDF (rollenes deler: ${ROLES.map(r => r.parts.join('/')).join(', ')}), manglende ${PROJECT}/analyse/uit-forutsetninger-${YEAR}.md, mal (${TEMPLATE || 'ikke oppgitt'}) og renderer (${LIBREOFFICE || 'ikke oppgitt'}).`,
-  { label: 'forbered', phase: 'Forbered', effort: 'low', schema: PREP_SCHEMA })
+  opts('prep', { label: 'forbered', phase: 'Forbered', schema: PREP_SCHEMA }))
 
 if (!prep) throw new Error('Forberedelsen feilet; ingen agentresultat')
 log(`Kilder hentet: ${prep.sources_fetched}, feilet: ${prep.sources_failed.length}, mangler: ${prep.missing.length}`)
@@ -102,11 +136,12 @@ const ASSUMPTIONS_SCHEMA = {
 }
 
 const assumptions = await agent(`${COMMON}
-Oppgave: dokumenter UiTs forhåndsforutsetninger for budsjettåret ${YEAR}.
+Du kjører som ${describe('assumptions')}.
+Oppgave: dokumenter UiTs forhåndsforutsetninger for budsjettåret ${YEAR}. Det avgjørende er den eksakte KD-rammen i 1 000 kroner og hver linje i broen fra saldert ${YEAR - 1}; kontroller tabellen visuelt mot PDF-siden før du skriver tallene.
 Hvis ${PROJECT}/analyse/uit-forutsetninger-${YEAR}.md allerede finnes og har KD-ramme med kilde: les den, kontroller kildene og returner uten å skrive om.
-Ellers: bruk ${SKILL}/references/kildekart.md. Finn universitetsstyrets foreløpige fordeling for ${YEAR} (normalt junimøtet ${YEAR - 1}). Start med ${RUN}/kildesjekk.json hvis den finnes; den kan inneholde treff fra UiTs styreportal. Hent dokumentene med ${PY} ${SCRIPTS}/fetch_sources.py til ${PROJECT}/analyse/kilder/uit-forutsetninger-${YEAR}/ (lag en kilder-input.json der først). Lag tekstuttrekk med extract_documents.py. Skriv ${PROJECT}/analyse/uit-forutsetninger-${YEAR}.md med samme struktur som ${PROJECT}/analyse/uit-forutsetninger-2024.md: kilder og versjon, bro fra saldert ${YEAR - 1} til foreløpig ${YEAR} i 1 000 kroner, forutsetninger som skal prøves, resultatgrunnlag, planleggingsår, UiT-spesifikke forhold. Skriv også ${PROJECT}/analyse/${YEAR}-rammebro-input.json med UiT-siden fylt ut og forslagssiden null.
+Ellers: bruk ${RUN}/kildesjekk.json (feltet uit_forelopig_fordeling) og ${SKILL}/references/kildekart.md. Hent dokumentene med ${PY} ${SCRIPTS}/fetch_sources.py ${PROJECT}/analyse/kilder/uit-forutsetninger-${YEAR}/kilder-input.json ${PROJECT}/analyse/kilder/uit-forutsetninger-${YEAR} (launcheren har skrevet kildelisten) og lag tekstuttrekk med extract_documents.py. Skriv ${PROJECT}/analyse/uit-forutsetninger-${YEAR}.md med samme struktur som ${PROJECT}/analyse/uit-forutsetninger-2024.md: kilder og versjon, bro fra saldert ${YEAR - 1} til foreløpig ${YEAR} i 1 000 kroner, forutsetninger som skal prøves, resultatgrunnlag, planleggingsår, UiT-spesifikke forhold. Skriv også ${PROJECT}/analyse/${YEAR}-rammebro-input.json med UiT-siden fylt ut og forslagssiden null.
 Ikke åpne UiTs analyse av statsbudsjettet ${YEAR}, endelig fordeling ${YEAR} eller tildelingsbrev. Noter alle åpnede UiT-dokumenter i ${RUN}/eksponeringslogg.md.`,
-  { label: 'uit-forutsetninger', phase: 'Forutsetninger', schema: ASSUMPTIONS_SCHEMA })
+  opts('assumptions', { label: 'uit-forutsetninger', phase: 'Forutsetninger', schema: ASSUMPTIONS_SCHEMA }))
 
 if (!assumptions || !assumptions.found) {
   log('UiTs forhåndsforutsetninger ble ikke funnet; rollene fortsetter, men rammeavviket kan ikke beregnes')
@@ -151,6 +186,11 @@ const REVIEW_SCHEMA = {
   required: ['part', 'differences', 'corrections_with_source', 'conditions_lost', 'file'],
 }
 
+function roleStage(role, mode) {
+  if (mode === 'duplicate') return 'duplicate'
+  return CRITICAL_ROLES.includes(role.id) ? 'role_critical' : 'role_other'
+}
+
 function rolePrompt(role, mode) {
   const parts = role.parts.join(', ')
   const outDir = mode === 'duplicate' ? `${RUN}/kontroll/${role.id}` : `${RUN}/deler/${role.id}`
@@ -158,27 +198,28 @@ function rolePrompt(role, mode) {
     ? `Dette er et uavhengig andreutkast. Ikke les ${RUN}/deler/ eller andre agenters filer fra denne kjøringen. Skriv bare under ${outDir}/.`
     : `Ikke endre andre rollers filer.`
   return `${COMMON}
-Du er fagrollen ${role.id} med delene ${parts}. Les oppdraget ${RUN}/oppdrag/${role.id}.md.
+Du er fagrollen ${role.id} med delene ${parts}, og kjører som ${describe(roleStage(role, mode))}. Les oppdraget ${RUN}/oppdrag/${role.id}.md.
+Avgjørende punkter først: for ramme den eksakte UiT-raden i blått hefte og begge broer uten rest; for hod, kud, nfd og kdd navngitte UiT-tilskudd med beløp, mottaker og vilkår (opptak, engangs, resultatandel); for alle deler finansieringsflyttinger som ikke er kutt. Deretter resten av delen, kort.
 Før du åpner årets kilder: les ${PROJECT}/arbeidsminne/${role.id}/erfaringer-2018-2023.md og alle ${PROJECT}/arbeidsminne/${role.id}/erfaringer-*-proeve.md og erfaringer-review-*.md. Beregn SHA-256 av den historiske minnefilen (for eksempel med ${PY} -c) og skriv ${outDir}/minne-lest.json med feltene role, sha256, read_at_utc og memory.
 Bruk ${PROJECT}/analyse/uit-forutsetninger-${YEAR}.md som UiT-side når den finnes. Kilder ligger i ${PROJECT}/analyse/kilder/${YEAR}/ (PDF og .txt med "=== PDF-side N ===").
 For hver del: skriv ${outDir}/<del>/notater.md (søkeord, treff, avviste treff med grunn, kildehull), ${outDir}/<del>/rapport.md og ${outDir}/<del>/funn.json i formatet fra agent-workflow.md. Ankeret skal inneholde funnets eget beløp; hvis bare et sammenligningstall kan markeres entydig, skal claim si det og et eget anker for beløpet legges til. Kjør ${PY} ${SCRIPTS}/build_evidence.py ${outDir}/<del>/funn.json --project ${PROJECT} --output ${outDir}/<del>/belegg og rett ankere til skriptet godtar dem. Tom funnliste gir et dokumentert negativt resultat, ikke en falsk kilde.
 Rollen kd_ramme skal i tillegg fylle forslagssiden i ${PROJECT}/analyse/${YEAR}-rammebro-input.json og kjøre ${PY} ${SCRIPTS}/reconcile_budget.py ${PROJECT}/analyse/${YEAR}-rammebro-input.json --output ${outDir}/ramme/rammebro-kontroll.json; resten må være null.
-${mode === 'duplicate' ? '' : `Etterpå: skriv ${PROJECT}/arbeidsminne/${role.id}/erfaringer-${YEAR}-proeve.md, merket prøve uten fasit, med dato, modell og effort du kjørte med. Ikke endre historiske minnefiler.`}
+${mode === 'duplicate' ? '' : `Etterpå: skriv ${PROJECT}/arbeidsminne/${role.id}/erfaringer-${YEAR}-proeve.md, merket prøve uten fasit, med dato og modell/effort (${describe(roleStage(role, mode))}). Ikke endre historiske minnefiler.`}
 ${isolation} Noter hvert åpnet UiT-dokument i ${RUN}/eksponeringslogg.md.`
 }
 
 const roleResults = await pipeline(
   ROLES,
-  role => agent(rolePrompt(role, 'primary'), { label: `rolle:${role.id}`, phase: 'Fagroller', schema: ROLE_SCHEMA }),
+  role => agent(rolePrompt(role, 'primary'), opts(roleStage(role, 'primary'), { label: `rolle:${role.id}`, phase: 'Fagroller', schema: ROLE_SCHEMA })),
   async (primary, role) => {
     if (!primary) return { role: role.id, primary: null, reviews: [] }
     const dup = role.parts.filter(p => DUPLICATE_PARTS.includes(p))
     if (!dup.length) return { role: role.id, primary, reviews: [] }
     const second = await agent(rolePrompt({ id: role.id, parts: dup }, 'duplicate'),
-      { label: `andreutkast:${role.id}`, phase: 'Fagroller', schema: ROLE_SCHEMA })
+      opts('duplicate', { label: `andreutkast:${role.id}`, phase: 'Fagroller', schema: ROLE_SCHEMA }))
     const reviews = await parallel(dup.map(part => () => agent(`${COMMON}
-Sammenlignende kontroll av delen ${part} for rollen ${role.id}. Les begge uavhengige utkast: ${RUN}/deler/${role.id}/${part}/ og ${RUN}/kontroll/${role.id}/${part}/, og de samme primærkildene. Kontroller uenigheter mot kildene, og kontroller dekning mot temalisten i ${PROJECT}/arbeidsminne/${role.id}/erfaringer-2018-2023.md, også temaer begge har utelatt. Skriv ${RUN}/deler/${role.id}/${part}/kontroll.md med hver forskjell, hvilket utkast som har kildebelegg, og hvilke vilkår som må inn. Rett bare ${RUN}/deler/${role.id}/${part}/rapport.md og funn.json der du har kildebelegg, og kjør build_evidence.py på nytt hvis funn.json endres. Enighet er ikke godkjenning.`,
-      { label: `kontroll:${part}`, phase: 'Fagroller', schema: REVIEW_SCHEMA })))
+Du kjører som ${describe('review')}. Sammenlignende kontroll av delen ${part} for rollen ${role.id}. Les begge uavhengige utkast: ${RUN}/deler/${role.id}/${part}/ og ${RUN}/kontroll/${role.id}/${part}/, og de samme primærkildene. Kontroller uenigheter mot kildene, og kontroller dekning mot temalisten i ${PROJECT}/arbeidsminne/${role.id}/erfaringer-2018-2023.md, også temaer begge har utelatt. Skriv ${RUN}/deler/${role.id}/${part}/kontroll.md med hver forskjell, hvilket utkast som har kildebelegg, og hvilke vilkår som må inn. Rett bare ${RUN}/deler/${role.id}/${part}/rapport.md og funn.json der du har kildebelegg, og kjør build_evidence.py på nytt hvis funn.json endres. Enighet er ikke godkjenning.`,
+      opts('review', { label: `kontroll:${part}`, phase: 'Fagroller', schema: REVIEW_SCHEMA }))))
     return { role: role.id, primary, second, reviews: reviews.filter(Boolean) }
   },
 )
@@ -208,14 +249,14 @@ const EDITOR_SCHEMA = {
 }
 
 const editor = await agent(`${COMMON}
-Du er redaktøren. Les ${PROJECT}/arbeidsminne/redaktor/erfaringer-2018-2023.md, erfaringer-*-proeve.md og erfaringer-review-*.md først og skriv ${RUN}/minne-lest-redaktor.json med role, sha256, read_at_utc.
+Du er redaktøren og kjører som ${describe('editor')}. Les ${PROJECT}/arbeidsminne/redaktor/erfaringer-2018-2023.md, erfaringer-*-proeve.md og erfaringer-review-*.md først og skriv ${RUN}/minne-lest-redaktor.json med role, sha256, read_at_utc.
 Delrapportene ligger i ${RUN}/deler/<rolle>/<del>/. Roller uten leveranse: ${ROLES.filter(r => !delivered.find(d => d.role === r.id)).map(r => r.id).join(', ') || 'ingen'}. Rapporter manglende deler som manglende.
-Skriv ${RUN}/samlet-rapport.md etter mønsteret i ${PROJECT}/leveranser/2024-v2/samlet-rapport.md: hovedvurdering, avvikstabell fra ${RUN}/deler/kd_ramme/ramme/rammebro-kontroll.json, prioriterte funn med kilde, samordning av kryssende tiltak (samme beløp i to departementer telles én gang), arbeidsdeling med lenker, erfaringer, videre arbeid. Skill rammetildeling, navngitt tilskudd, fellespott, kostnad og politisk føring.
+Skriv ${RUN}/samlet-rapport.md etter mønsteret i ${PROJECT}/leveranser/2024-v2/samlet-rapport.md: hovedvurdering, avvikstabell fra ${RUN}/deler/kd_ramme/ramme/rammebro-kontroll.json, prioriterte funn med kilde, samordning av kryssende tiltak (samme beløp i to departementer telles én gang), arbeidsdeling med lenker, erfaringer, videre arbeid. Skill rammetildeling, navngitt tilskudd, fellespott, kostnad og politisk føring. Kontroller at hvert beløp i den samlede rapporten står likt i delrapporten det kommer fra.
 Skriv ${RUN}/presentasjon.json etter ${PROJECT}/leveranser/2024-v2/presentasjon.json og ${RUN}/videreformidling.md som tydelig usendt utkast med emne, mottakergruppe, hovedfunn, dokumentstatus og vedlegg.
 Kjør ${PY} ${SCRIPTS}/assemble_evidence.py ${PROJECT}/${CONFIG} --project ${PROJECT} --output ${RUN}/kildepakke.pdf.
 ${TEMPLATE ? `Kjør ${PY} ${SCRIPTS}/build_presentation.py ${RUN}/presentasjon.json --template ${TEMPLATE} --output ${RUN}/statsbudsjettet-${YEAR}.pptx${LIBREOFFICE ? ` --libreoffice ${LIBREOFFICE}` : ''} og kontroller renderingen visuelt hvis den finnes.` : 'Ingen mal er oppgitt: lag ikke PowerPoint; skriv i rapporten at presentasjonen ikke er produsert.'}
-Skriv ${PROJECT}/arbeidsminne/redaktor/erfaringer-${YEAR}-proeve.md. Send ingenting til noen.`,
-  { label: 'redaktor', phase: 'Redaktør', schema: EDITOR_SCHEMA })
+Skriv ${PROJECT}/arbeidsminne/redaktor/erfaringer-${YEAR}-proeve.md med dato og modell/effort. Send ingenting til noen.`,
+  opts('editor', { label: 'redaktor', phase: 'Redaktør', schema: EDITOR_SCHEMA }))
 
 if (!editor) log('Redaktøren leverte ikke; kontrollen kjører likevel og rapporterer manglende leveranser')
 
@@ -240,14 +281,15 @@ Sluttkontroll uten faglig omskriving.
 1. Kjør ${PY} ${SCRIPTS}/manage_workflow.py check ${PROJECT}/${CONFIG} --project ${PROJECT} --output ${RUN}/kontroll.json. Returkode 2 betyr ufullstendig; list hver issue.
 2. Les ${RUN}/deler/kd_ramme/ramme/rammebro-kontroll.json og oppgi status og rest. Hvis filen mangler, si det.
 3. Kontroller at alle relative Markdown-lenker i ${RUN}/*.md og ${RUN}/deler/**/rapport.md peker til eksisterende filer.
-4. Skriv ${RUN}/manifest.json med SHA-256 for alle filer under ${RUN} og for ${SKILL}/SKILL.md, med created_at_utc.
+4. Skriv ${RUN}/manifest.json med SHA-256 for alle filer under ${RUN} og for ${SKILL}/SKILL.md, med created_at_utc og modellplanen: ${JSON.stringify(PLAN)}.
 5. Kontroller at ${RUN}/eksponeringslogg.md har oppføringer fra alle roller og redaktør og at ingen forbudt mappe er nevnt som lest. Legg til en avsluttende linje om at loggen er fryst før fasit.
 6. Skriv ${RUN}/verifikasjon.md med kjørte kommandoer, resultater og hva kontrollen ikke beviser (faglig riktighet, visuell kvalitet).`,
-  { label: 'kontroll', phase: 'Kontroll', effort: 'low', schema: CHECK_SCHEMA })
+  opts('check', { label: 'kontroll', phase: 'Kontroll', schema: CHECK_SCHEMA }))
 
 return {
   run_id: RUN_ID,
   run_dir: RUN,
+  model_plan: PLAN,
   preparation: prep,
   assumptions,
   roles: delivered.map(r => ({ role: r.role, parts: r.primary.parts, reviews: r.reviews.length })),

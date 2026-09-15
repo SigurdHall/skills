@@ -73,13 +73,23 @@ pipeline. Standardvalg gir 10 agentkall pluss to per duplisert del.
 
 ## Modell og effort
 
-Alle agenter arver sesjonens modell. Sett ikke lavere effort for deler med
-sammensatte vilkår (HOD, KUD, ramme); de Codex-baserte prøvene viste at
-laveste effort ga utelatte vilkår og en enhetsfeil (millioner oppgitt som
-kroner). Lav effort er bare for Forbered og Kontroll. Ingen Claude-profil er
-målt i dette prosjektet; skriv observasjoner fra kjøringen inn i fagrollens
-erfaringsnotat med dato, modell og effort, uten å generalisere fra én
-kjøring.
+Workflow-skriptet har en modellplan per fase. Standardprofilen `rask`
+prioriterer riktige tall på de avgjørende punktene og kort kjøretid: Opus
+med medium effort på forutsetningene, rollene kd_ramme, helse_miljo og
+naring_arbeid_kultur, sammenlignende review og redaktør; Sonnet på
+forbered, de to øvrige rollene, andreutkast og kontroll. Tabellen med
+begrunnelse står i launcherens
+[promptform](../../uit-statsbudsjett-proeve/references/prompt-form.md).
+`profile: sesjon` arver sesjonens modell for alle agenter; `models`
+overstyrer enkeltfaser. Slå på `/fast` i sesjonen før start hvis rask
+Opus-utdata er ønsket; skriptet kan ikke gjøre det.
+
+Sett ikke lavere effort enn medium for deler med sammensatte vilkår (HOD,
+KUD, ramme); de Codex-baserte prøvene viste at laveste effort ga utelatte
+vilkår og en enhetsfeil (millioner oppgitt som kroner). Ingen Claude-profil
+er målt i dette prosjektet. Hver agent får sin modell og effort i prompten
+og skriver dem i fagrollens erfaringsnotat; juster planen etter første
+fasitkontroll, ikke etter én kjøring.
 
 ## Kvitteringer og eksponering
 

@@ -25,6 +25,20 @@ notater/rapporter/funn, samsvarende markerte utdrag og redaktørleveransene.
 Returkode 2 betyr ufullstendig leveranse. Filkontrollen erstatter ikke
 faglig lesing eller visuell kontroll.
 
+## Kontroller tom tilstand før ny kjøring
+
+```bash
+python scripts/check_clean_state.py --project /path/to/prosjekt --year 2027 --run-id 2027-claude-v1
+python scripts/check_clean_state.py --project /path/to/prosjekt --year 2027 --run-id 2027-claude-v1 --archive
+```
+
+Hver kjøring starter fra tom tilstand. Skriptet lister rester fra tidligere
+forsøk for samme år (leveransemappen, hentede kilder, UiTs
+forutsetningsnotat, rammebro-filer, årets erfaringsnotater) og gir
+returkode 3. Med `--archive` flyttes de til `arkiv/avbrutt/<tidsstempel>-<kjøring>/`
+med samme relative sti. Fasitmappen `<år>/`, arbeidsdelingen og de
+historiske minnene røres aldri.
+
 ## Finn årets kilder og sjekk publisering
 
 ```bash
