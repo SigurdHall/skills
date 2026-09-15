@@ -19,9 +19,11 @@ import sys
 from pathlib import Path
 
 PAGE_MARK = re.compile(r"^=== PDF-side (\d+) ===\s*$")
+# «Tromsø» alene står ikke her: det ga hundrevis av treff om by og politi i JD. Roller som
+# trenger stedsnavnet, legger det i sine egne søkeord.
 GLOBAL_KEYWORDS = [
     "UiT", "Universitetet i Tromsø", "Universitetet i Tromsö", "Noregs arktiske universitet", "Norges arktiske universitet",
-    "Tromsø", "Norges arktiske universitetsmuseum", "Tromsø Museum",
+    "Norges arktiske universitetsmuseum", "Tromsø Museum",
 ]
 # Hvilke uttrekk hver del leser. <del>-prop-<år>.txt er standard.
 SOURCE_FILES = {
