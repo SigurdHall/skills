@@ -127,9 +127,13 @@ Fasesett etter `omfang`:
 | `full` | ett kall, `phase_set: "full"` | Samme dag, etter hurtigsvaret, samme `kjøring` |
 | `alt` (standard) | to kall: først `"hurtig"`, så `"full"` | Test eller når alt skal gå i ett |
 
-Etter et kall med `hurtig` eller `alt`: les `leveranser/<kjøring>/hurtigsvar.md`
-og gjengi hele innholdet i chatten før du starter `full`. Det er
-informasjonen brukeren trenger først.
+Etter et kall med `hurtig` eller `alt`: gjengi hele
+`leveranser/<kjøring>/hurtigsvar.md` i chatten og oppgi stien til
+Excel-arbeidsboken `leveranser/<kjøring>/uit-ramme-<år>.xlsx` (Windows:
+samme sti under `\\wsl.localhost\Ubuntu-24.04`), før du starter `full`. Det
+er informasjonen brukeren trenger først: hvor mye penger UiT har fått i
+blått hefte, forklart i arkene `Sektor`, `UiT-bro`, `Mot foreløpig` og
+`Kilder`.
 
 `profil: rask` gir modellplanen i promptformen; `profil: sesjon` arver
 sesjonens modell. Enkeltfaser overstyres med `"models": {...}` når formen

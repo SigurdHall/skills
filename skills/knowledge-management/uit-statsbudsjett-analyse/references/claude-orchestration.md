@@ -51,37 +51,40 @@ hele departementsgjennomgangen:
 | Fasesett | Faser | Når |
 |---|---|---|
 | `forutsetninger` | Forbered (bare UiT-dokumenter), Forutsetninger | September, når universitetsstyrets junisak er publisert |
-| `hurtig` | Forbered, Forutsetninger (hopper over når notatet er forberedt), Hurtigsvar | Budsjettdagen, første minutter |
+| `hurtig` | Hurtigsvar, Forbered (parallelt), Forutsetninger (hopper over når notatet er forberedt), Avvik | Budsjettdagen, første minutter |
 | `full` | Fagroller, Redaktør, Kontroll | Samme kjøring, etter hurtigsvaret |
-| `alt` | alle seks | Test |
+| `alt` | alle sju | Test |
 
-1. **Forbered** (sonnet, lav effort). Henter kilder med `fetch_sources.py`
-   fra `analyse/kilder/<år>/kilder-input.json` og UiT-dokumentene fra
-   `analyse/kilder/uit-forutsetninger-<år>/kilder-input.json`, lager
-   tekstuttrekk med sidemarkører (blått hefte og KD først), kjører
-   `manage_workflow.py prepare`, oppretter `eksponeringslogg.md`.
-2. **Forutsetninger** (opus, medium). Skriver
+1. **Hurtigsvar** (henting på sonnet lav, Excel-ark på opus medium). Henter
+   bare blått hefte og KD, trekker ut tekst, kjører
+   `parse_blaatt_hefte_table.py`, tolker kolonnene visuelt mot PDF-siden,
+   bygger `leveranser/<kjøring>/uit-ramme-<år>.xlsx` med
+   `build_frame_workbook.py` og skriver `hurtigsvar.md` i formatet fra
+   [hurtigsvar-format.md](hurtigsvar-format.md). Hovedtallene logges;
+   launcheren gjengir filen i chatten. Dette er det første svaret.
+2. **Forbered** (sonnet, lav), parallelt med Excel-arket. Henter de øvrige
+   kildene og UiT-dokumentene, lager uttrekk, kjører
+   `manage_workflow.py prepare`, utvider `eksponeringslogg.md`.
+3. **Forutsetninger** (opus, medium). Skriver
    `analyse/uit-forutsetninger-<år>.md` og `<år>-rammebro-input.json`
-   (UiT-siden) fra styresaken; gjenbruker et forberedt notat når det
-   finnes. Ukjent forblir ukjent.
-3. **Hurtigsvar** (opus, medium). UiT-raden i blått hefte kontrollert
-   visuelt, forslagssiden i rammebroen, `reconcile_budget.py`, og
-   `leveranser/<kjøring>/hurtigsvar.md` i det faste formatet fra
-   [hurtigsvar-format.md](hurtigsvar-format.md). Hovedtallene logges i
-   framdriftsvisningen; launcheren gjengir filen i chatten.
-4. **Fagroller** (parallelt). Kritiske roller på opus, øvrige på sonnet;
+   (UiT-siden) fra styresaken; gjenbruker et notat forberedt i september.
+4. **Avvik** (opus, medium). Harmoniserer forslagssiden mot UiTs bro,
+   kjører `reconcile_budget.py`, legger arket `Mot foreløpig` inn i
+   arbeidsboken og oppdaterer hurtigsvaret med avviket.
+5. **Fagroller** (parallelt). Kritiske roller på opus, øvrige på sonnet;
    `minne-lest.json` før kildene, `notater.md`, `rapport.md`, `funn.json`,
    `build_evidence.py`, årets erfaring. kd_ramme kontrollerer hurtigsvarets
-   bro på nytt mot kildene i stedet for å kopiere den. Deler i
-   `duplicate_parts` får uavhengig andreutkast og review.
-5. **Redaktør** (opus). Samlet rapport, presentasjonsspesifikasjon,
-   meldingsutkast, kildepakke; avvik mot hurtigsvaret nevnes.
-6. **Kontroll** (sonnet, lav). `manage_workflow.py check`, begge
-   rammebro-kontroller, lenker, manifest med modellplan, eksponeringslogg
-   fryst, `verifikasjon.md`.
+   bro på nytt mot kildene. Deler i `duplicate_parts` får uavhengig
+   andreutkast og review.
+6. **Redaktør** (opus). Samlet rapport, presentasjonsspesifikasjon,
+   meldingsutkast med Excel-arket som første vedlegg, kildepakke.
+7. **Kontroll** (sonnet, lav). `manage_workflow.py check`, begge
+   rammebro-kontroller, ny bygging av arbeidsboken som kontroll, lenker,
+   manifest med modellplan, eksponeringslogg fryst, `verifikasjon.md`.
 
-Redaktøren venter på alle roller; alt annet kjører som pipeline.
-Standardvalg gir 3 + 7 agentkall pluss to per duplisert del.
+Redaktøren venter på alle roller; alt annet kjører som pipeline eller
+parallelt. `hurtig` bruker fire til fem agentkall, `full` sju pluss to per
+duplisert del.
 
 ## Modell og effort
 

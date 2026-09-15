@@ -25,6 +25,24 @@ notater/rapporter/funn, samsvarende markerte utdrag og redaktørleveransene.
 Returkode 2 betyr ufullstendig leveranse. Filkontrollen erstatter ikke
 faglig lesing eller visuell kontroll.
 
+## Hurtigsvar: UiT-raden i blått hefte som Excel-ark
+
+```bash
+python scripts/parse_blaatt_hefte_table.py /path/to/blaatt-hefte-forslag-2027.txt --output /path/to/hurtigsvar/blaatt-hefte-tabell.json
+python scripts/build_frame_workbook.py --example
+python scripts/build_frame_workbook.py /path/to/hurtigsvar/rammeark-input.json --output /path/to/uit-ramme-2027.xlsx
+```
+
+Parseren finner siden med UiT-raden i hovedtabellen, leser alle
+institusjonsrader (beløp i 1 000 kroner, strek = null) og kontrollerer at
+siste kolonne er summen av de foregående. Den tolker ikke kolonnene;
+`header_lines` er teksten over tabellen, og etikettene settes etter visuell
+kontroll av PDF-siden. Arbeidsbok-byggeren skriver arkene `Sektor`,
+`UiT-bro`, `Mot foreløpig` (når input har `preliminary`) og `Kilder` med
+formler og beregnede verdier; returkode 2 betyr at UiT-broen ikke summerer
+til tabellens forslag. Krever `XlsxWriter`. Formatet står i
+[hurtigsvar-format.md](hurtigsvar-format.md).
+
 ## Kontroller tom tilstand før ny kjøring
 
 ```bash

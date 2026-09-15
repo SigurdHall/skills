@@ -29,8 +29,10 @@ omfang: alt
 forutsetninger: behold
 ```
 
-Hurtigsvaret med UiTs ramme, avvik mot foreløpig fordeling og fem punkter å
-følge opp kommer i chatten innen minutter; deretter fortsetter
+Først kommer Excel-arbeidsboken `uit-ramme-2027.xlsx` med UiTs rad fra
+blått hefte forklart (arkene `Sektor`, `UiT-bro`, `Kilder`) og
+`hurtigsvar.md` i chatten, innen minutter. Så legges avviket mot UiTs
+foreløpige fordeling inn (`Mot foreløpig`), og deretter fortsetter
 departementsgjennomgangen i samme kjøring. Er budsjettet ikke lagt ut,
 stopper skillen etter publiseringssjekken og sier når du bør prøve igjen.
 
@@ -81,7 +83,7 @@ fortsett-ved-mangler: ja
 | `forbudt` | `<år>/` | Mapper under prosjektet som ikke skal åpnes eller listes: UiTs eget materiale for prøveåret og alt senere som er fasit. I `prøve`-modus legges alltid `<år>/` til. |
 | `dupliser` | `ramme` | Deler som får uavhengig andreutkast og sammenlignende review: `ramme`, `kd`, `fin`, `hod`, `kld`, `nfd`, `aid`, `kud`, `kdd`, `jd`, `ud`, `oed`. Hver del koster to ekstra agentkall. `ingen` slår av. |
 | `profil` | `rask` | `rask`: modellplanen under. `sesjon`: alle agenter arver sesjonens modell og effort. |
-| `modeller` | `(ingen)` | Overstyring per fase som JSON, for eksempel `{"role_other": {"model": "opus"}}`. Faser: `prep`, `assumptions`, `quick`, `role_critical`, `role_other`, `duplicate`, `review`, `editor`, `check`. |
+| `modeller` | `(ingen)` | Overstyring per fase som JSON, for eksempel `{"role_other": {"model": "opus"}}`. Faser: `prep`, `quick`, `assumptions`, `deviation`, `role_critical`, `role_other`, `duplicate`, `review`, `editor`, `check`. |
 | `mal` | `(ingen)` | Sti til UiT PowerPoint-mal. Uten mal lages bare `presentasjon.json`. |
 | `renderer` | `(ingen)` | Sti til LibreOffice `soffice`. Uten renderer lages ingen PDF/PNG-forhåndsvisning. |
 | `kun-sjekk` | `nei` | `ja`: kjør bare publiserings- og kildesjekken og rapporter. Ingen analyse startes. |
@@ -89,11 +91,14 @@ fortsett-ved-mangler: ja
 
 ## Hurtigsvaret
 
-Fast format i `references/hurtigsvar-format.md` i analyseskillen: hovedtall
-(forslag, UiTs foreløpige, avvik, saldert), komponenter fra rammebroen,
-fem punkter å følge opp med beløp, mottaker, vilkår og PDF-side, hva som
-ikke er kontrollert ennå, kilder og status. Skrives til
-`leveranser/<kjøring>/hurtigsvar.md` og gjengis i chatten.
+Leveransen er Excel-arbeidsboken `leveranser/<kjøring>/uit-ramme-<år>.xlsx`,
+bygd deterministisk fra blått heftes hovedtabell etter mønster fra UiTs
+arbeidsbøker 2018–2019: `Sektor` (alle institusjoner, saldert, forslag,
+nominell endring, sum), `UiT-bro` (saldert året før, hver justering i
+UiT-raden, forslag som sum, kontroll mot tabellen), `Mot foreløpig` (avvik
+per komponent, fra fasen Avvik) og `Kilder`. `hurtigsvar.md` forklarer
+arket i det faste formatet i `references/hurtigsvar-format.md` i
+analyseskillen og gjengis i chatten.
 
 ## Modellplanen `rask`
 
@@ -103,9 +108,11 @@ Opus med medium effort; mekaniske trinn og de øvrige rollene på Sonnet.
 
 | Fase | Modell | Effort | Hvorfor |
 |---|---|---|---|
-| Forbered | sonnet | low | Henting, uttrekk og oppdragsfiler er skriptstyrt |
+| Hurtigsvar: henting | sonnet | low | Blått hefte og KD hentes og parses skriptstyrt |
+| Hurtigsvar: Excel-ark | opus | medium | Kolonnetolkning og UiT-raden er dagens viktigste tall |
+| Forbered | sonnet | low | Øvrige kilder, uttrekk og oppdragsfiler, parallelt med hurtigsvaret |
 | Forutsetninger | opus | medium | UiTs KD-ramme og bro må være eksakt |
-| Hurtigsvar | opus | medium | UiT-raden og broen mot foreløpig fordeling er dagens viktigste tall |
+| Avvik | opus | medium | Harmonisering mot UiTs foreløpige fordeling |
 | kd_ramme, helse_miljo, naring_arbeid_kultur | opus | medium | Rammebro, HOD-vilkår og KUD-tilskudd var der ett utkast oftest feilet i 2024-prøvene |
 | bygg_samisk_justis, nordomraader_energi | sonnet | medium | Færre navngitte UiT-beløp; review fanger avvik hvis delen dupliseres |
 | Andreutkast (`dupliser`) | sonnet | medium | Uavhengig andre modell gir mangfold, ikke gjentakelse |
