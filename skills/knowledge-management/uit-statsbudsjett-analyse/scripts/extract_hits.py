@@ -18,7 +18,8 @@ import re
 import sys
 from pathlib import Path
 
-PAGE_MARK = re.compile(r"^=== PDF-side (\d+) ===\s*$")
+# extract_documents.py skriver «## PDF-side N»; eldre uttrekk i prosjektet har «=== PDF-side N ===».
+PAGE_MARK = re.compile(r"^(?:## PDF-side (\d+)|=== PDF-side (\d+) ===)\s*$")
 # «Tromsø» alene står ikke her: det ga hundrevis av treff om by og politi i JD. Roller som
 # trenger stedsnavnet, legger det i sine egne søkeord.
 GLOBAL_KEYWORDS = [
@@ -42,7 +43,7 @@ def split_pages(text: str) -> list[tuple[int, list[str]]]:
         if match:
             if lines or pages:
                 pages.append((current, lines))
-            current = int(match.group(1))
+            current = int(match.group(1) or match.group(2))
             lines = []
             continue
         lines.append(line)

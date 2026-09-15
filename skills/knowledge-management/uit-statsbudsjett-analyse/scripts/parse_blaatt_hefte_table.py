@@ -15,7 +15,8 @@ import re
 import sys
 from pathlib import Path
 
-PAGE_MARK = re.compile(r"^=== PDF-side (\d+) ===\s*$")
+# extract_documents.py skriver «## PDF-side N»; eldre uttrekk i prosjektet har «=== PDF-side N ===».
+PAGE_MARK = re.compile(r"^(?:## PDF-side (\d+)|=== PDF-side (\d+) ===)\s*$")
 NUMBER = re.compile(r"^-?\d{1,3}(?: \d{3})*$|^-$")
 UIT_NAMES = ("UiT", "Universitetet i Tromsø", "Universitetet i Tromsö", "UiT Noregs arktiske universitet")
 
@@ -26,7 +27,7 @@ def split_pages(text: str) -> dict[int, list[str]]:
     for line in text.splitlines():
         match = PAGE_MARK.match(line)
         if match:
-            current = int(match.group(1))
+            current = int(match.group(1) or match.group(2))
             pages.setdefault(current, [])
             continue
         pages.setdefault(current, []).append(line)

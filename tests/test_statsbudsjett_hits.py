@@ -65,6 +65,12 @@ def test_run_writes_per_part_files_and_reports_missing_sources(tmp_path):
     assert (out / "kld-treff.json").exists()
 
 
+def test_hits_accept_current_extractor_page_markers():
+    doc = DOC.replace("=== PDF-side 88 ===", "## PDF-side 88").replace("=== PDF-side 89 ===", "## PDF-side 89")
+    found = hits.find_hits(doc, ["Tromsøundersøkelsen"], window=4)
+    assert [h["pdf_page"] for h in found] == [88]
+
+
 def test_source_mapping_for_special_parts():
     assert hits.sources_for("ramme", 2027) == ["blaatt-hefte-forslag-2027.txt", "kd-prop-2027.txt"]
     assert hits.sources_for("fin", 2027) == ["fin-skatt-prop-2027.txt"]

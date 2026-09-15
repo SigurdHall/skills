@@ -118,9 +118,15 @@ def test_blaatt_hefte_pattern_then_page_fallback():
 
 
 def test_check_saldert_stage_only_needs_vedtak_edition_and_next_year_uit_case():
-    vedtak = discover.BLAATT_HEFTE_FOLDER + "orientering-om-statsbudsjettet-2024-for-universitet-og-hogskular.pdf"
-    page = f'<a href="{vedtak.replace(R, "")}">Orientering om statsbudsjettet 2024 for universitet og høgskular etter vedtak i Stortinget 18. desember 2023</a>'
-    fetcher = FakeFetcher({discover.KD_BLAATT_HEFTE_PAGE: page, **elements_world(2025)}, pdfs=[vedtak])
+    vedtak = discover.BLAATT_HEFTE_FOLDER + "v3.-orientering-om-statsbudsjettet-2024-for-universitet-og-hogskular.pdf"
+    later = discover.BLAATT_HEFTE_FOLDER + "orientering-om-statsbudsjettet-2025-for-universitet-og-hogskular.pdf"
+    page = (
+        f'<a href="{later.replace(R, "")}">Orientering om statsbudsjettet 2025 for universitet og høgskular etter vedtak i Stortinget 18. desember 2024</a>'
+        f'<a href="{vedtak.replace(R, "")}">Orientering om statsbudsjettet 2024 for universitet og høgskular etter vedtak i Stortinget 18. desember 2023</a>'
+    )
+    fetcher = FakeFetcher({discover.KD_BLAATT_HEFTE_PAGE: page, **elements_world(2025)}, pdfs=[vedtak, later])
+    # «desember 2024» i 2025-utgavens tittel skal ikke gi treff for 2024
+    assert discover.find_blaatt_hefte(2024, fetcher, stage="saldert")["url"] == vedtak
     report = discover.check(2024, "saldert", fetcher)
     assert report["verdict"] == "published" and report["departments"] == []
     assert report["uit_forelopig_fordeling_neste_aar"]["board_case"] == "S 18/24"

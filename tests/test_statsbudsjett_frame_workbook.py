@@ -54,6 +54,12 @@ def test_parse_finds_uit_row_and_checks_sums(tmp_path):
     assert json.loads(out.read_text(encoding="utf-8"))["uit"]["values"][-1] == 4045822
 
 
+def test_parse_accepts_current_extractor_page_markers(tmp_path):
+    current_format = PAGE.replace("=== PDF-side 10 ===", "## PDF-side 10").replace("=== PDF-side 15 ===", "## PDF-side 15").replace("=== PDF-side 16 ===", "## PDF-side 16").replace("=== PDF-side 17 ===", "## PDF-side 17")
+    result = parse.find_table(parse.split_pages(current_format), 6)
+    assert result["pdf_page"] == 16 and result["uit"]["values"][-1] == 4045822
+
+
 def test_parse_reports_missing_table(tmp_path):
     extract = tmp_path / "x.txt"
     extract.write_text("=== PDF-side 1 ===\nIngen tabell her\n", encoding="utf-8")

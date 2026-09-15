@@ -112,9 +112,11 @@ def find_blaatt_hefte(year: int, fetcher: Fetcher, stage: str = "forslag") -> di
             return {"status": "funnet", "url": url, "bytes": length, "via": "filnavnmønster", "stage": wanted}
     page = text_of(fetcher, KD_BLAATT_HEFTE_PAGE)
     anchors = re.findall(r'<a[^>]*href="(/contentassets/[^"]*\.pdf)"[^>]*>([^<]*)</a>', page)
+    year_in_title = re.compile(rf"statsbudsjett(?:et)?\s+{year}\b")
     for href, text in anchors:
         label = unescape(text).lower()
-        if str(year) not in label:
+        # «… statsbudsjettet 2025 … etter vedtak i Stortinget 18. desember 2024» gjelder 2025, ikke 2024
+        if not year_in_title.search(label):
             continue
         if wanted == "forslag" and "forslag" not in label:
             continue
