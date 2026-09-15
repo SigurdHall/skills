@@ -77,6 +77,8 @@ def workbook_input(with_preliminary=True):
             {"name": "UiT", "values": [3806533, 250434, 2839, 4059806]},
         ],
         "uit_name": "UiT",
+        "previous_year": {"vedtatt_total": 3806533, "source": "blått hefte 2023 etter vedtak, PDF-side 16"},
+        "price": {"column_key": "pris", "rate_pct": 4.4, "note": "inkl. videreført RNB", "source_page": 14},
         "preliminary": {
             "source": "UiT S 18/23 vedlegg 1 s. 3",
             "expected_total": 3959565,
@@ -108,8 +110,12 @@ def test_workbook_has_fixed_sheets_formulas_and_uit_values(tmp_path):
     assert "UiT" in strings and "NTNU" in strings
     assert "<f>SUM(B4:B5)</f>" in sektor and "(C4-B4)/B4" in sektor
     assert "<v>3806533</v>" in sektor and "<v>4059806</v>" in sektor
-    bro, _, _ = sheet_xml(out, 2)
+    bro, _, strings2 = sheet_xml(out, 2)
     assert "<f>SUM(B4:B6)</f>" in bro and "<v>4059806</v>" in bro
+    assert summary["previous_year_residual"] == 0 and summary["price_rate_pct"] == 4.4
+    assert "Sats 4.4 %, inkl. videreført RNB (PDF-side 14)" in strings2
+    assert "Vedtatt budsjett 2023 ifølge blått hefte etter vedtak i Stortinget" in strings2
+    assert "<f>B4-B11</f>" in bro
     mot, _, _ = sheet_xml(out, 3)
     assert "<f>C4-B4</f>" in mot and "<v>3959565</v>" in mot
 

@@ -17,15 +17,18 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 
-def leftover_paths(project: Path, year: int, run_id: str, keep_assumptions: bool = False) -> list[Path]:
-    """UiTs forutsetninger kan være forberedt med vilje før budsjettdagen; da beholdes de."""
+def leftover_paths(project: Path, year: int, run_id: str, keep_prepared: bool = False) -> list[Path]:
+    """Grunnlaget (fjorårets vedtatte budsjett og UiTs forutsetninger) kan være forberedt med vilje
+    før budsjettdagen; med keep_prepared beholdes det."""
     candidates = [
         project / "leveranser" / run_id,
         project / "analyse" / "kilder" / str(year),
         project / "analyse" / f"{year}-rammebro-kontroll.json",
     ]
-    if not keep_assumptions:
+    if not keep_prepared:
         candidates += [
+            project / "analyse" / "kilder" / f"saldert-{year - 1}",
+            project / "analyse" / f"saldert-{year - 1}.json",
             project / "analyse" / "kilder" / f"uit-forutsetninger-{year}",
             project / "analyse" / f"uit-forutsetninger-{year}.md",
             project / "analyse" / f"{year}-rammebro-input.json",
@@ -58,17 +61,18 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--year", type=int, required=True)
     parser.add_argument("--run-id", required=True)
     parser.add_argument("--archive", action="store_true", help="flytt restene til arkiv/avbrutt/")
-    parser.add_argument("--keep-assumptions", action="store_true", help="behold forberedte UiT-forutsetninger for året")
+    parser.add_argument("--keep-prepared", "--keep-assumptions", dest="keep_prepared", action="store_true",
+                        help="behold forberedt grunnlag: fjorårets vedtatte budsjett og UiTs forutsetninger for året")
     parser.add_argument("--output", type=Path)
     args = parser.parse_args(argv)
 
     project = args.project.resolve()
-    found = leftover_paths(project, args.year, args.run_id, args.keep_assumptions)
+    found = leftover_paths(project, args.year, args.run_id, args.keep_prepared)
     report = {
         "project": str(project),
         "year": args.year,
         "run_id": args.run_id,
-        "keep_assumptions": args.keep_assumptions,
+        "keep_prepared": args.keep_prepared,
         "leftovers": [p.relative_to(project).as_posix() for p in found],
         "other_runs_for_year": other_runs_for_year(project, args.year, args.run_id),
         "archived_to": None,

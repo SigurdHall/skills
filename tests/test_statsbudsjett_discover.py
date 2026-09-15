@@ -102,12 +102,31 @@ def test_blaatt_hefte_pattern_then_page_fallback():
     assert discover.find_blaatt_hefte(2025, fetcher)["via"] == "filnavnmønster"
 
     odd = discover.BLAATT_HEFTE_FOLDER + "2026.09.30-forslag-til-orientering-2027-samlefil.pdf"
-    page = f'<a href="{odd.replace(R, "")}">x</a><a href="/contentassets/31af8e2c3a224ac2829e48cc91d89083/orientering-om-statsbudsjettet-2027-etter-vedtak.pdf">y</a>'
-    fetcher = FakeFetcher({discover.KD_BLAATT_HEFTE_PAGE: page}, pdfs=[odd])
+    vedtak = discover.BLAATT_HEFTE_FOLDER + "v3.-orientering-om-statsbudsjettet-2027-for-universitet-og-hogskular.pdf"
+    page = (
+        f'<a href="{odd.replace(R, "")}">Orientering om forslag til statsbudsjettet 2027 for universitet og høgskular</a>'
+        f'<a href="{vedtak.replace(R, "")}">Orientering om statsbudsjettet 2027 for universitet og høgskular etter vedtak i Stortinget 17. desember 2026</a>'
+    )
+    fetcher = FakeFetcher({discover.KD_BLAATT_HEFTE_PAGE: page}, pdfs=[odd, vedtak])
     result = discover.find_blaatt_hefte(2027, fetcher)
     assert result["status"] == "funnet" and result["url"] == odd and result["via"] == "KDs kronologiske side"
+    # etter vedtak: filnavnet mangler «vedtak», lenketeksten avgjør
+    result = discover.find_blaatt_hefte(2027, fetcher, stage="saldert")
+    assert result["status"] == "funnet" and result["url"] == vedtak and result["stage"] == "vedtak"
 
     assert discover.find_blaatt_hefte(2027, FakeFetcher({}))["status"] == "ikke publisert"
+
+
+def test_check_saldert_stage_only_needs_vedtak_edition_and_next_year_uit_case():
+    vedtak = discover.BLAATT_HEFTE_FOLDER + "orientering-om-statsbudsjettet-2024-for-universitet-og-hogskular.pdf"
+    page = f'<a href="{vedtak.replace(R, "")}">Orientering om statsbudsjettet 2024 for universitet og høgskular etter vedtak i Stortinget 18. desember 2023</a>'
+    fetcher = FakeFetcher({discover.KD_BLAATT_HEFTE_PAGE: page, **elements_world(2025)}, pdfs=[vedtak])
+    report = discover.check(2024, "saldert", fetcher)
+    assert report["verdict"] == "published" and report["departments"] == []
+    assert report["uit_forelopig_fordeling_neste_aar"]["board_case"] == "S 18/24"
+    sources, uit_sources = discover.write_sources_input(report, "x")
+    assert sources[0]["id"] == "blaatt-hefte-vedtatt-2024" and "vedtak" in sources[0]["stage"]
+    assert uit_sources[0]["id"] == "uit-forelopig-2025-framlegg" and uit_sources[0]["budget_year"] == 2025
 
 
 def test_year_page_from_index_or_stortinget():

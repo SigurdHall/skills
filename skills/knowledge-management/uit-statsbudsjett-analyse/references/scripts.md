@@ -43,6 +43,19 @@ formler og beregnede verdier; returkode 2 betyr at UiT-broen ikke summerer
 til tabellens forslag. Krever `XlsxWriter`. Formatet står i
 [hurtigsvar-format.md](hurtigsvar-format.md).
 
+## Programmatisk søk med avsnitt før og etter
+
+```bash
+python scripts/extract_hits.py /path/to/arbeidsdeling.json --sources-dir /path/to/analyse/kilder/2027 --output /path/to/leveranser/<kjøring>/treff --year 2027
+```
+
+Søker i .txt-uttrekkene med rollens søkeord pluss UiTs navnevarianter og
+skriver `<del>-treff.md` og `<del>-treff.json` per del: hvert treffavsnitt
+med avsnittet før og etter, PDF-side og søkeord. Korte ord krever
+ordgrense («UiT» treffer ikke «kontinuitet»). Rollene tolker treffene;
+skriptet vurderer ikke relevans, og fravær av treff beviser ikke fravær av
+tiltak. Returkode 3 betyr at et uttrekk mangler for en del.
+
 ## Kontroller tom tilstand før ny kjøring
 
 ```bash
@@ -54,8 +67,9 @@ Hver kjøring starter fra tom tilstand. Skriptet lister rester fra tidligere
 forsøk for samme år (leveransemappen, hentede kilder, UiTs
 forutsetningsnotat, rammebro-filer, årets erfaringsnotater) og gir
 returkode 3. Med `--archive` flyttes de til `arkiv/avbrutt/<tidsstempel>-<kjøring>/`
-med samme relative sti. `--keep-assumptions` lar forberedte UiT-forutsetninger
-(notat, kilder, rammebro-input) stå. Fasitmappen `<år>/`, arbeidsdelingen og de
+med samme relative sti. `--keep-prepared` lar forberedt grunnlag stå: fjorårets vedtatte budsjett
+(`analyse/saldert-<år−1>.json` og kilder) og UiTs forutsetninger (notat, kilder,
+rammebro-input). Fasitmappen `<år>/`, arbeidsdelingen og de
 historiske minnene røres aldri.
 
 ## Finn årets kilder og sjekk publisering

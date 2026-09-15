@@ -16,7 +16,7 @@ Samme ark hvert år, etter UiTs arbeidsbøker fra 2018 og 2019:
 | Ark | Innhold | Formler |
 |---|---|---|
 | `Sektor` | Alle institusjoner i hovedtabellen: saldert året før, forslag, nominell endring i prosent; sumrad. UiT-raden er uthevet. | `(forslag−saldert)/saldert`, `SUM` |
-| `UiT-bro` | «Budsjettforslag <år> for UiT inkl. justeringer»: saldert året før, én rad per kolonne i blått heftes UiT-rad (pris, studieplasser, resultat, kutt, flyttinger, andre endringer), forslag som sum, kontroll mot tabellens forslag (skal være 0). | `SUM`, kontrollcelle |
+| `UiT-bro` | «Budsjettforslag <år> for UiT inkl. justeringer»: saldert året før, én rad per kolonne i blått heftes UiT-rad (pris med sats i merknaden, studieplasser, resultat, kutt, flyttinger, andre endringer), forslag som sum, kontroll mot tabellens forslag (skal være 0), og kontroll mot vedtatt budsjett året før fra blått hefte etter vedtak i Stortinget (skal være 0). | `SUM`, to kontrollceller |
 | `Mot foreløpig` | UiTs foreløpige fordeling mot forslaget per harmonisert komponent, avvik, kilde på begge sider, avvik på totalrammen. Lages i fasen Avvik. | `forslag−UiT`, `SUM` |
 | `Kilder` | Dokument, stadium, URL, SHA-256, PDF-side, hentetid, kolonnetolkning med overskriftstekst, kontroller. | |
 
@@ -35,6 +35,8 @@ aldri som null.
 |---|---:|---|
 | Regjeringens forslag, KD kap. 260 post 50 til UiT | | blått hefte, UiT-raden, PDF-side |
 | Saldert <år−1> | | samme rad |
+| Vedtatt <år−1> ifølge blått hefte etter vedtak i Stortinget, og differanse mot saldert i tabellen | | `analyse/saldert-<år−1>.json` |
+| Prisjustering: sats og beløp, hva kolonnen inneholder | | blått hefte, PDF-side |
 | Endring i kroner og prosent | | `Sektor`-arket |
 | Sektorens nominelle endring | | `Sektor`-arket, sumraden |
 | UiTs foreløpige fordeling (styresak, dato) | | fylles i fasen Avvik |

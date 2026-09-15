@@ -20,7 +20,7 @@ stopper den. Se [kildekartet](kildekart.md) for mønstrene skriptet bruker.
 
 | Behov | Bruk |
 |---|---|
-| Hele årsanalysen | Workflow-skriptet `.claude/workflows/uit-statsbudsjett-analyse.js` i skills-repoet, startet av `/uit-statsbudsjett-proeve`. Direkte: `Workflow({scriptPath, args})`. |
+| Hele årsanalysen | De to workflow-skriptene `.claude/workflows/uit-ramme.js` og `.claude/workflows/uit-departementer.js` i skills-repoet, startet av `/uit-statsbudsjett-proeve`. Direkte: `Workflow({scriptPath, args})`. |
 | Én rolle på nytt, én del rettet, eller fasitsammenligning | Agent-verktøyet direkte, med oppdragsfilen fra `leveranser/<kjøring>/oppdrag/<rolle>.md` som prompt-grunnlag. |
 | Deterministiske trinn: kildeoppdagelse, henting, uttrekk, avstemming, markering, filkontroll | Python-skriptene i `scripts/`. Ikke la en modell regne det et skript kan regne. |
 
@@ -43,48 +43,57 @@ Fra en Claude Code-sesjon på Windows:
 Workflow-skriptet får dette som `unc_project` og `python_cmd`; da får hver
 agent samme instruks. Fra en WSL-sesjon utelates begge.
 
-## Fasesett og faser i workflow-skriptet
+## To workflows
 
-`phase_set` velger hva som kjøres, slik at budsjettdagen ikke venter på
-hele departementsgjennomgangen:
+| Workflow | Fasesett | Faser | Når |
+|---|---|---|---|
+| `uit-ramme.js` | `grunnlag` | Grunnlag, Forutsetninger | September: blått hefte for året før etter vedtak og universitetsstyrets junisak er publisert |
+| `uit-ramme.js` | `budsjettdag` | Hurtigsvar, Avvik | Budsjettdagen, første minutter |
+| `uit-ramme.js` | `alt` | alle fire | Test |
+| `uit-departementer.js` | | Forbered, Fagroller, Redaktør, Kontroll | Samme kjøring, etter rammearket |
 
-| Fasesett | Faser | Når |
-|---|---|---|
-| `forutsetninger` | Forbered (bare UiT-dokumenter), Forutsetninger | September, når universitetsstyrets junisak er publisert |
-| `hurtig` | Hurtigsvar, Forbered (parallelt), Forutsetninger (hopper over når notatet er forberedt), Avvik | Budsjettdagen, første minutter |
-| `full` | Fagroller, Redaktør, Kontroll | Samme kjøring, etter hurtigsvaret |
-| `alt` | alle sju | Test |
+**uit-ramme**
 
-1. **Hurtigsvar** (henting på sonnet lav, Excel-ark på opus medium). Henter
-   bare blått hefte og KD, trekker ut tekst, kjører
-   `parse_blaatt_hefte_table.py`, tolker kolonnene visuelt mot PDF-siden,
-   bygger `leveranser/<kjøring>/uit-ramme-<år>.xlsx` med
-   `build_frame_workbook.py` og skriver `hurtigsvar.md` i formatet fra
-   [hurtigsvar-format.md](hurtigsvar-format.md). Hovedtallene logges;
-   launcheren gjengir filen i chatten. Dette er det første svaret.
-2. **Forbered** (sonnet, lav), parallelt med Excel-arket. Henter de øvrige
-   kildene og UiT-dokumentene, lager uttrekk, kjører
-   `manage_workflow.py prepare`, utvider `eksponeringslogg.md`.
-3. **Forutsetninger** (opus, medium). Skriver
+1. **Grunnlag** (sonnet, lav). Henter blått hefte for året før etter vedtak i
+   Stortinget, parser hovedtabellen med `parse_blaatt_hefte_table.py` og
+   skriver `analyse/saldert-<år−1>.json`; UiT-radens siste tall er vedtatt
+   budsjett året før. Henter UiTs styresaksdokumenter.
+2. **Forutsetninger** (opus, medium). Skriver
    `analyse/uit-forutsetninger-<år>.md` og `<år>-rammebro-input.json`
-   (UiT-siden) fra styresaken; gjenbruker et notat forberedt i september.
+   (UiT-siden) fra styresaken; UiTs bro skal starte på vedtatt året før.
+   Gjenbruker et forberedt notat.
+3. **Hurtigsvar** (henting på sonnet lav, Excel-ark på opus medium). Henter
+   bare blått hefte og KD, parser tabellen, tolker kolonnene visuelt mot
+   PDF-siden, finner prissatsen, kontrollerer saldert i tabellen mot vedtatt
+   året før, bygger `leveranser/<kjøring>/uit-ramme-<år>.xlsx` med
+   `build_frame_workbook.py` og skriver `hurtigsvar.md` i formatet fra
+   [hurtigsvar-format.md](hurtigsvar-format.md). Dette er det første svaret.
 4. **Avvik** (opus, medium). Harmoniserer forslagssiden mot UiTs bro,
    kjører `reconcile_budget.py`, legger arket `Mot foreløpig` inn i
-   arbeidsboken og oppdaterer hurtigsvaret med avviket.
-5. **Fagroller** (parallelt). Kritiske roller på opus, øvrige på sonnet;
-   `minne-lest.json` før kildene, `notater.md`, `rapport.md`, `funn.json`,
-   `build_evidence.py`, årets erfaring. kd_ramme kontrollerer hurtigsvarets
+   arbeidsboken og oppdaterer hurtigsvaret.
+
+**uit-departementer**
+
+1. **Forbered** (sonnet, lav). Henter de øvrige fagproposisjonene, lager
+   uttrekk, kjører `manage_workflow.py prepare`, og kjører det
+   programmatiske søket `extract_hits.py`: per del ett dokument med hvert
+   treffavsnitt pluss avsnittet før og etter, PDF-side og søkeord.
+2. **Fagroller** (parallelt, opus medium). Hver rolle tolker treffene for
+   sine deler mot PDF-siden, leter i tillegg etter tiltak uten UiT-navn,
+   og leverer `minne-lest.json`, `notater.md`, `rapport.md`, `funn.json`,
+   `build_evidence.py` og årets erfaring. kd_ramme kontrollerer rammearkets
    bro på nytt mot kildene. Deler i `duplicate_parts` får uavhengig
-   andreutkast og review.
-6. **Redaktør** (opus). Samlet rapport, presentasjonsspesifikasjon,
+   andreutkast (sonnet) og review (opus).
+3. **Redaktør** (fable, high). Oppsummerer rammeark, hurtigsvar, treff og
+   delrapporter til samlet rapport, presentasjonsspesifikasjon,
    meldingsutkast med Excel-arket som første vedlegg, kildepakke.
-7. **Kontroll** (sonnet, lav). `manage_workflow.py check`, begge
+4. **Kontroll** (sonnet, lav). `manage_workflow.py check`, begge
    rammebro-kontroller, ny bygging av arbeidsboken som kontroll, lenker,
    manifest med modellplan, eksponeringslogg fryst, `verifikasjon.md`.
 
 Redaktøren venter på alle roller; alt annet kjører som pipeline eller
-parallelt. `hurtig` bruker fire til fem agentkall, `full` sju pluss to per
-duplisert del.
+parallelt. `budsjettdag` bruker tre agentkall, `grunnlag` to,
+`uit-departementer` sju pluss to per duplisert del.
 
 ## Modell og effort
 

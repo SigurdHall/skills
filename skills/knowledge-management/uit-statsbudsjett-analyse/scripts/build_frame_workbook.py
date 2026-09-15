@@ -28,6 +28,8 @@ INPUT_EXAMPLE = {
     ],
     "institutions": [{"name": "UiT", "values": [3806533, 250434, 4045822]}],
     "uit_name": "UiT",
+    "previous_year": {"vedtatt_total": 3806533, "source": "Orientering om statsbudsjettet 2023 etter vedtak i Stortinget, UiT-raden, PDF-side 16", "url": "https://..."},
+    "price": {"column_key": "pris", "rate_pct": 4.4, "note": "inkluderer videreført RNB-kompensasjon", "source_page": 14},
     "preliminary": {
         "source": "UiT S 18/23 vedlegg 1 s. 3",
         "expected_total": 3959565,
@@ -121,12 +123,17 @@ def build(data: dict, output: Path) -> dict:
     sheet.write_row(2, 0, ["Post", "Beløp", "Merknad"], head)
     sheet.write(3, 0, columns[0]["label"])
     sheet.write_number(3, 1, uit_saldert, num)
+    price = data.get("price") or {}
+    price_key = price.get("column_key", "pris")
     row = 4
     for index in range(1, len(columns) - 1):
         value = uit["values"][index]
+        note = columns[index].get("note", "") or ("strek i tabellen" if value is None else "")
+        if price and columns[index].get("key") == price_key and price.get("rate_pct") is not None:
+            note = f"Sats {price['rate_pct']} %" + (f", {price['note']}" if price.get("note") else "") + (f" (PDF-side {price['source_page']})" if price.get("source_page") else "")
         sheet.write(row, 0, columns[index]["label"])
         sheet.write_number(row, 1, value or 0, num)
-        sheet.write(row, 2, columns[index].get("note", "") or ("strek i tabellen" if value is None else ""))
+        sheet.write(row, 2, note)
         row += 1
     components_sum = uit_saldert + sum(v or 0 for v in uit["values"][1:-1])
     sheet.write(row, 0, columns[-1]["label"], bold)
@@ -136,6 +143,17 @@ def build(data: dict, output: Path) -> dict:
     sheet.write(row + 2, 0, "Kontroll: sum av justeringer minus tabellens forslag (skal være 0)")
     sheet.write_formula(row + 2, 1, f"=B{row + 1}-B{row + 2}", num_bold, components_sum - uit_forslag)
     summary["bridge_residual"] = components_sum - uit_forslag
+    previous = data.get("previous_year")
+    if previous and previous.get("vedtatt_total") is not None:
+        vedtatt = int(previous["vedtatt_total"])
+        sheet.write(row + 4, 0, f"Vedtatt budsjett {year - 1} ifølge blått hefte etter vedtak i Stortinget")
+        sheet.write_number(row + 4, 1, vedtatt, num)
+        sheet.write(row + 4, 2, previous.get("source", ""))
+        sheet.write(row + 5, 0, f"Kontroll: saldert {year - 1} i tabellen minus vedtatt {year - 1} (skal være 0)")
+        sheet.write_formula(row + 5, 1, f"=B4-B{row + 5}", num_bold, uit_saldert - vedtatt)
+        summary["previous_year_residual"] = uit_saldert - vedtatt
+    if price.get("rate_pct") is not None:
+        summary["price_rate_pct"] = price["rate_pct"]
 
     # --- Mot foreløpig ----------------------------------------------------------
     preliminary = data.get("preliminary")
@@ -183,6 +201,10 @@ def build(data: dict, output: Path) -> dict:
         ("Hentet (UTC)", source.get("fetched_at_utc", "")),
         ("Generert av", "build_frame_workbook.py; tall fra parse_blaatt_hefte_table.py, kolonner tolket og kontrollert visuelt mot PDF-siden"),
     ]
+    if previous:
+        rows.append((f"Vedtatt {year - 1}", f"{previous.get('vedtatt_total', '')} fra {previous.get('source', '')}" + (f", URL {previous['url']}" if previous.get("url") else "")))
+    if price:
+        rows.append(("Prisjustering", f"sats {price.get('rate_pct', 'ukjent')} %" + (f"; {price['note']}" if price.get("note") else "") + (f"; PDF-side {price['source_page']}" if price.get("source_page") else "")))
     for index, column in enumerate(columns):
         rows.append((f"Kolonne {index + 1}", f"{column['label']}" + (f" ({column.get('header_text')})" if column.get("header_text") else "")))
     for key, value in (data.get("checks") or {}).items():

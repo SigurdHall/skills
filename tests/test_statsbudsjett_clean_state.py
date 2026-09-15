@@ -24,6 +24,8 @@ def make_project(tmp_path, year=2025, run_id="2025-claude-v1"):
     (project / "analyse" / "kilder" / "2024").mkdir()
     (project / "analyse" / f"uit-forutsetninger-{year}.md").write_text("x", encoding="utf-8")
     (project / "analyse" / "uit-forutsetninger-2024.md").write_text("behold", encoding="utf-8")
+    (project / "analyse" / "kilder" / "saldert-2024").mkdir()
+    (project / "analyse" / "saldert-2024.json").write_text("{}", encoding="utf-8")
     (project / "arbeidsminne" / "kd_ramme").mkdir(parents=True)
     (project / "arbeidsminne" / "kd_ramme" / "erfaringer-2018-2023.md").write_text("historikk", encoding="utf-8")
     (project / "arbeidsminne" / "kd_ramme" / f"erfaringer-{year}-proeve.md").write_text("rest", encoding="utf-8")
@@ -36,20 +38,22 @@ def test_leftovers_are_listed_but_fasit_config_and_history_are_not(tmp_path):
     assert found == {
         "leveranser/2025-claude-v1", "analyse/kilder/2025", "analyse/kilder/uit-forutsetninger-2025",
         "analyse/uit-forutsetninger-2025.md", "arbeidsminne/kd_ramme/erfaringer-2025-proeve.md",
+        "analyse/kilder/saldert-2024", "analyse/saldert-2024.json",
     }
     assert clean.other_runs_for_year(project, 2025, "2025-claude-v1") == ["2025-claude-v0"]
 
 
-def test_keep_assumptions_leaves_prepared_uit_note_and_sources(tmp_path):
+def test_keep_prepared_leaves_basis_and_uit_note(tmp_path):
     project = make_project(tmp_path)
     (project / "analyse" / "2025-rammebro-input.json").write_text("{}", encoding="utf-8")
-    kept = {p.relative_to(project).as_posix() for p in clean.leftover_paths(project, 2025, "2025-claude-v1", keep_assumptions=True)}
+    kept = {p.relative_to(project).as_posix() for p in clean.leftover_paths(project, 2025, "2025-claude-v1", keep_prepared=True)}
     assert kept == {"leveranser/2025-claude-v1", "analyse/kilder/2025", "arbeidsminne/kd_ramme/erfaringer-2025-proeve.md"}
-    assert clean.main(["--project", str(project), "--year", "2025", "--run-id", "2025-claude-v1", "--archive", "--keep-assumptions"]) == 0
-    assert (project / "analyse" / "uit-forutsetninger-2025.md").exists()
-    assert (project / "analyse" / "kilder" / "uit-forutsetninger-2025").exists()
-    assert (project / "analyse" / "2025-rammebro-input.json").exists()
+    assert clean.main(["--project", str(project), "--year", "2025", "--run-id", "2025-claude-v1", "--archive", "--keep-prepared"]) == 0
+    for kept_path in ["analyse/uit-forutsetninger-2025.md", "analyse/kilder/uit-forutsetninger-2025", "analyse/2025-rammebro-input.json", "analyse/saldert-2024.json", "analyse/kilder/saldert-2024"]:
+        assert (project / kept_path).exists(), kept_path
     assert not (project / "leveranser" / "2025-claude-v1").exists()
+    # the old flag name still works
+    assert clean.main(["--project", str(project), "--year", "2025", "--run-id", "2025-claude-v1", "--keep-assumptions"]) == 0
 
 
 def test_check_without_archive_reports_and_exits_3(tmp_path, capsys):
@@ -57,7 +61,7 @@ def test_check_without_archive_reports_and_exits_3(tmp_path, capsys):
     out = tmp_path / "rydd.json"
     assert clean.main(["--project", str(project), "--year", "2025", "--run-id", "2025-claude-v1", "--output", str(out)]) == 3
     report = json.loads(out.read_text(encoding="utf-8"))
-    assert report["clean"] is False and report["archived_to"] is None and len(report["leftovers"]) == 5
+    assert report["clean"] is False and report["archived_to"] is None and len(report["leftovers"]) == 7
     assert (project / "leveranser" / "2025-claude-v1").exists()
 
 
@@ -70,6 +74,7 @@ def test_archive_moves_leftovers_and_keeps_everything_else(tmp_path):
     assert (moved / "leveranser/2025-claude-v1/kildesjekk.json").exists()
     assert (moved / "analyse/kilder/2025/kd.pdf").exists()
     assert (moved / "arbeidsminne/kd_ramme/erfaringer-2025-proeve.md").read_text(encoding="utf-8") == "rest"
+    assert (moved / "analyse/saldert-2024.json").exists()
     assert not (project / "leveranser" / "2025-claude-v1").exists()
     assert not (project / "analyse" / "kilder" / "2025").exists()
     # untouched

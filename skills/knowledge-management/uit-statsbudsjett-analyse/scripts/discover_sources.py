@@ -96,7 +96,9 @@ def is_pdf(status: int, content_type: str) -> bool:
 # --- blått hefte -------------------------------------------------------------------
 
 def find_blaatt_hefte(year: int, fetcher: Fetcher, stage: str = "forslag") -> dict:
-    """Prøv det stabile filnavnet først, deretter KDs kronologiske side."""
+    """Forslaget: prøv det stabile filnavnet først. Begge utgaver: KDs kronologiske side, der
+    lenketeksten skiller «Orientering om forslag til statsbudsjettet Y …» fra
+    «Orientering om statsbudsjettet Y … etter vedtak i Stortinget …». Filnavnene varierer."""
     wanted = "forslag" if stage == "forslag" else "vedtak"
     candidates = []
     if wanted == "forslag":
@@ -107,21 +109,22 @@ def find_blaatt_hefte(year: int, fetcher: Fetcher, stage: str = "forslag") -> di
     for url in candidates:
         status, content_type, length = fetcher.head(url)
         if is_pdf(status, content_type):
-            return {"status": "funnet", "url": url, "bytes": length, "via": "filnavnmønster"}
+            return {"status": "funnet", "url": url, "bytes": length, "via": "filnavnmønster", "stage": wanted}
     page = text_of(fetcher, KD_BLAATT_HEFTE_PAGE)
-    for href in re.findall(r'href="(/contentassets/[^"]*\.pdf)"', page):
-        name = href.lower()
-        if str(year) not in name:
+    anchors = re.findall(r'<a[^>]*href="(/contentassets/[^"]*\.pdf)"[^>]*>([^<]*)</a>', page)
+    for href, text in anchors:
+        label = unescape(text).lower()
+        if str(year) not in label:
             continue
-        if wanted == "forslag" and "forslag" not in name:
+        if wanted == "forslag" and "forslag" not in label:
             continue
-        if wanted == "vedtak" and "vedtak" not in name:
+        if wanted == "vedtak" and ("vedtak" not in label or "forslag" in label):
             continue
         url = REGJERINGEN + href
         status, content_type, length = fetcher.head(url)
         if is_pdf(status, content_type):
-            return {"status": "funnet", "url": url, "bytes": length, "via": "KDs kronologiske side"}
-    return {"status": "ikke publisert", "url": None, "checked": candidates + [KD_BLAATT_HEFTE_PAGE]}
+            return {"status": "funnet", "url": url, "bytes": length, "via": "KDs kronologiske side", "stage": wanted, "title": unescape(text).strip()}
+    return {"status": "ikke publisert", "url": None, "stage": wanted, "checked": candidates + [KD_BLAATT_HEFTE_PAGE]}
 
 
 # --- fagproposisjoner --------------------------------------------------------------
@@ -246,8 +249,24 @@ def find_uit_allocation(year: int, fetcher: Fetcher, board: int = UIT_BOARD) -> 
 # --- samlet kontroll ------------------------------------------------------------------
 
 def check(year: int, stage: str, fetcher: Fetcher) -> dict:
+    """Stadiet forslag: hele budsjettdagen. Stadiet saldert: bare blått hefte etter vedtak for året
+    (grunnlaget for neste års bro), pluss UiTs foreløpige fordeling for året etter."""
     blaatt = find_blaatt_hefte(year, fetcher, stage)
-    departments = find_departments(year, fetcher) if stage == "forslag" else []
+    if stage == "saldert":
+        uit_next = find_uit_allocation(year + 1, fetcher)
+        verdict = "published" if blaatt["status"] == "funnet" and uit_next["status"] == "funnet" else ("partial" if blaatt["status"] == "funnet" else "not_published")
+        return {
+            "year": year,
+            "stage": stage,
+            "checked_at_utc": datetime.now(timezone.utc).replace(microsecond=0).isoformat(),
+            "verdict": verdict,
+            "blaatt_hefte": blaatt,
+            "departments": [],
+            "missing_parts": [],
+            "unmapped_departments": [],
+            "uit_forelopig_fordeling_neste_aar": uit_next,
+        }
+    departments = find_departments(year, fetcher)
     found_parts = {d["part"] for d in departments if d["part"] and d["status"] == "funnet"}
     missing = [p for p in REQUIRED_PARTS if p not in found_parts]
     uit = find_uit_allocation(year, fetcher)
@@ -275,12 +294,13 @@ def write_sources_input(report: dict, stage_text: str) -> tuple[list[dict], list
     year = report["year"]
     sources = []
     if report["blaatt_hefte"].get("url"):
+        saldert = report["blaatt_hefte"].get("stage") == "vedtak"
         sources.append({
-            "id": f"blaatt-hefte-forslag-{year}",
+            "id": f"blaatt-hefte-{'vedtatt' if saldert else 'forslag'}-{year}",
             "url": report["blaatt_hefte"]["url"],
             "budget_year": year,
-            "stage": stage_text,
-            "title": f"Orientering om forslag til statsbudsjettet {year} for universitet og høgskular",
+            "stage": "saldert budsjett etter vedtak i Stortinget" if saldert else stage_text,
+            "title": report["blaatt_hefte"].get("title") or f"Orientering om {'statsbudsjettet' if saldert else 'forslag til statsbudsjettet'} {year} for universitet og høgskular",
         })
     for document in report["departments"]:
         if not document.get("pdf_url") or not document.get("part"):
@@ -294,12 +314,13 @@ def write_sources_input(report: dict, stage_text: str) -> tuple[list[dict], list
             "stage": stage_text,
             "title": f"{document['department']} {label} ({year - 1}–{year})",
         })
-    uit = report.get("uit_forelopig_fordeling") or {}
+    uit = report.get("uit_forelopig_fordeling") or report.get("uit_forelopig_fordeling_neste_aar") or {}
+    uit_year = year + 1 if "uit_forelopig_fordeling_neste_aar" in report else year
     uit_sources = [
         {
-            "id": f"uit-forelopig-{year}-{'framlegg' if d['main'] else 'vedlegg-' + str(d['id'])}",
+            "id": f"uit-forelopig-{uit_year}-{'framlegg' if d['main'] else 'vedlegg-' + str(d['id'])}",
             "url": d["url"],
-            "budget_year": year,
+            "budget_year": uit_year,
             "stage": "UiTs foreløpige fordeling",
             "title": d["title"],
         }
