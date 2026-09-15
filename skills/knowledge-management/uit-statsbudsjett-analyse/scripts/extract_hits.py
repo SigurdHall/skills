@@ -99,10 +99,23 @@ def sources_for(part: str, year: int) -> list[str]:
     return [name.format(year=year) for name in SOURCE_FILES.get(part, [f"{part}-prop-{year}.txt"])]
 
 
+def keyword_counts(hits_by_file: dict[str, list[dict]]) -> dict[str, int]:
+    counts: dict[str, int] = {}
+    for hits in hits_by_file.values():
+        for hit in hits:
+            for keyword in hit["keywords"]:
+                counts[keyword] = counts.get(keyword, 0) + 1
+    return dict(sorted(counts.items(), key=lambda item: -item[1]))
+
+
 def render_markdown(part: str, year: int, hits_by_file: dict[str, list[dict]], keywords: list[str]) -> str:
+    counts = keyword_counts(hits_by_file)
     out = [f"# Programmatiske treff: {part}, budsjettår {year}", "",
            f"Søkeord: {', '.join(keywords)}.", "",
-           "Mekaniske treff med avsnittet før og etter. Relevans, mottaker, beløp og vilkår må tolkes mot PDF-siden. Fravær av treff beviser ikke fravær av tiltak.", ""]
+           "Mekaniske treff med avsnittet før og etter. Relevans, mottaker, beløp og vilkår må tolkes mot PDF-siden. Fravær av treff beviser ikke fravær av tiltak.", "",
+           "| Søkeord | Treff |", "|---|---:|"]
+    out += [f"| {k} | {v} |" for k, v in counts.items()]
+    out += ["", "Søkeord med svært mange treff (for eksempel departementets eget fagområde) er støy for UiT-formålet; skum dem og let etter UiT-nærhet i stedet for å lese alle.", ""]
     for filename, hits in hits_by_file.items():
         out.append(f"## {filename}: {len(hits)} treff")
         out.append("")
@@ -133,9 +146,10 @@ def run(config: dict, sources_dir: Path, output: Path, year: int, window: int, e
                     summary["missing_sources"].append(f"{part}: {filename}")
                     continue
                 hits_by_file[filename] = find_hits(path.read_text(encoding="utf-8", errors="replace"), keywords, window)
-            (output / f"{part}-treff.json").write_text(json.dumps({"part": part, "role": role["id"], "year": year, "keywords": keywords, "files": hits_by_file}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+            counts = keyword_counts(hits_by_file)
+            (output / f"{part}-treff.json").write_text(json.dumps({"part": part, "role": role["id"], "year": year, "keywords": keywords, "keyword_counts": counts, "files": hits_by_file}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
             (output / f"{part}-treff.md").write_text(render_markdown(part, year, hits_by_file, keywords), encoding="utf-8")
-            summary["parts"][part] = {name: len(h) for name, h in hits_by_file.items()}
+            summary["parts"][part] = {"total": sum(len(h) for h in hits_by_file.values()), "per_file": {name: len(h) for name, h in hits_by_file.items()}, "top_keywords": dict(list(counts.items())[:5])}
     return summary
 
 

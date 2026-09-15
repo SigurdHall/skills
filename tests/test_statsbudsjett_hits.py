@@ -58,8 +58,10 @@ def test_run_writes_per_part_files_and_reports_missing_sources(tmp_path):
     data = json.loads((out / "hod-treff.json").read_text(encoding="utf-8"))
     assert data["role"] == "helse_miljo" and "UiT" in data["keywords"] and "Saminor" in data["keywords"]
     assert len(data["files"]["hod-prop-2025.txt"]) == 2
+    assert data["keyword_counts"] == {"UiT": 1, "Tromsøundersøkelsen": 1, "Universitetet i Tromsø": 1}
     md = (out / "hod-treff.md").read_text(encoding="utf-8")
     assert "PDF-side 88" in md and "**Det foreslås 7,3 mill. kroner" in md
+    assert "| Tromsøundersøkelsen | 1 |" in md
     assert (out / "kld-treff.json").exists()
 
 
