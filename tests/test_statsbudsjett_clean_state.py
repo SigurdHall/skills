@@ -40,6 +40,18 @@ def test_leftovers_are_listed_but_fasit_config_and_history_are_not(tmp_path):
     assert clean.other_runs_for_year(project, 2025, "2025-claude-v1") == ["2025-claude-v0"]
 
 
+def test_keep_assumptions_leaves_prepared_uit_note_and_sources(tmp_path):
+    project = make_project(tmp_path)
+    (project / "analyse" / "2025-rammebro-input.json").write_text("{}", encoding="utf-8")
+    kept = {p.relative_to(project).as_posix() for p in clean.leftover_paths(project, 2025, "2025-claude-v1", keep_assumptions=True)}
+    assert kept == {"leveranser/2025-claude-v1", "analyse/kilder/2025", "arbeidsminne/kd_ramme/erfaringer-2025-proeve.md"}
+    assert clean.main(["--project", str(project), "--year", "2025", "--run-id", "2025-claude-v1", "--archive", "--keep-assumptions"]) == 0
+    assert (project / "analyse" / "uit-forutsetninger-2025.md").exists()
+    assert (project / "analyse" / "kilder" / "uit-forutsetninger-2025").exists()
+    assert (project / "analyse" / "2025-rammebro-input.json").exists()
+    assert not (project / "leveranser" / "2025-claude-v1").exists()
+
+
 def test_check_without_archive_reports_and_exits_3(tmp_path, capsys):
     project = make_project(tmp_path)
     out = tmp_path / "rydd.json"

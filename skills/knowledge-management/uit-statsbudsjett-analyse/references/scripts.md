@@ -36,7 +36,8 @@ Hver kjøring starter fra tom tilstand. Skriptet lister rester fra tidligere
 forsøk for samme år (leveransemappen, hentede kilder, UiTs
 forutsetningsnotat, rammebro-filer, årets erfaringsnotater) og gir
 returkode 3. Med `--archive` flyttes de til `arkiv/avbrutt/<tidsstempel>-<kjøring>/`
-med samme relative sti. Fasitmappen `<år>/`, arbeidsdelingen og de
+med samme relative sti. `--keep-assumptions` lar forberedte UiT-forutsetninger
+(notat, kilder, rammebro-input) stå. Fasitmappen `<år>/`, arbeidsdelingen og de
 historiske minnene røres aldri.
 
 ## Finn årets kilder og sjekk publisering

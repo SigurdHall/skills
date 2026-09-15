@@ -8,11 +8,40 @@ stopper hvis et obligatorisk felt mangler eller en verdi er ugyldig.
 Slå på `/fast` i sesjonen før du starter hvis du vil ha rask Opus-utdata;
 skillen kan ikke gjøre det for deg.
 
-## Minste prompt
+## Budsjettdagen: to kommandoer
+
+I september, når universitetsstyrets junisak er publisert:
+
+```text
+/uit-statsbudsjett-proeve
+år: 2027
+modus: skarp
+omfang: forutsetninger
+```
+
+Den dagen statsbudsjettet legges fram:
+
+```text
+/uit-statsbudsjett-proeve
+år: 2027
+modus: skarp
+omfang: alt
+forutsetninger: behold
+```
+
+Hurtigsvaret med UiTs ramme, avvik mot foreløpig fordeling og fem punkter å
+følge opp kommer i chatten innen minutter; deretter fortsetter
+departementsgjennomgangen i samme kjøring. Er budsjettet ikke lagt ut,
+stopper skillen etter publiseringssjekken og sier når du bør prøve igjen.
+
+## Test på et historisk år
 
 ```text
 /uit-statsbudsjett-proeve
 år: 2025
+modus: prøve
+forbudt: 2024/, 2025/
+dupliser: ramme
 ```
 
 ## Full prompt med alle felt
@@ -22,6 +51,8 @@ skillen kan ikke gjøre det for deg.
 år: 2025
 stadium: forslag
 modus: prøve
+omfang: alt
+forutsetninger: nye
 kjøring: 2025-claude-v1
 prosjekt: /home/sihal7953/repos/uit-statsbudsjett
 forbudt: 2024/, 2025/
@@ -40,19 +71,29 @@ fortsett-ved-mangler: ja
 | Felt | Standard | Gyldige verdier og betydning |
 |---|---|---|
 | `år` | ingen, må oppgis | Budsjettåret Y. Forslaget for Y publiseres normalt i oktober Y−1. |
-| `stadium` | `forslag` | `forslag` (regjeringens opprinnelige Prop. 1 S), `tillegg` (tilleggsproposisjon), `saldert` (etter Stortingets vedtak), `rnb`. Bare `forslag` har automatisk kildeoppdagelse i dag; de andre krever manuelle kilde-URL-er. |
+| `stadium` | `forslag` | `forslag` (regjeringens opprinnelige Prop. 1 S), `tillegg`, `saldert`, `rnb`. Bare `forslag` har automatisk kildeoppdagelse i dag; de andre krever manuelle kilde-URL-er. |
 | `modus` | `prøve` | `prøve`: historisk år der UiTs egen analyse finnes som fasit; prøveårets UiT-mappe og alt senere UiT-materiale er forbudt. `skarp`: årets budsjett, ingen fasit finnes ennå. |
-| `kjøring` | `<år>-claude-v1` | Navn på leveransemappen `leveranser/<kjøring>/`. Hver kjøring starter fra tom tilstand; se `rydd`. |
-| `rydd` | `ja` | `ja`: rester fra tidligere forsøk for samme år (leveransemappe, hentede kilder, forutsetningsnotat, årets erfaringsnotater) flyttes til `arkiv/avbrutt/<tidsstempel>-<kjøring>/` før start. `nei`: stopp hvis rester finnes. Fasitmappen `<år>/`, arbeidsdelingen og historiske minner røres aldri. |
+| `omfang` | `alt` | `forutsetninger`: bare UiTs foreløpige fordeling, kan kjøres før budsjettet finnes. `hurtig`: kilder, forutsetninger og hurtigsvar. `full`: departementsgjennomgang, redaktør og kontroll i en kjøring som allerede har hurtigsvar. `alt`: hurtig og deretter full. |
+| `forutsetninger` | `nye` | `nye`: forutsetningsnotat og UiT-kilder lages på nytt (ren test). `behold`: et notat forberedt med `omfang: forutsetninger` beholdes og gjenbrukes; ryddesjekken lar det stå. |
+| `kjøring` | `<år>-claude-v1` | Navn på leveransemappen `leveranser/<kjøring>/`. `hurtig` og `full` skal bruke samme navn. |
+| `rydd` | `ja` | `ja`: rester fra tidligere forsøk for samme år flyttes til `arkiv/avbrutt/<tidsstempel>-<kjøring>/` før start. `nei`: stopp hvis rester finnes. Fasitmappen `<år>/`, arbeidsdelingen og historiske minner røres aldri. |
 | `prosjekt` | `/home/sihal7953/repos/uit-statsbudsjett` | POSIX-sti til analyseprosjektet i WSL. Fra Windows leses filene via `\\wsl.localhost\Ubuntu-24.04` + samme sti. |
 | `forbudt` | `<år>/` | Mapper under prosjektet som ikke skal åpnes eller listes: UiTs eget materiale for prøveåret og alt senere som er fasit. I `prøve`-modus legges alltid `<år>/` til. |
 | `dupliser` | `ramme` | Deler som får uavhengig andreutkast og sammenlignende review: `ramme`, `kd`, `fin`, `hod`, `kld`, `nfd`, `aid`, `kud`, `kdd`, `jd`, `ud`, `oed`. Hver del koster to ekstra agentkall. `ingen` slår av. |
 | `profil` | `rask` | `rask`: modellplanen under. `sesjon`: alle agenter arver sesjonens modell og effort. |
-| `modeller` | `(ingen)` | Overstyring per fase som JSON, for eksempel `{"role_other": {"model": "opus"}}`. Faser: `prep`, `assumptions`, `role_critical`, `role_other`, `duplicate`, `review`, `editor`, `check`. |
+| `modeller` | `(ingen)` | Overstyring per fase som JSON, for eksempel `{"role_other": {"model": "opus"}}`. Faser: `prep`, `assumptions`, `quick`, `role_critical`, `role_other`, `duplicate`, `review`, `editor`, `check`. |
 | `mal` | `(ingen)` | Sti til UiT PowerPoint-mal. Uten mal lages bare `presentasjon.json`. |
 | `renderer` | `(ingen)` | Sti til LibreOffice `soffice`. Uten renderer lages ingen PDF/PNG-forhåndsvisning. |
 | `kun-sjekk` | `nei` | `ja`: kjør bare publiserings- og kildesjekken og rapporter. Ingen analyse startes. |
-| `fortsett-ved-mangler` | `ja` | `ja`: start analysen når blått hefte og KD Prop. 1 S finnes, selv om noen fagproposisjoner eller UiTs forutsetninger mangler; manglene dokumenteres. `nei`: stopp ved enhver mangel. |
+| `fortsett-ved-mangler` | `ja` | `ja`: start analysen når blått hefte og KD Prop. 1 S finnes, selv om noen fagproposisjoner mangler; manglene dokumenteres. `nei`: stopp ved enhver mangel. |
+
+## Hurtigsvaret
+
+Fast format i `references/hurtigsvar-format.md` i analyseskillen: hovedtall
+(forslag, UiTs foreløpige, avvik, saldert), komponenter fra rammebroen,
+fem punkter å følge opp med beløp, mottaker, vilkår og PDF-side, hva som
+ikke er kontrollert ennå, kilder og status. Skrives til
+`leveranser/<kjøring>/hurtigsvar.md` og gjengis i chatten.
 
 ## Modellplanen `rask`
 
@@ -64,6 +105,7 @@ Opus med medium effort; mekaniske trinn og de øvrige rollene på Sonnet.
 |---|---|---|---|
 | Forbered | sonnet | low | Henting, uttrekk og oppdragsfiler er skriptstyrt |
 | Forutsetninger | opus | medium | UiTs KD-ramme og bro må være eksakt |
+| Hurtigsvar | opus | medium | UiT-raden og broen mot foreløpig fordeling er dagens viktigste tall |
 | kd_ramme, helse_miljo, naring_arbeid_kultur | opus | medium | Rammebro, HOD-vilkår og KUD-tilskudd var der ett utkast oftest feilet i 2024-prøvene |
 | bygg_samisk_justis, nordomraader_energi | sonnet | medium | Færre navngitte UiT-beløp; review fanger avvik hvis delen dupliseres |
 | Andreutkast (`dupliser`) | sonnet | medium | Uavhengig andre modell gir mangfold, ikke gjentakelse |
@@ -77,17 +119,18 @@ som skal justeres etter første fasitkontroll, ikke en målt anbefaling.
 ## Hva skjer etter prompten
 
 1. Formen tolkes og vises. Mangler `år`, stopper Claude og ber om det.
-   Ryddesjekken arkiverer rester fra tidligere forsøk (`rydd: ja`) eller
-   stopper (`rydd: nei`).
-2. Publiseringssjekk mot regjeringen.no og UiTs styreportal skriver
-   `leveranser/<kjøring>/kildesjekk.json`. Resultatet vises som tabell:
-   funnet, ikke publisert, ikke identifisert.
-3. Ved `kun-sjekk: ja` eller manglende blått hefte/KD stopper kjøringen her.
-4. Kildelisten skrives til `analyse/kilder/<år>/kilder-input.json`, og
-   `arbeidsflyt/arbeidsdeling-<år>.json` lages fra forrige år hvis den mangler.
-5. Workflowen `uit-statsbudsjett-analyse` startes med argumentene fra formen
-   og modellplanen.
-6. Sluttrapport med status per fase, leveransestier og hva som må gjøres før
+2. Ryddesjekken arkiverer rester fra tidligere forsøk (`rydd: ja`) eller
+   stopper (`rydd: nei`). Forberedte forutsetninger beholdes bare med
+   `forutsetninger: behold`.
+3. Publiseringssjekk mot regjeringen.no og UiTs styreportal skriver
+   `leveranser/<kjøring>/kildesjekk.json`. Resultatet vises som tabell.
+4. Ved `kun-sjekk: ja` eller manglende blått hefte/KD stopper kjøringen her
+   (unntatt `omfang: forutsetninger`, som bare trenger UiT-saken).
+5. Kildelistene skrives, og `arbeidsflyt/arbeidsdeling-<år>.json` lages fra
+   forrige år hvis den mangler.
+6. Workflowen startes med fasesettet fra `omfang`. Hurtigsvaret gjengis i
+   chatten så snart det finnes.
+7. Sluttrapport med status per fase, leveransestier og hva som må gjøres før
    fasit legges inn.
 
 ## Slik hjelper Claude med å fylle formen

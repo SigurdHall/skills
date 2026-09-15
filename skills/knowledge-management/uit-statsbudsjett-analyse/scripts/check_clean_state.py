@@ -17,15 +17,19 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 
-def leftover_paths(project: Path, year: int, run_id: str) -> list[Path]:
+def leftover_paths(project: Path, year: int, run_id: str, keep_assumptions: bool = False) -> list[Path]:
+    """UiTs forutsetninger kan være forberedt med vilje før budsjettdagen; da beholdes de."""
     candidates = [
         project / "leveranser" / run_id,
         project / "analyse" / "kilder" / str(year),
-        project / "analyse" / "kilder" / f"uit-forutsetninger-{year}",
-        project / "analyse" / f"uit-forutsetninger-{year}.md",
-        project / "analyse" / f"{year}-rammebro-input.json",
         project / "analyse" / f"{year}-rammebro-kontroll.json",
     ]
+    if not keep_assumptions:
+        candidates += [
+            project / "analyse" / "kilder" / f"uit-forutsetninger-{year}",
+            project / "analyse" / f"uit-forutsetninger-{year}.md",
+            project / "analyse" / f"{year}-rammebro-input.json",
+        ]
     memory = project / "arbeidsminne"
     if memory.is_dir():
         candidates.extend(sorted(memory.glob(f"*/erfaringer-{year}-proeve.md")))
@@ -54,15 +58,17 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--year", type=int, required=True)
     parser.add_argument("--run-id", required=True)
     parser.add_argument("--archive", action="store_true", help="flytt restene til arkiv/avbrutt/")
+    parser.add_argument("--keep-assumptions", action="store_true", help="behold forberedte UiT-forutsetninger for året")
     parser.add_argument("--output", type=Path)
     args = parser.parse_args(argv)
 
     project = args.project.resolve()
-    found = leftover_paths(project, args.year, args.run_id)
+    found = leftover_paths(project, args.year, args.run_id, args.keep_assumptions)
     report = {
         "project": str(project),
         "year": args.year,
         "run_id": args.run_id,
+        "keep_assumptions": args.keep_assumptions,
         "leftovers": [p.relative_to(project).as_posix() for p in found],
         "other_runs_for_year": other_runs_for_year(project, args.year, args.run_id),
         "archived_to": None,

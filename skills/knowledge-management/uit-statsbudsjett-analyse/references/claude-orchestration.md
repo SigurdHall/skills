@@ -43,33 +43,45 @@ Fra en Claude Code-sesjon på Windows:
 Workflow-skriptet får dette som `unc_project` og `python_cmd`; da får hver
 agent samme instruks. Fra en WSL-sesjon utelates begge.
 
-## Faser i workflow-skriptet
+## Fasesett og faser i workflow-skriptet
 
-1. **Forbered** (én agent, lav effort). Henter kilder med `fetch_sources.py`
-   fra `analyse/kilder/<år>/kilder-input.json`, lager tekstuttrekk med
-   sidemarkører, kjører `manage_workflow.py prepare`, oppretter eller
-   utvider `leveranser/<kjøring>/eksponeringslogg.md` og dokumenterer hva
-   som mangler.
-2. **Forutsetninger** (én agent). Bruker treffet fra `kildesjekk.json`
-   (UiTs styresak) eller slår opp styreportalen selv, henter dokumentene og
-   skriver `analyse/uit-forutsetninger-<år>.md` etter 2024-filens struktur.
-   Ukjent forblir ukjent.
-3. **Fagroller** (parallelt, én agent per rolle). Hver agent leser sitt
-   historiske minne, forrige års prøveerfaring og reviewerfaringer, skriver
-   `minne-lest.json` med SHA-256 før kildene åpnes, leverer `notater.md`,
-   `rapport.md` og `funn.json` per del, kjører `build_evidence.py` og lagrer
-   årets erfaring separat. Deler i `duplicate_parts` får et uavhengig
-   andreutkast i `kontroll/<del>/` som ikke leser `deler/`, og et
-   sammenlignende review som bare retter med kildebelegg.
-4. **Redaktør** (én agent, etter alle roller). Kvittering, samlet rapport,
-   presentasjonsspesifikasjon, meldingsutkast, `assemble_evidence.py`, og
-   `build_presentation.py` når mal og renderer er oppgitt.
-5. **Kontroll** (én agent, lav effort). `manage_workflow.py check`,
-   `reconcile_budget.py`, lenkekontroll, hashmanifest, fullført
-   eksponeringslogg og `verifikasjon.md`.
+`phase_set` velger hva som kjøres, slik at budsjettdagen ikke venter på
+hele departementsgjennomgangen:
 
-Skriptet venter på alle roller før redaktøren starter. Alt annet kjører som
-pipeline. Standardvalg gir 10 agentkall pluss to per duplisert del.
+| Fasesett | Faser | Når |
+|---|---|---|
+| `forutsetninger` | Forbered (bare UiT-dokumenter), Forutsetninger | September, når universitetsstyrets junisak er publisert |
+| `hurtig` | Forbered, Forutsetninger (hopper over når notatet er forberedt), Hurtigsvar | Budsjettdagen, første minutter |
+| `full` | Fagroller, Redaktør, Kontroll | Samme kjøring, etter hurtigsvaret |
+| `alt` | alle seks | Test |
+
+1. **Forbered** (sonnet, lav effort). Henter kilder med `fetch_sources.py`
+   fra `analyse/kilder/<år>/kilder-input.json` og UiT-dokumentene fra
+   `analyse/kilder/uit-forutsetninger-<år>/kilder-input.json`, lager
+   tekstuttrekk med sidemarkører (blått hefte og KD først), kjører
+   `manage_workflow.py prepare`, oppretter `eksponeringslogg.md`.
+2. **Forutsetninger** (opus, medium). Skriver
+   `analyse/uit-forutsetninger-<år>.md` og `<år>-rammebro-input.json`
+   (UiT-siden) fra styresaken; gjenbruker et forberedt notat når det
+   finnes. Ukjent forblir ukjent.
+3. **Hurtigsvar** (opus, medium). UiT-raden i blått hefte kontrollert
+   visuelt, forslagssiden i rammebroen, `reconcile_budget.py`, og
+   `leveranser/<kjøring>/hurtigsvar.md` i det faste formatet fra
+   [hurtigsvar-format.md](hurtigsvar-format.md). Hovedtallene logges i
+   framdriftsvisningen; launcheren gjengir filen i chatten.
+4. **Fagroller** (parallelt). Kritiske roller på opus, øvrige på sonnet;
+   `minne-lest.json` før kildene, `notater.md`, `rapport.md`, `funn.json`,
+   `build_evidence.py`, årets erfaring. kd_ramme kontrollerer hurtigsvarets
+   bro på nytt mot kildene i stedet for å kopiere den. Deler i
+   `duplicate_parts` får uavhengig andreutkast og review.
+5. **Redaktør** (opus). Samlet rapport, presentasjonsspesifikasjon,
+   meldingsutkast, kildepakke; avvik mot hurtigsvaret nevnes.
+6. **Kontroll** (sonnet, lav). `manage_workflow.py check`, begge
+   rammebro-kontroller, lenker, manifest med modellplan, eksponeringslogg
+   fryst, `verifikasjon.md`.
+
+Redaktøren venter på alle roller; alt annet kjører som pipeline.
+Standardvalg gir 3 + 7 agentkall pluss to per duplisert del.
 
 ## Modell og effort
 
