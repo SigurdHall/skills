@@ -21,6 +21,8 @@ relevans og harmonisering av beløp; ikke overlat dette til nøkkelord alene.
 Les [agentarbeidsflyten](references/agent-workflow.md) før delegering. I
 Claude Code kjøres hele løpet med workflow-skriptet som er beskrevet i
 [kjøringsbeskrivelsen](references/claude-orchestration.md).
+I Codex brukes [Codex-startskillen](../codex-uit-statsbudsjett-proeve/SKILL.md)
+og [Codex-kjøringsbeskrivelsen](references/codex-orchestration.md).
 
 1. Finn årets eller nærmeste historiske dokument «Arbeidsdeling og søkeord».
    Bevar fagområdene og prioriteringene. Bruk stabile fagroller som kan eie

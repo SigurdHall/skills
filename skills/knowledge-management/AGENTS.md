@@ -12,6 +12,7 @@ Current skills:
 - `weekly-production-review`
 - `uit-statsbudsjett-analyse`
 - `uit-statsbudsjett-proeve`
+- `codex-uit-statsbudsjett-proeve`
 
 ## Ownership boundary (avoid two truths)
 
@@ -31,4 +32,3 @@ Current skills:
 - `uit-statsbudsjett-proeve` → user-invoked launcher (`/uit-statsbudsjett-proeve`):
   prompt form, publication check and source discovery, then starts the
   workflow. Holds no domain knowledge of its own.
-
