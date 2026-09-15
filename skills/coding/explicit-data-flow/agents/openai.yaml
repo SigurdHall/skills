@@ -1,0 +1,4 @@
+interface:
+  display_name: "Explicit Data Flow"
+  short_description: "One section per table, literal source and output, no dispatch on table name"
+  default_prompt: "Use $explicit-data-flow to rebuild this transformation notebook as straight-line sections per output table, keeping every guard and proving the output is unchanged."
