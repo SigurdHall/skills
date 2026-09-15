@@ -63,14 +63,14 @@ def main(argv: list[str] | None = None) -> int:
         "project": str(project),
         "year": args.year,
         "run_id": args.run_id,
-        "leftovers": [str(p.relative_to(project)) for p in found],
+        "leftovers": [p.relative_to(project).as_posix() for p in found],
         "other_runs_for_year": other_runs_for_year(project, args.year, args.run_id),
         "archived_to": None,
         "clean": not found,
     }
     if found and args.archive:
         stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
-        report["archived_to"] = str(archive(project, found, args.run_id, stamp).relative_to(project))
+        report["archived_to"] = archive(project, found, args.run_id, stamp).relative_to(project).as_posix()
         report["clean"] = True
     content = json.dumps(report, ensure_ascii=False, indent=2)
     if args.output:

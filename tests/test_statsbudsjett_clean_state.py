@@ -32,7 +32,7 @@ def make_project(tmp_path, year=2025, run_id="2025-claude-v1"):
 
 def test_leftovers_are_listed_but_fasit_config_and_history_are_not(tmp_path):
     project = make_project(tmp_path)
-    found = {str(p.relative_to(project)) for p in clean.leftover_paths(project, 2025, "2025-claude-v1")}
+    found = {p.relative_to(project).as_posix() for p in clean.leftover_paths(project, 2025, "2025-claude-v1")}
     assert found == {
         "leveranser/2025-claude-v1", "analyse/kilder/2025", "analyse/kilder/uit-forutsetninger-2025",
         "analyse/uit-forutsetninger-2025.md", "arbeidsminne/kd_ramme/erfaringer-2025-proeve.md",
