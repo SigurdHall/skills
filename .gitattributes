@@ -1,2 +1,3 @@
 # Workflow scripts are read by the Claude Code Workflow tool, which rejects CR characters.
 *.js text eol=lf
+*.mjs text eol=lf
