@@ -21,8 +21,11 @@ Pick any output table. Reading one section top to bottom, the reader answers:
 4. Which checks apply, and what stops the run?
 5. Where is it written, in which mode, with which partition?
 
-If answering needs a second place in the file, that is a finding. Count the
-places per table when reviewing; more than two is a defect.
+A place is anywhere a table-specific rule lives: the section itself, a dict
+entry keyed by the table, a branch on its name. The shared mechanics cell does
+not count; a reader learns `write_gold` once. If a table needs a second place,
+that is a finding. Count the places per table when reviewing; more than two is
+a defect.
 
 ## Rules
 
@@ -35,7 +38,8 @@ places per table when reviewing; more than two is a defect.
    `regnskap_med_koder`, `budsjett_med_versjon`. Not `df2`, `tmp`, `out`.
 4. **Column choices and business rules live in the section that uses them.**
    A column list for one table sits in that table's section, not in a
-   cross-table dict keyed by table name.
+   cross-table dict keyed by table name. The one exception is the rule block
+   of a uniform loop, defined under Loops.
 5. **No dispatch on table name.** No `if table_name == ...`, no
    `rules[table_name]`, no `kind` or `slag` discriminator, no behaviour from
    a name prefix. Two tables needing the same operation call the same
@@ -54,8 +58,9 @@ Shared functions are mechanics that are identical for every caller and carry
 no per-table branch: read at a locked version, write with a mode, unique
 check, reconciliation, status row. Each takes its inputs as arguments, does
 one thing, has a verb name, and stays short enough to read in one screen.
-A function that takes `table_name` and looks something up with it is a
-dispatcher, not a mechanic.
+A function that chooses behaviour from `table_name` is a dispatcher, not a
+mechanic. Looking up run state by the table being read, such as the locked
+version of that table, is a mechanic: the name selects data, not a code path.
 
 Inline versus extract: if inlining costs at most five lines and at most three
 copies, inline. Extract only identical mechanics. An extraction justified by
@@ -70,10 +75,12 @@ iterates is a literal directly above it. The moment one table needs a
 different operation, it leaves the loop and gets its own section.
 
 Per-table rule blocks are acceptable inside such a loop when all three hold:
-every rule is a column list consumed by the same uniform step, all rules for
-a table sit together in one block, and the loop body has no table-name
-branch. Ten dicts each keyed by table name, where one table's rules are
-spread across all ten, is the pattern this skill removes.
+every rule is a column list or a rename mapping consumed by the same uniform
+step in the same order for every table, all rules for a table sit together in
+one block, and the loop body has no table-name branch. Such a block is the
+table's section; it counts as one place. Ten dicts each keyed by table name,
+where one table's rules are spread across all ten, is the pattern this skill
+removes, and so is any dict whose values select a code path.
 
 ## Rollback, locking and status
 
@@ -122,8 +129,9 @@ def bygg_fak_regnskap():
 2. **Write each section from the inventory.** Behaviour identical unless the
    review listed a defect, and then the change is named in the report.
 3. **Keep only mechanics.** Move them to one short cell near the top. Delete
-   config dicts, dispatchers, discriminators and the functions that validated
-   them.
+   dispatchers, discriminators, dicts that spread one table's rules over
+   several places or select code paths, and the functions that validated
+   them. A rule block under Loops stays.
 4. **Prove equivalence** on a fixture: same columns and types, same rows,
    same guards firing with the same messages. Rewrite tests to call sections
    and mechanics directly; tests of the removed configuration layer are
