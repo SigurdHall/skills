@@ -49,11 +49,13 @@ in the file is needed.
    table name in the message. If the same check appears in twenty sections,
    it appears twenty times.
 3. **Literal names everywhere.** The table read, the table written, the
-   partition column, the join keys. No name built from a prefix, a suffix, a
-   string split or a dict lookup.
+   partition column, the join keys, the columns dropped. No name built from a
+   prefix, a suffix, a string split or a dict lookup; `drop` lists the columns
+   instead of matching `startswith`.
 4. **Business rules sit in the chain that uses them.** A drop list, a rename,
    a date cast, a lookup belong to one table and are written in that table's
-   chain, not in a cross-table dict.
+   chain, not in a cross-table dict. The one exception is the rule block of a
+   uniform loop, defined under Loops; that block is the table's section.
 5. **No dispatch on table name.** No `if table_name == ...`,
    `rules[table_name]`, kind flags or registries.
 6. **Natural order inside the chain**: read, filter, select and rename,
@@ -83,10 +85,14 @@ across them is the pattern this skill removes.
 Do not wrap chains in functions to get a `try/except` around them. Each Delta
 overwrite is atomic on its own; a failure stops the notebook at the failing
 cell and leaves earlier tables written and later ones from the previous run.
-Make that acceptable by construction: put a reconciliation cell at the end,
-write the status row last, and let the pipeline decide what to rerun. If the
-owner needs every table to switch together, write to a staging schema and
-publish in one final cell, still without functions.
+Handle that outside the chains: write the status row last, and add a small
+separate restore notebook as the next pipeline step that puts every table
+back to the version it had at the last status write, drops tables created
+after it, and does nothing after a successful run. A check that must not
+leave a bad table visible does the same inline: note the version before the
+write, and after a failed check restore or drop, then raise. Writing several
+tables from one final cell is not atomic either; if readers must never see
+mixed versions, that needs a publication pointer, not a staging schema.
 
 ## Rebuild procedure
 
@@ -95,8 +101,10 @@ publish in one final cell, still without functions.
    messages, write mode and partition. That is what must survive.
 2. **Write each chain from the inventory.** Behaviour identical unless the
    review listed a defect, and then the change is named in the report.
-3. **Delete every function, config dict and dispatcher.** Inline what they
-   did, where it is used. Keep a loop only for uniform mechanics.
+3. **Delete every function, dispatcher, and dict that spreads one table's
+   rules over several places or selects a code path.** Inline what they did,
+   where it is used. Keep a loop only for uniform mechanics; its rule blocks
+   stay.
 4. **Prove equivalence** on a fixture: same columns and types, same rows,
    same checks firing with messages the tests match. Tests run the cells in
    order and inject failures between cells; tests of removed mechanics such
