@@ -26,6 +26,14 @@ def last(navn):
 bygg_rammeark = last("bygg_rammeark")
 
 
+def rnb_celle(ws):
+    """RNB-inndatacellen: raden i Hovedtall der etiketten begynner med «RNB-endring»."""
+    for row in ws.iter_rows(min_col=2, max_col=3):
+        if isinstance(row[0].value, str) and row[0].value.startswith("RNB-endring"):
+            return row[1]
+    raise AssertionError("fant ikke RNB-cellen")
+
+
 @pytest.fixture(scope="module")
 def dok():
     return json.loads(EKSEMPEL.read_text(encoding="utf-8"))
@@ -78,12 +86,12 @@ def test_hovedtall_etiketter_og_verdier(dok, ark_uten_rnb):
     assert ws["C10"].value == pytest.approx(0.038)
     assert ws["C15"].value == 157470
     assert "nei" in ws["C18"].value
-    assert ws["C21"].value == 8300  # RNB 2024 fra budsjettbasen (supplerende tildelingsbrev 25.06.2024)
+    assert rnb_celle(ws).value == 8300  # RNB 2024 fra budsjettbasen (supplerende tildelingsbrev 25.06.2024)
     assert "ikke oppgitt" in ws["C12"].value  # formelen har fallback-teksten når cellen tømmes
 
 
 def test_rnb_fylles_naar_oppgitt(ark_med_rnb):
-    assert ark_med_rnb["Hovedtall"]["C21"].value == 1000  # --rnb overstyrer basen
+    assert rnb_celle(ark_med_rnb["Hovedtall"]).value == 1000  # --rnb overstyrer basen
 
 
 def test_budsjettloep_har_aarene_til_og_med_heftets(ark_uten_rnb):
@@ -94,6 +102,29 @@ def test_budsjettloep_har_aarene_til_og_med_heftets(ark_uten_rnb):
     assert ws[f"C{rad_2025}"].value == 4155453 and ws[f"D{rad_2025}"].value == 4175449 and ws[f"E{rad_2025}"].value == -907
     rad_2024 = 6 + aar.index("2024")
     assert ws[f"E{rad_2024}"].value == 8300 and "tildelingsbrev" in ws[f"G{rad_2024}"].value
+    rad_2023 = 6 + aar.index("2023")
+    assert ws[f"E{rad_2023}"].value == 86200 and "(uverifisert)" in ws[f"G{rad_2023}"].value
+    assert ws["E5"].value == "RNB-endring, kap. 260 post 50"
+
+
+def test_rnb_etikett_og_regime(ark_uten_rnb):
+    ws = ark_uten_rnb["Hovedtall"]
+    tekster = {c.value for row in ws.iter_rows() for c in row if isinstance(c.value, str)}
+    assert not any("RNB-proposisjonen" in t for t in tekster)
+    assert any("RNB-endring 2024" in t for t in tekster)
+    assert any("Realvekst (metode b, med RNB 2024 i utgangspunktet)" == t for t in tekster)
+    assert any("RNB-regime" in t for t in tekster)
+
+
+def test_base_port_gir_merknad_ved_avvik(dok, tmp_path):
+    base = bygg_rammeark.last_base()
+    import copy
+    b = copy.deepcopy(base)
+    b["aar"]["2024"]["vedtatt"]["ramme"] += 1
+    res = bygg_rammeark.bygg(dok, tmp_path / "x.xlsx", base=b)
+    assert res["base_merknad"] and "4 061 059" in res["base_merknad"]
+    res_ok = bygg_rammeark.bygg(dok, tmp_path / "y.xlsx", base=base)
+    assert res_ok["base_merknad"] is None
 
 
 def test_satser_uten_lukket_ramme_har_tekst(ark_uten_rnb):

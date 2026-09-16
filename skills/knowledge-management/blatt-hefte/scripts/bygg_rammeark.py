@@ -31,14 +31,40 @@ def last_base(sti: Path | None = None) -> dict:
 
 
 def rnb_fra_base(base: dict, budsjettaar: int) -> tuple[int | None, str]:
-    """RNB-tillegget for året før budsjettåret (det som løfter utgangspunktet), med kildetekst."""
+    """RNB-endringen for året før budsjettåret (det som løfter utgangspunktet), med kildetekst."""
     post = base.get("aar", {}).get(str(budsjettaar - 1), {}).get("rnb")
-    if not post or post.get("tillegg") is None:
+    if not post or post.get("endring") is None:
         return None, f"ingen RNB {budsjettaar - 1} i budsjettbasen"
     k = post.get("kilde", {})
-    belop = f"{post['tillegg']:,}".replace(",", " ")
-    return post["tillegg"], (f"RNB {budsjettaar - 1}: {belop} (1 000 kr) fra {k.get('dokument')}, "
-                             f"{k.get('dato') or 'dato ukjent'}; {k.get('status', '')}")
+    belop = f"{post['endring']:,}".replace(",", " ")
+    uverifisert = "" if post.get("verifisert", True) else " (UVERIFISERT: ikke kontrollert mot offentlig dokument)"
+    return post["endring"], (f"RNB {budsjettaar - 1}: {belop} (1 000 kr) fra {k.get('dokument')}, "
+                             f"{k.get('dato') or 'dato ukjent'}{uverifisert}")
+
+
+def rnb_regime(dok: dict, rnb: int | None) -> str:
+    """Er RNB-endringen for året før allerede med i heftets prisjusteringskolonne (som RNB 2023 i 2024-heftet)?"""
+    if rnb is None:
+        return "ingen RNB-endring for året før i basen"
+    p = dok["prisjustering"]
+    if p["ren_sats"] is False and p["avvik"] is not None and rnb and abs(p["avvik"] - rnb) <= 0.05 * abs(rnb):
+        return (f"RNB-endringen ({rnb:,}) ser ut til å være videreført i prisjusteringskolonnen "
+                f"(overskudd {p['avvik']:,}); «med RNB»-tallene i hoveddelen gjelder".replace(",", " "))
+    return ("RNB-endringen inngår ikke i prisjusteringskolonnen; hvis den er varig, er raden "
+            "«om RNB-endringen er varig» det riktige realveksttallet")
+
+
+def kontroll_base(base: dict, dok: dict) -> str | None:
+    """Kjøretidsport: basens vedtatt for året før skal være lik heftets utgangspunkt for UiT."""
+    aar_foer = str(dok["kilde"]["budsjettaar"] - 1)
+    post = base.get("aar", {}).get(aar_foer, {})
+    vedtatt = (post.get("vedtatt") or {}).get("ramme")
+    utg = uit_rad(dok)["verdier"][0]
+    if vedtatt is None:
+        return f"Budsjettbasen mangler vedtatt {aar_foer}; kjør bygg_base.py etter at heftet etter vedtak er hentet."
+    if vedtatt != utg:
+        return f"Budsjettbasen sier vedtatt {aar_foer} = {vedtatt:,}, heftet bruker {utg:,} som utgangspunkt.".replace(",", " ")
+    return None
 
 
 def budsjettloep_rader(base: dict, dok: dict) -> list[dict]:
@@ -50,11 +76,14 @@ def budsjettloep_rader(base: dict, dok: dict) -> list[dict]:
         if int(aar) > aar_naa:
             continue
         r = post.get("rnb") or {}
+        kilde = (r.get("kilde") or {}).get("dokument") if r else None
+        if r and not r.get("verifisert", True) and kilde and "(uverifisert)" not in kilde:
+            kilde += " (uverifisert)"
         rader.append({"aar": aar,
                       "forslag": (post.get("forslag") or {}).get("ramme"),
                       "vedtatt": (post.get("vedtatt") or {}).get("ramme"),
-                      "rnb": r.get("tillegg"),
-                      "rnb_kilde": (r.get("kilde") or {}).get("dokument") if r else None})
+                      "rnb": r.get("endring"),
+                      "rnb_kilde": kilde})
     if not any(r["aar"] == str(aar_naa) for r in rader):
         rader.append({"aar": str(aar_naa), "forslag": None, "vedtatt": None, "rnb": None, "rnb_kilde": None})
     egen = next(r for r in rader if r["aar"] == str(aar_naa))
@@ -168,6 +197,7 @@ def bygg(dok: dict, output: Path, rnb: int | None = None, finn_rapport: dict | N
     wb = openpyxl.load_workbook(output)
     avledede = avledet(dok, finn_rapport)
     avledede["rnb.kilde_tekst"] = rnb_kilde if rnb is not None else f"ikke oppgitt ({rnb_kilde})"
+    avledede["rnb.regime"] = rnb_regime(dok, rnb)
     uit = uit_rad(dok)
     univ, alle = institusjonsrader(dok)
     open_rader, lukket_rader = satsblokker(dok)
@@ -195,12 +225,15 @@ def bygg(dok: dict, output: Path, rnb: int | None = None, finn_rapport: dict | N
 
     # RNB-etiketten får riktig år
     aar_foer = dok["kilde"]["budsjettaar"] - 1
-    celle("hovedtall_rnb").offset(column=-1).value = (
-        f"Tillegg i RNB {aar_foer} for UiT, kap. 260 post 50 (fra budsjettbasen, se Kilder og Budsjettløp; overstyres med --rnb)"
-        if rnb is not None else
-        f"Tillegg i RNB {aar_foer} for UiT, kap. 260 post 50: ikke i budsjettbasen ennå; fyll inn fra supplerende tildelingsbrev")
+    for navn in ("hovedtall_rnb", "hovedtall_realvekst_b_rnb", "hovedtall_realvekst_a_rnb"):
+        etikett = celle(navn).offset(column=-1)
+        etikett.value = etikett.value.replace("<år−1>", str(aar_foer))
+    if rnb is None:
+        celle("hovedtall_rnb").offset(column=-1).value = (
+            f"RNB-endring {aar_foer} for UiT, kap. 260 post 50: ikke i budsjettbasen ennå; fyll inn fra KDs supplerende tildelingsbrev")
     wb.save(output)
-    return {"output": str(output), "radantall": radantall, "rnb": rnb, "rnb_kilde": rnb_kilde}
+    return {"output": str(output), "radantall": radantall, "rnb": rnb, "rnb_kilde": rnb_kilde,
+            "base_merknad": kontroll_base(base, dok), "rnb_regime": rnb_regime(dok, rnb)}
 
 
 def _fyll_tabell(ws, blokk: dict, layout: mal.Layout, dok: dict, uit: dict, univ: list, alle: list, loep: list) -> None:

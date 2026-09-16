@@ -3,7 +3,7 @@
     bygg_base.py --kilder <mappe med <år>/blaatt-hefte-<år>-<utgave>.pdf> --output references/budsjettbase.json
                  [--rnb references/rnb-tillegg.json]
 
-Forslag og vedtatt leses fra heftene med les_blaatt_hefte.les. RNB-tilleggene kan
+Forslag og vedtatt leses fra heftene med les_blaatt_hefte.les. RNB-endringene kan
 ikke leses fra blått hefte; de kommer fra rnb-tillegg.json (per budsjettår: beløp i
 1 000 kroner, komponenter og kilde), som vedlikeholdes fra RNB-proposisjonen og
 KDs supplerende tildelingsbrev. Basen skrives på nytt hver gang og eier ingen tall
@@ -64,9 +64,14 @@ def bygg(kilder: Path, rnb_fil: Path | None) -> dict:
         base.setdefault(aar, {"forslag": None, "vedtatt": None, "rnb": None})["rnb"] = post
     for aar, post in base.items():
         v, r = post["vedtatt"], post["rnb"]
-        post["vedtatt_inkl_rnb"] = (v["ramme"] + r["tillegg"]) if v and r and r.get("tillegg") is not None else None
+        post["vedtatt_etter_rnb"] = (v["ramme"] + r["endring"]) if v and r and r.get("endring") is not None else None
+        brev = (r or {}).get("tildelingsbrev")
+        if v and brev and brev.get("ramme") != v["ramme"]:
+            raise SystemExit(f"{aar}: tildelingsbrevets ramme {brev['ramme']} avviker fra blått hefte etter vedtak {v['ramme']}")
+    if not base:
+        raise SystemExit(f"ingen hefter funnet under {kilder}; basen er ikke skrevet")
     return {
-        "beskrivelse": "UiT, kap. 260 post 50, 1 000 kroner. forslag og vedtatt er lest fra blått hefte (utgave forslag / etter vedtak); rnb er tillegget i revidert nasjonalbudsjett samme budsjettår, fra rnb-tillegg.json.",
+        "beskrivelse": "UiT, kap. 260 post 50, 1 000 kroner. forslag og vedtatt er lest fra blått hefte (utgave forslag / etter vedtak); rnb er endringen i revidert nasjonalbudsjett samme budsjettår, fra rnb-tillegg.json.",
         "bygget_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "rnb_kilde": str(rnb_fil) if rnb_fil else None,
         "aar": dict(sorted(base.items())),
@@ -80,11 +85,17 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--output", type=Path, default=STANDARD_UT)
     a = p.parse_args(argv)
     base = bygg(a.kilder, a.rnb)
+    if a.output.exists():
+        gammel = json.loads(a.output.read_text(encoding="utf-8")).get("aar", {})
+        tapt = [aar for aar, post in gammel.items()
+                if aar not in base["aar"] or any(post.get(k) and not base["aar"][aar].get(k) for k in ("forslag", "vedtatt", "rnb"))]
+        if tapt:
+            raise SystemExit(f"basen ville mistet data for {tapt}; ikke skrevet")
     a.output.write_text(json.dumps(base, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
     for aar, post in base["aar"].items():
         f = post["forslag"]["ramme"] if post["forslag"] else "-"
         v = post["vedtatt"]["ramme"] if post["vedtatt"] else "-"
-        r = post["rnb"]["tillegg"] if post["rnb"] else "-"
+        r = post["rnb"]["endring"] if post["rnb"] else "-"
         print(f"{aar}: forslag {f}  vedtatt {v}  rnb {r}")
     return 0
 

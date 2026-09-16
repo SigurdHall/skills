@@ -100,7 +100,7 @@
       },
       {
        "navn": "hovedtall_realvekst_b_rnb",
-       "etikett": "Realvekst (metode b, med RNB)",
+       "etikett": "Realvekst (metode b, med RNB <år−1> i utgangspunktet)",
        "formel": "=IF(@hovedtall_rnb=\"\",\"ikke oppgitt\",(@hovedtall_endring-@hovedtall_prisjustering)/(@hovedtall_utgangspunkt+@hovedtall_rnb))",
        "format": "prosent"
       }
@@ -146,13 +146,25 @@
       },
       {
        "navn": "hovedtall_realvekst_a_rnb",
-       "etikett": "Realvekst (metode a, med RNB)",
+       "etikett": "Realvekst (metode a, med RNB <år−1> i utgangspunktet)",
        "formel": "=IF(@hovedtall_rnb=\"\",\"ikke oppgitt\",@hovedtall_endring/(@hovedtall_utgangspunkt+@hovedtall_rnb)-@hovedtall_prissats)",
        "format": "prosent"
       },
       {
+       "navn": "hovedtall_realvekst_b_rnb_varig",
+       "etikett": "Realvekst (metode b) om RNB-endringen er varig og ikke inngår i prisjusteringskolonnen",
+       "formel": "=IF(@hovedtall_rnb=\"\",\"ikke oppgitt\",(@hovedtall_forslag-(@hovedtall_utgangspunkt+@hovedtall_rnb)-@hovedtall_prisjustering)/(@hovedtall_utgangspunkt+@hovedtall_rnb))",
+       "format": "prosent"
+      },
+      {
+       "navn": "hovedtall_rnb_regime",
+       "etikett": "RNB-regime (utledet av skriptet)",
+       "felt": "rnb.regime",
+       "format": "tekst"
+      },
+      {
        "navn": "hovedtall_rnb",
-       "etikett": "Tillegg i RNB <år-1>, kap. 260 post 50, hentes fra RNB-proposisjonen; tom = ikke justert",
+       "etikett": "RNB-endring <år−1> for UiT, kap. 260 post 50, fra budsjettbasen (KDs supplerende tildelingsbrev); tom = ikke justert",
        "inndata": true,
        "format": "belop"
       }
@@ -201,13 +213,13 @@
       },
       {
        "kolonne": "E",
-       "overskrift": "RNB-tillegg",
+       "overskrift": "RNB-endring, kap. 260 post 50",
        "felt": "rnb",
        "format": "belop"
       },
       {
        "kolonne": "F",
-       "overskrift": "Vedtatt inkl. RNB",
+       "overskrift": "Vedtatt etter RNB",
        "formel": "=IF(OR(D{rad}=\"\",E{rad}=\"\"),\"ikke oppgitt\",D{rad}+E{rad})",
        "format": "belop"
       },
@@ -222,7 +234,7 @@
     {
      "navn": "budsjettloep_merknad",
      "type": "fritekst",
-     "tekst": "RNB-tillegget er UiTs endring på kap. 260 post 50 i KDs supplerende tildelingsbrev nr. 1 etter revidert nasjonalbudsjett (juni/juli). Proposisjonen har bare sektortall, og blått hefte har ingen RNB-utgave. Realvekst «med RNB» i Hovedtall bruker RNB-tillegget for året før som del av utgangspunktet."
+     "tekst": "RNB-endringen er UiTs endring på kap. 260 post 50 i KDs supplerende tildelingsbrev nr. 1 etter revidert nasjonalbudsjett (juni/juli); den kan være negativ. Proposisjonen har bare sektortall, og blått hefte har ingen RNB-utgave. Hovedtall bruker RNB-endringen for året før som del av utgangspunktet. Kilder merket (uverifisert) er ikke kontrollert mot et offentlig dokument."
     }
    ]
   },

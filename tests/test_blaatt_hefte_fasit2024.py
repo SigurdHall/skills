@@ -162,7 +162,8 @@ def test_realvekst_fire_tall(ark):
     ht = ark["Hovedtall"]
     assert ht["C11"].value == "=('Hovedtall'!$C$8-'Hovedtall'!$C$15)/'Hovedtall'!$C$6"
     assert ht["C19"].value == "='Hovedtall'!$C$9-'Hovedtall'!$C$10"
-    assert ht["C21"].value == RNB
+    rnb_rad = next(r for r in range(1, ht.max_row + 1) if isinstance(ht[f"B{r}"].value, str) and ht[f"B{r}"].value.startswith("RNB-endring"))
+    assert ht[f"C{rnb_rad}"].value == RNB
 
 
 def test_avvikslisten_er_lukket_og_brukt():

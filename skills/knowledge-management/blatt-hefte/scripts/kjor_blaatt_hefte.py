@@ -98,7 +98,7 @@ def hovedtall(dok: dict | None, rnb: int | None) -> dict:
                 prissats=dok["prisjustering"]["sats_prosent"])
     if pris is not None:
         tall["realvekst_uten_rnb"] = 100 * (endring - pris) / utg
-        if rnb:
+        if rnb is not None:
             tall["realvekst_med_rnb"] = 100 * (endring - pris) / (utg + rnb)
     return tall
 
@@ -204,6 +204,10 @@ def kjor(args: argparse.Namespace) -> int:
         ark_sti = Path(args.output) if args.output else ut / f"uit-ramme-{args.year}-{utgave}.xlsx"
         bygget = bygg_rammeark.bygg(dok, ark_sti, rnb=args.rnb, finn_rapport=finn_rapport)
         rnb_brukt, rnb_kilde = bygget["rnb"], bygget["rnb_kilde"]
+        if bygget.get("base_merknad"):
+            merknader.append(bygget["base_merknad"])
+        if rnb_brukt is not None and "UVERIFISERT" in rnb_kilde:
+            merknader.append(f"RNB-endringen for {args.year - 1} er ikke verifisert mot et offentlig dokument.")
         klokke.maal("bygg", t)
         dom = dom or f"publisert; {utgave}sutgaven for {args.year} er hentet og lest"
         returkode = 10 if merknader else 0
@@ -228,8 +232,10 @@ def kjor(args: argparse.Namespace) -> int:
         nominell_pst=fmt_pst(tall["nominell_pst"]),
         prissats=("ikke levert" if tall["prissats"] is None else f"{tall['prissats']:.1f} %".replace(".", ",")),
         realvekst_uten_rnb=fmt_pst(tall["realvekst_uten_rnb"]),
-        realvekst_med_rnb=("ikke oppgitt" if rnb_brukt is None
-                           else fmt_pst(tall["realvekst_med_rnb"]) + f" (RNB {args.year - 1}: {fmt_kr(rnb_brukt)})"),
+        realvekst_med_rnb=("ikke oppgitt" if rnb_brukt is None or tall["realvekst_med_rnb"] is None
+                           else fmt_pst(tall["realvekst_med_rnb"])
+                           + f" (RNB-endring {args.year - 1}: {fmt_kr(rnb_brukt)}; effekt "
+                           + f"{tall['realvekst_med_rnb'] - tall['realvekst_uten_rnb']:+.2f} pp)".replace(".", ",")),
         kontroll_a=kontrolltekst(dok, "alle_rader_summerer"), kontroll_b=kontroll_b_tekst(dok),
         kontroll_c=(dok["hovedtabell"]["kontroll"]["kryss"]["status"] if dok else "ikke levert"),
         ren_sats=("ikke levert" if dok is None else str(dok["prisjustering"]["ren_sats"])),
