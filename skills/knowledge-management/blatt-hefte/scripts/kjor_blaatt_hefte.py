@@ -26,6 +26,7 @@ import bygg_rammeark  # noqa: E402
 import finn_blaatt_hefte  # noqa: E402
 import hent_blaatt_hefte  # noqa: E402
 import les_blaatt_hefte  # noqa: E402
+import proeve  # noqa: E402
 
 SKILL = HER.parent
 PROSJEKT = Path("/home/sihal7953/repos/uit-statsbudsjett")
@@ -202,7 +203,8 @@ def kjor(args: argparse.Namespace) -> int:
         t = time.perf_counter()
         klokke.krev("bygg")
         ark_sti = Path(args.output) if args.output else ut / f"uit-ramme-{args.year}-{utgave}.xlsx"
-        bygget = bygg_rammeark.bygg(dok, ark_sti, rnb=args.rnb, finn_rapport=finn_rapport)
+        bygget = bygg_rammeark.bygg(dok, ark_sti, rnb=args.rnb, finn_rapport=finn_rapport,
+                                    base=getattr(args, "base", None))
         rnb_brukt, rnb_kilde = bygget["rnb"], bygget["rnb_kilde"]
         if bygget.get("base_merknad"):
             merknader.append(bygget["base_merknad"])
@@ -256,9 +258,14 @@ def universitetsavvik(dok: dict) -> list[str]:
     """Merknad når heftets universitetsliste avviker fra references/institusjoner.json."""
     if not INSTITUSJONER.exists():
         return []
-    aar = dok["kilde"]["budsjettaar"]
-    kjent = {u["kortkode"].upper() for u in json.loads(INSTITUSJONER.read_text(encoding="utf-8")).get("universiteter", [])
-             if u.get("fra_budsjettaar", 0) <= aar}
+    aar, utgave = dok["kilde"]["budsjettaar"], dok["kilde"]["utgave"]
+    rang = {"forslag": 0, "vedtak": 1}
+
+    def gjelder(u: dict) -> bool:
+        fra_aar, fra_utg = u.get("fra_budsjettaar", 0), u.get("fra_utgave", "forslag")
+        return (aar, rang[utgave]) >= (fra_aar, rang.get(fra_utg, 0))
+
+    kjent = {u["kortkode"].upper() for u in json.loads(INSTITUSJONER.read_text(encoding="utf-8")).get("universiteter", []) if gjelder(u)}
     i_heftet = {i["kortkode_norm"] for i in dok["institusjoner"]["liste"] if i["universitet"] and i["statlig"]}
     nye, borte = sorted(i_heftet - kjent), sorted(kjent - i_heftet)
     if not nye and not borte:
@@ -286,11 +293,38 @@ def kontroll_b_tekst(dok: dict | None) -> str:
 
 
 def finn_referanse(pdf: Path, year: int, kilder_dir: Path) -> Path | None:
-    """Forrige års vedtaksutgave fra kildemappen, for kontroll C."""
-    for kandidat in (kilder_dir / str(year - 1)).glob("blaatt-hefte-*-vedtak*.pdf"):
-        if kandidat != pdf:
-            return kandidat
+    """Forrige års vedtaksutgave, for kontroll C: først i oppgitt kildemappe, så i prosjektets faste.
+    Forrige års hefte er en offentlig kilde fra før budsjettdagen og er lov også i prøvemodus."""
+    for mappe in (kilder_dir, PROSJEKT / "analyse" / "kilder" / "blaatt-hefte"):
+        for kandidat in (mappe / str(year - 1)).glob("blaatt-hefte-*-vedtak*.pdf"):
+            if kandidat != pdf:
+                return kandidat
     return None
+
+
+def kjor_proeve(args: argparse.Namespace) -> int:
+    """Som kjor, men som på budsjettdagen: ingen fasit, ingen cache, alt logget."""
+    proeve_dir, cache = proeve.ny_proeve_dir(args.year, args.stage)
+    args.output_dir = str(proeve_dir)
+    args.kilder_dir = str(cache)
+    args.output = None
+    args.status_output = None
+    args.known = str(proeve.filtrer_kjente(Path(args.known), args.year, proeve_dir / "kjente-utgaver-filtrert.json"))
+    args.base = proeve.filtrer_base(bygg_rammeark.last_base(), args.year)
+    (proeve_dir / "budsjettbase-filtrert.json").write_text(json.dumps(args.base, ensure_ascii=False, indent=1), encoding="utf-8")
+    vakt = proeve.installer_vakt(args.year, proeve_dir)
+    start = time.perf_counter()
+    try:
+        returkode = kjor(args)
+    except PermissionError as feil:
+        sys.stdout.write(f"\nPRØVEN STOPPET: {feil}\n")
+        returkode = 11
+    vegg = round(time.perf_counter() - start, 2)
+    manifest = proeve.skriv_manifest(proeve_dir, vakt, args.year, args.stage, returkode, cache)
+    sys.stdout.write(f"\nPrøvemodus: leveranse {proeve_dir}; manifest {manifest.name}; "
+                     f"brudd på filvakten: {len(vakt.brudd)}; vegg-til-vegg i prosessen {vegg} s; "
+                     f"kjente utgaver og budsjettbase filtrert til år før {args.year}.\n")
+    return returkode
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -305,7 +339,12 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--output-dir", default=str(PROSJEKT / "leveranser" / "rammeark"))
     p.add_argument("--kilder-dir", default=str(PROSJEKT / "analyse" / "kilder" / "blaatt-hefte"))
     p.add_argument("--known", default=str(KJENTE))
+    p.add_argument("--proeve", action="store_true",
+                   help="prøvemodus: filvakt mot fasit, kjente utgaver og base filtrert til år før, egen leveransemappe, manifest")
     args = p.parse_args(argv)
+    args.base = None
+    if args.proeve:
+        return kjor_proeve(args)
     if args.output and not args.status_output:
         args.status_output = str(Path(args.output).with_name(f"status-{args.year}-{args.stage}.md"))
     return kjor(args)

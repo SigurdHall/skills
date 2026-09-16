@@ -55,6 +55,17 @@ Er regjeringen.no nede eller heftet lastet ned i nettleseren, kjør med
 Websøk som fallback når kode 2, 4 eller 5 kommer etter publiseringsdatoen:
 `site:regjeringen.no/contentassets orientering statsbudsjettet <år> universitet hogskular`.
 
+## Prøvemodus
+
+`--proeve` kjører året som om det var budsjettdagen: kjente utgaver og
+budsjettbase filtreres til år før, heftet hentes til en tom cache, leveransen
+går til `leveranser/proeve/<tidsstempel>-<år>-<utgave>/`, og en filvakt stopper
+prosessen (returkode 11) hvis den åpner noe under `<prosjekt>/<år>/`,
+`leveranser/`, årets kildemapper, `assets/fasit-2024.json` eller testfixtures.
+`manifest.json` i mappen har sha256 av alt som ble skrevet, hentet og lest.
+Instruks for en tidsmålt prøve i en ny samtale:
+`uit-statsbudsjett/docs/proeve-2026-ny-samtale.md`.
+
 ## Budsjettbasen
 
 `references/budsjettbase.json` har UiTs forslag, vedtatt og RNB-tillegg per
