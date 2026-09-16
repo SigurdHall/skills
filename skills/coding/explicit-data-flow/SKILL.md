@@ -1,155 +1,120 @@
 ---
 name: explicit-data-flow
-description: Write, rebuild or review table-transformation code (Spark, pandas or SQL notebooks, medallion layers, ETL scripts) as explicit straight-line data flow with one section per output table, literal source and output, and business rules placed where they are used. Use when the user asks for readable transformations, ombygging, less indirection, fewer config dicts, or says "kode er billig, eierskap er dyrt". Not for application or library architecture, and never a reason to drop correctness guards.
+description: Write, rebuild or review table-transformation code (Spark, pandas or SQL notebooks, medallion layers, ETL scripts) as straight-line top-level chains, one per output table, with the read at the top, the write at the bottom, checks inline and no helper functions. Use when the user asks for readable transformations, ombygging, straight-line code, less indirection, fewer config dicts, or says "kode er billig, eierskap er dyrt". Not for application or library architecture, and never a reason to drop correctness checks.
 ---
 
 # Explicit Data Flow
 
 Code is cheap, ownership is expensive. The owner must be able to read every
-table from source to output without tracing a loop, a configuration object or
-a helper whose behaviour depends on the table name. An abstraction is allowed
-only when it pays for itself in a measured saving or a removed defect, never
-in fewer lines.
+table from source to output in one place, top to bottom, without entering a
+function, following a loop, or opening a configuration object. Repeated code
+is the accepted price. An abstraction is allowed only when it pays for itself
+in a measured saving, never in fewer lines.
 
-## The reader test
+## The shape
 
-Pick any output table. Reading one section top to bottom, the reader answers:
-
-1. Where do the rows come from, and at which version or filter?
-2. Which rows are kept?
-3. Which columns are selected, renamed or derived, and by which rule?
-4. Which checks apply, and what stops the run?
-5. Where is it written, in which mode, with which partition?
-
-A place is anywhere a table-specific rule lives: the section itself, a dict
-entry keyed by the table, a branch on its name. The shared mechanics cell does
-not count; a reader learns `write_gold` once. If a table needs a second place,
-that is a finding. Count the places per table when reviewing; more than two is
-a defect.
-
-## Rules
-
-1. **One section per output table**, in build order. The heading is the table
-   name. Dependencies sit above their users.
-2. **Source and output are literal** inside the section: the read at the top,
-   the write at the bottom, both with the table name spelled out. No output
-   name derived from string splitting, suffix stripping or prefix tests.
-3. **Name an intermediate when it has business meaning**: `regnskap`,
-   `regnskap_med_koder`, `budsjett_med_versjon`. Not `df2`, `tmp`, `out`.
-4. **Column choices and business rules live in the section that uses them.**
-   A column list for one table sits in that table's section, not in a
-   cross-table dict keyed by table name. The one exception is the rule block
-   of a uniform loop, defined under Loops.
-5. **No dispatch on table name.** No `if table_name == ...`, no
-   `rules[table_name]`, no `kind` or `slag` discriminator, no behaviour from
-   a name prefix. Two tables needing the same operation call the same
-   function twice with explicit arguments.
-6. **Transformations in natural order**: filter, select and rename, join
-   lookups, derive, check, write. The order a person would describe it.
-7. **Guards are part of the flow.** Call `require_unique(...)` right after
-   the step that can break uniqueness, inside the section. Do not centralise
-   checks in a `check_configuration()` that validates dicts.
-8. **No metaprogramming.** No `getattr`, `globals()`, generated expressions
-   from name patterns, decorators, registries or builder dicts.
-
-## What shared code may look like
-
-Shared functions are mechanics that are identical for every caller and carry
-no per-table branch: read at a locked version, write with a mode, unique
-check, reconciliation, status row. Each takes its inputs as arguments, does
-one thing, has a verb name, and stays short enough to read in one screen.
-A function that chooses behaviour from `table_name` is a dispatcher, not a
-mechanic. Looking up run state by the table being read, such as the locked
-version of that table, is a mechanic: the name selects data, not a code path.
-
-Inline versus extract: if inlining costs at most five lines and at most three
-copies, inline. Extract only identical mechanics. An extraction justified by
-efficiency must state the measured saving in a comment; an unmeasured
-efficiency claim does not buy indirection.
-
-## Loops
-
-A loop is allowed for uniform work: every iteration is the same operation on
-the same shape, and the body has no branch on which table it is. The list it
-iterates is a literal directly above it. The moment one table needs a
-different operation, it leaves the loop and gets its own section.
-
-Per-table rule blocks are acceptable inside such a loop when all three hold:
-every rule is a column list or a rename mapping consumed by the same uniform
-step in the same order for every table, all rules for a table sit together in
-one block, and the loop body has no table-name branch. Such a block is the
-table's section; it counts as one place. Ten dicts each keyed by table name,
-where one table's rules are spread across all ten, is the pattern this skill
-removes, and so is any dict whose values select a code path.
-
-## Rollback, locking and status
-
-Run-level mechanics stay in one clearly marked run section as straight-line
-code: lock sources, remember previous versions, try the sections in order,
-reconcile, write status, on failure restore. When every table must be written
-under one rollback, write each table section as a function named for the
-table, body straight-line, and call them in an explicit ordered list in the
-run section. One level of indirection, named, no dispatcher.
-
-## Example
-
-Before, the reader visits `bygg`, `fakta`, `build_fact`, `fakta_koder`,
-`with_natural_keys` and `write_gold` to learn what `fak_regnskap` is:
-
-```python
-fakta = {"fak_regnskap": {"kilde": "regnskap", "nye_navn": {...}, "fjern": [...], "datoer": [...]}}
-for table_name in bygg:
-    if table_name in fakta:
-        df = build_fact(table_name)
-```
-
-After, one section answers all five questions:
+One output table is one chain at top level, named for the table:
 
 ```python
 # ## fak_regnskap
-def bygg_fak_regnskap():
-    regnskap = silver("fak_okonomi").where(F.col("kilde") == "regnskap")
-    regnskap = regnskap.drop("kilde", "belop_budsjett", "belop_valuta_budsjett", "timer_budsjett", ...)
-    regnskap = (regnskap.withColumnRenamed("belop_regnskap", "belop")
-                        .withColumnRenamed("belop_valuta_regnskap", "belop_valuta")
-                        .withColumn("bilagsdato", F.col("bilagsdato").cast("date")))
-    # Naturlige nøkler fra dimensjonene. Surrogatene slippes etterpå.
-    regnskap_med_koder = with_code(regnskap, gold("dim_konto"), "zk_dim_konto", "konto_kode")
-    regnskap_med_koder = with_code(regnskap_med_koder, gold("dim_koststed"), "zk_dim_koststed", "koststed_kode")
-    require_all_matched(regnskap_med_koder, ["konto_kode", "koststed_kode"], "fak_regnskap")
-    fak_regnskap = regnskap_med_koder.drop(*[c for c in regnskap_med_koder.columns if c.startswith("zk_dim_")])
-    return write_gold(fak_regnskap, "fak_regnskap", partition="periode_aar")
+fak_regnskap = (
+    spark.read.option("versionAsOf", silver_lock["fak_okonomi"]).table("lh_okonomi.silver_okonomi.fak_okonomi")
+    .filter(F.col("kilde") == "regnskap")
+    .drop("kilde", "belop_budsjett", "belop_valuta_budsjett", "timer_budsjett", "dato_fra", "dato_til")
+    .withColumnRenamed("belop_regnskap", "belop")
+    .withColumn("bilagsdato", F.col("bilagsdato").cast("date"))
+    .join(dim_konto.select("zk_dim_konto", "konto_kode"), "zk_dim_konto", "left")
+    .join(dim_koststed.select("zk_dim_koststed", "koststed_kode"), "zk_dim_koststed", "left")
+)
+# Stopper ved faktarader uten dimensjonstreff. Ukjent-raden -1 er et treff.
+if fak_regnskap.where(F.col("konto_kode").isNull() | F.col("koststed_kode").isNull()).first():
+    raise ValueError("fak_regnskap: faktarader uten dimensjonstreff.")
+fak_regnskap = fak_regnskap.drop("zk_dim_konto", "zk_dim_koststed")
+(fak_regnskap.write.format("delta").mode("overwrite").option("overwriteSchema", "true")
+    .partitionBy("periode_aar").saveAsTable("gold_okonomi.fak_regnskap"))
 ```
+
+Reading it answers, in order: where the rows come from and at which version,
+which rows are kept, which columns are chosen, renamed and derived, which
+lookups apply, what stops the run, where it is written and how. Nothing else
+in the file is needed.
+
+## Rules
+
+1. **One chain per output table, at top level**, in build order, under a
+   heading with the table name. No `def` around it.
+2. **No helper functions in the notebook.** Reads, transformations, checks
+   and writes are written out where they happen. A check is two or three
+   lines after the chain: a filter or a groupBy, an `if`, a `raise` with the
+   table name in the message. If the same check appears in twenty sections,
+   it appears twenty times.
+3. **Literal names everywhere.** The table read, the table written, the
+   partition column, the join keys. No name built from a prefix, a suffix, a
+   string split or a dict lookup.
+4. **Business rules sit in the chain that uses them.** A drop list, a rename,
+   a date cast, a lookup belong to one table and are written in that table's
+   chain, not in a cross-table dict.
+5. **No dispatch on table name.** No `if table_name == ...`,
+   `rules[table_name]`, kind flags or registries.
+6. **Natural order inside the chain**: read, filter, select and rename,
+   derive, join lookups, then checks, then write.
+7. **Name an intermediate only when it carries business meaning** and is
+   used again: `regnskap`, `budsjett_med_versjon`. Otherwise keep chaining.
+8. **Comments are short working notes** on the line above the step they
+   explain: why a column is dropped, why a check exists, which order matters.
+
+## Loops
+
+A loop is allowed for uniform mechanics that are identical for every item
+and carry no per-item branch: locking a list of source tables at their
+confirmed version, applying the same cleaning to a list of look-alike tables
+with a rule block each, resolving where snapshot rows live for a list of
+tables. The loop body is written out inline like any chain. The list it
+iterates is a literal directly above it. A table that needs anything the
+loop body does not do leaves the loop and gets its own chain.
+
+A rule block inside such a loop is that table's section: all of its rules
+(key, drops, casts, renames) in one dict literal, consumed in the same order
+for every table. Ten dicts keyed by table name with one table's rules spread
+across them is the pattern this skill removes.
+
+## Failure and rollback
+
+Do not wrap chains in functions to get a `try/except` around them. Each Delta
+overwrite is atomic on its own; a failure stops the notebook at the failing
+cell and leaves earlier tables written and later ones from the previous run.
+Make that acceptable by construction: put a reconciliation cell at the end,
+write the status row last, and let the pipeline decide what to rerun. If the
+owner needs every table to switch together, write to a staging schema and
+publish in one final cell, still without functions.
 
 ## Rebuild procedure
 
-1. **Inventory the contract.** For every output table, from the existing
-   dicts and dispatcher: source, filter, columns kept, renames, derived
-   columns, checks, write mode and partition. This is the behaviour to keep.
-2. **Write each section from the inventory.** Behaviour identical unless the
+1. **Inventory the contract** per output table from the old code: source and
+   version, filter, columns kept, renames, derived columns, checks with their
+   messages, write mode and partition. That is what must survive.
+2. **Write each chain from the inventory.** Behaviour identical unless the
    review listed a defect, and then the change is named in the report.
-3. **Keep only mechanics.** Move them to one short cell near the top. Delete
-   dispatchers, discriminators, dicts that spread one table's rules over
-   several places or select code paths, and the functions that validated
-   them. A rule block under Loops stays.
+3. **Delete every function, config dict and dispatcher.** Inline what they
+   did, where it is used. Keep a loop only for uniform mechanics.
 4. **Prove equivalence** on a fixture: same columns and types, same rows,
-   same guards firing with the same messages. Rewrite tests to call sections
-   and mechanics directly; tests of the removed configuration layer are
-   removed with it.
+   same checks firing with messages the tests match. Tests run the cells in
+   order and inject failures between cells; tests of removed mechanics such
+   as configuration validation or rollback are removed with them.
 
 ## Review procedure
 
-For each output table, count the places visited to answer the reader test.
-List every dispatcher, dict keyed by table name, name-derived behaviour, loop
-with a per-table branch, helper with a hidden lookup, and configuration
-validator. Report per table: places visited, the hidden rule, the proposed
-section. Say which guards must survive the rebuild.
+For each output table, count the places a reader must visit to answer the
+questions under The shape. More than one is a finding. List every function,
+dict keyed by table name, name-derived behaviour, loop with a per-table
+branch and configuration validator. Report per table: places visited, the
+hidden rule, the proposed chain. Say which checks must survive.
 
 ## Completion report
 
-- Tables and their sections. Source lines before and after, reported, not
+- Tables and their chains. Source lines before and after, reported, not
   targeted.
-- Shared functions kept, each with its justification.
+- Loops kept, each with the uniform mechanic it covers.
 - Behavioural differences, expected none unless a listed defect was fixed.
 - Test evidence: which tests ran, on which runtime, what remains unverified.
 
