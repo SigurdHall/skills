@@ -1,0 +1,69 @@
+{
+ "budsjettaar": 2023,
+ "utgave": "forslag",
+ "kolonner": [
+  "Saldert budsjett 2022",
+  "Prisjustering",
+  "Studieplassar 2019–2022",
+  "Resultatbasert utteljing",
+  "Inndekning satsingar",
+  "Endra reisevanar",
+  "Premiemodell pensjon",
+  "Studieavgift utanfrå EØS",
+  "Andre endringar",
+  "Forslag rammeløyving 2023"
+ ],
+ "antall_rader": 21,
+ "uit_rad": [
+  3647822,
+  109435,
+  29617,
+  50932,
+  -20395,
+  -21771,
+  -214,
+  -5216,
+  16279,
+  3806489
+ ],
+ "sats_prosent": 3.0,
+ "ren_sats": true,
+ "resultat_kolonner": [
+  "Studiepoeng",
+  "Kandidatar",
+  "Utvekslingsstudentar (inkl. Erasmus+)",
+  "Doktorgradar",
+  "Sum endring open ramme",
+  "Publiseringspoeng",
+  "Midlar frå EU",
+  "Inntekter frå NFR og regionale forskingsfond",
+  "BOA-inntekter",
+  "Sum endring lukka ramme"
+ ],
+ "resultat_uit": [
+  24120,
+  1165,
+  956,
+  6025,
+  32266,
+  -900,
+  15225,
+  543,
+  3798,
+  18666
+ ],
+ "lukket_ramme": true,
+ "universiteter": [
+  "NMBU",
+  "NTNU",
+  "NU",
+  "OM",
+  "UIA",
+  "UIB",
+  "UIO",
+  "UIS",
+  "UIT",
+  "USN"
+ ],
+ "prosjekt_pdf": "/home/sihal7953/repos/uit-statsbudsjett/analyse/kilder/blaatt-hefte/2023/blaatt-hefte-2023-forslag.pdf"
+}

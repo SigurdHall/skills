@@ -1,0 +1,63 @@
+{
+ "budsjettaar": 2025,
+ "utgave": "forslag",
+ "kolonner": [
+  "Saldert budsjett 2024",
+  "Prisjustering",
+  "Studieplassar 2020–2024",
+  "Utfasing rekr.-stillingar",
+  "Resultatbasert utteljing",
+  "Overgangsordning nytt fin.sys.",
+  "Reduksjon",
+  "Studieavgift",
+  "Eigenbetaling for gjentak",
+  "Desentralisert og fleksibel utdanning",
+  "Nye studieplassar",
+  "Andre endringar",
+  "Forslag rammeløyving 2025"
+ ],
+ "antall_rader": 21,
+ "uit_rad": [
+  4061059,
+  157470,
+  -17034,
+  -24255,
+  -25307,
+  20487,
+  -17329,
+  -5653,
+  -1091,
+  20800,
+  520,
+  -14214,
+  4155453
+ ],
+ "sats_prosent": 3.8,
+ "ren_sats": false,
+ "resultat_kolonner": [
+  "Studiepoeng",
+  "Doktorgradar",
+  "Fullføring",
+  "Sum"
+ ],
+ "resultat_uit": [
+  -21307,
+  -2996,
+  -1881,
+  -25307
+ ],
+ "lukket_ramme": false,
+ "universiteter": [
+  "NMBU",
+  "NTNU",
+  "NU",
+  "OM",
+  "UIA",
+  "UIB",
+  "UIO",
+  "UIS",
+  "UIT",
+  "USN"
+ ],
+ "prosjekt_pdf": "/home/sihal7953/repos/uit-statsbudsjett/analyse/kilder/blaatt-hefte/2025/blaatt-hefte-2025-forslag.pdf"
+}

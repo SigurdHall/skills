@@ -1,0 +1,71 @@
+{
+ "budsjettaar": 2021,
+ "utgave": "forslag",
+ "kolonner": [
+  "Saldert budsjett 2020",
+  "ABE-reform",
+  "Prisjustering",
+  "St.plassar 2016-2020",
+  "5. året lærarutd.",
+  "Rekr.-stillingar",
+  "Resultatbasert utteljing",
+  "Statens innkjøpssenter",
+  "Midlar til Udir",
+  "Andre endringar",
+  "Budsjettforslag 2021"
+ ],
+ "antall_rader": 21,
+ "uit_rad": [
+  3405234,
+  -17104,
+  108420,
+  69102,
+  6054,
+  22990,
+  13865,
+  -179,
+  -640,
+  null,
+  3607742
+ ],
+ "sats_prosent": 3.2,
+ "ren_sats": true,
+ "resultat_kolonner": [
+  "Studiepoeng",
+  "Kandidatar",
+  "Utvekslingsstudentar (inkl. Erasmus+)",
+  "Doktorgradar",
+  "Sum endring open ramme",
+  "Publiseringspoeng",
+  "Midlar frå EU",
+  "Inntekter frå NFR og regionale forskingsfond",
+  "BOA-inntekter",
+  "Sum endring lukka ramme"
+ ],
+ "resultat_uit": [
+  585,
+  6999,
+  -309,
+  909,
+  8184,
+  -912,
+  14319,
+  -1149,
+  -6577,
+  5681
+ ],
+ "lukket_ramme": true,
+ "universiteter": [
+  "NMBU",
+  "NTNU",
+  "NU",
+  "OM",
+  "UIA",
+  "UIB",
+  "UIO",
+  "UIS",
+  "UIT",
+  "USN"
+ ],
+ "prosjekt_pdf": "/home/sihal7953/repos/uit-statsbudsjett/analyse/kilder/blaatt-hefte/2021/blaatt-hefte-2021-forslag.pdf"
+}

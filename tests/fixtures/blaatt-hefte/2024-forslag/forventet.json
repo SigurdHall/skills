@@ -1,0 +1,73 @@
+{
+ "budsjettaar": 2024,
+ "utgave": "forslag",
+ "kolonner": [
+  "Saldert budsjett 2023",
+  "Prisjustering",
+  "Studieplassar 2019–2023",
+  "Utfasing rekr.-stillingar",
+  "Resultatbasert utteljing",
+  "Inndekning satsingar",
+  "Omfordeling Ukraina",
+  "Rammeauke (jf. kap. 3.3.3)",
+  "Studieavgift",
+  "Nye studieplassar",
+  "Andre endringar",
+  "Forslag rammeløyving 2024"
+ ],
+ "antall_rader": 21,
+ "uit_rad": [
+  3806533,
+  250434,
+  2839,
+  -11684,
+  -5085,
+  -42056,
+  -734,
+  47724,
+  -10891,
+  null,
+  8742,
+  4045822
+ ],
+ "sats_prosent": 4.4,
+ "ren_sats": false,
+ "resultat_kolonner": [
+  "Studiepoeng",
+  "Kandidatar",
+  "Utvekslingsstudentar",
+  "Doktorgrader",
+  "Sum endring open ramme",
+  "Publiseringspoeng",
+  "Midlar frå EU",
+  "Inntekter frå NFR/RFF",
+  "BOA-inntekter",
+  "Sum endring lukka ramme"
+ ],
+ "resultat_uit": [
+  -15672,
+  22117,
+  5208,
+  -4376,
+  7277,
+  1329,
+  -9306,
+  -495,
+  -3890,
+  -12362
+ ],
+ "lukket_ramme": true,
+ "universiteter": [
+  "NMBU",
+  "NTNU",
+  "NU",
+  "OM",
+  "UIA",
+  "UIB",
+  "UIO",
+  "UIS",
+  "UIT",
+  "USN"
+ ],
+ "prosjekt_pdf": "/home/sihal7953/repos/uit-statsbudsjett/analyse/kilder/blaatt-hefte/2024/blaatt-hefte-2024-forslag.pdf"
+}

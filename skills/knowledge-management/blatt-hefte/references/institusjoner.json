@@ -1,0 +1,117 @@
+{
+  "beskrivelse": "Kortkoder for statlige universiteter og høgskoler i blått hefte. Listen er en kontrollreferanse: leseren bruker alltid heftets egen forkortingsliste og advarer når den avviker fra denne filen. Poster med fra_budsjettaar gjelder bare hefter for det året og senere.",
+  "kilde": "Forkortingslisten (pdf-side 4) i blått hefte 2022 forslag og 2026 forslag, lastet ned fra regjeringen.no",
+  "kontrollert": "2026-09-16",
+  "universiteter": [
+    {
+      "kortkode": "NU",
+      "navn": "Nord universitet"
+    },
+    {
+      "kortkode": "NMBU",
+      "navn": "Noregs miljø- og biovitskaplege universitet"
+    },
+    {
+      "kortkode": "NTNU",
+      "navn": "Noregs teknisk-naturvitskaplege universitet"
+    },
+    {
+      "kortkode": "OM",
+      "navn": "OsloMet – storbyuniversitetet"
+    },
+    {
+      "kortkode": "UiA",
+      "navn": "Universitetet i Agder"
+    },
+    {
+      "kortkode": "UiB",
+      "navn": "Universitetet i Bergen"
+    },
+    {
+      "kortkode": "UiO",
+      "navn": "Universitetet i Oslo"
+    },
+    {
+      "kortkode": "UiS",
+      "navn": "Universitetet i Stavanger"
+    },
+    {
+      "kortkode": "USN",
+      "navn": "Universitetet i Søraust-Noreg"
+    },
+    {
+      "kortkode": "UiT",
+      "navn": "Universitetet i Tromsø – Noregs arktiske universitet"
+    },
+    {
+      "kortkode": "INN",
+      "navn": "Universitetet i Innlandet",
+      "fra_budsjettaar": 2025,
+      "merknad": "Høgskolen i Innlandet fikk universitetsstatus i 2024; står som universitet i heftet fra 2025 etter vedtak."
+    }
+  ],
+  "nye_universiteter": [
+    {
+      "kortkode": "INN",
+      "navn": "Universitetet i Innlandet",
+      "fra_budsjettaar": 2025,
+      "merknad": "Høgskolen i Innlandet (HINN/HiNN) fikk universitetsstatus i 2024 og står som universitet i heftet fra og med 2025. Heftet for 2026 har derfor elleve universiteter, ikke ti. Leseren tar universitetsinndelingen fra heftet og advarer om avviket mot universiteter-listen."
+    }
+  ],
+  "kortkodevarianter": [
+    {
+      "institusjon": "Samisk høgskole",
+      "varianter": [
+        "SH",
+        "SA"
+      ],
+      "merknad": "SH til og med 2024, SA fra 2026-heftet (samisk namn Sámi allaskuvla)"
+    },
+    {
+      "institusjon": "Høgskolen i Innlandet / Universitetet i Innlandet",
+      "varianter": [
+        "HiNN",
+        "HINN",
+        "INN"
+      ],
+      "merknad": "HINN i 2022-heftet, INN etter universitetsstatus"
+    },
+    {
+      "institusjon": "Høgskulen i Volda",
+      "varianter": [
+        "HiVo",
+        "HVO"
+      ],
+      "merknad": "HiVo i 2022-heftet, HVO i 2026-heftet"
+    },
+    {
+      "institusjon": "Høgskolen i Molde, vitskapleg høgskole i logistikk",
+      "varianter": [
+        "HiM",
+        "HIM"
+      ],
+      "merknad": "Vitskapleg høgskole, ikke universitet, til tross for navneregelen"
+    },
+    {
+      "institusjon": "Høgskulen for grøn utvikling",
+      "varianter": [
+        "HGut",
+        "HGUt"
+      ],
+      "merknad": "Ulik store/små bokstaver mellom årganger"
+    },
+    {
+      "institusjon": "Barratt Due musikkinstitutt",
+      "varianter": [
+        "BD",
+        "BDM"
+      ],
+      "merknad": "BD i 2022-heftet, BDM i 2026-heftet"
+    }
+  ],
+  "normalisering": "Sammenlign kortkoder i STORE BOKSTAVER. Da faller HiNN/HINN, HiVo/HVO, HiM/HIM, HGut/HGUt sammen, mens SH/SA og BD/BDM må slås opp i kortkodevarianter.",
+  "ikke_universitet_tross_navn": [
+    "NHH",
+    "HiM"
+  ]
+}

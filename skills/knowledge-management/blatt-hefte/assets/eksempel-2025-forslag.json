@@ -1,0 +1,1212 @@
+{
+  "kontrakt_versjon": "1",
+  "kilde": {
+    "budsjettaar": 2025,
+    "utgave": "forslag",
+    "tittel": "Orientering om forslag til statsbudsjettet 2025 for universitet og høgskular",
+    "url": null,
+    "sha256": "5537b1083deed772c14f5a87c5fd045a97534ebb5e62be7644341c4b60502023",
+    "content_length": 1093956,
+    "hentet_utc": null,
+    "sider": 28,
+    "filnavn": "blaatt-hefte-forslag-2025.pdf"
+  },
+  "hovedtabell": {
+    "pdf_side": 13,
+    "trykt_side": 12,
+    "kolonner": [
+      "Saldert budsjett 2024",
+      "Prisjustering",
+      "Studieplassar 2020–2024",
+      "Utfasing rekr.-stillingar",
+      "Resultatbasert utteljing",
+      "Overgangsordning nytt fin.sys.",
+      "Reduksjon",
+      "Studieavgift",
+      "Eigenbetaling for gjentak",
+      "Desentralisert og fleksibel utdanning",
+      "Nye studieplassar",
+      "Andre endringar",
+      "Forslag rammeløyving 2025"
+    ],
+    "utgangspunkt_indeks": 0,
+    "sum_indeks": 12,
+    "rader": [
+      {
+        "kortkode": "AHO",
+        "kortkode_norm": "AHO",
+        "verdier": [
+          252874,
+          9816,
+          -3422,
+          -2109,
+          -1367,
+          2545,
+          -606,
+          -455,
+          -4,
+          null,
+          null,
+          13414,
+          270686
+        ]
+      },
+      {
+        "kortkode": "HIM",
+        "kortkode_norm": "HIM",
+        "verdier": [
+          359497,
+          13971,
+          -4465,
+          -6328,
+          -1532,
+          3418,
+          -1681,
+          -754,
+          -502,
+          1500,
+          null,
+          null,
+          363124
+        ]
+      },
+      {
+        "kortkode": "HINN",
+        "kortkode_norm": "HINN",
+        "verdier": [
+          1500699,
+          58151,
+          -8917,
+          -10546,
+          -57078,
+          7871,
+          -6998,
+          -1626,
+          -974,
+          12000,
+          500,
+          -3539,
+          1489543
+        ]
+      },
+      {
+        "kortkode": "HiØ",
+        "kortkode_norm": "HIØ",
+        "verdier": [
+          858554,
+          33356,
+          -2549,
+          -5273,
+          -6846,
+          3275,
+          -3317,
+          -1212,
+          -336,
+          3400,
+          null,
+          null,
+          879052
+        ]
+      },
+      {
+        "kortkode": "HVL",
+        "kortkode_norm": "HVL",
+        "verdier": [
+          2451315,
+          95289,
+          -13185,
+          -11601,
+          -46002,
+          6976,
+          -8832,
+          -1575,
+          -991,
+          11800,
+          1000,
+          3580,
+          2487774
+        ]
+      },
+      {
+        "kortkode": "HVO",
+        "kortkode_norm": "HVO",
+        "verdier": [
+          456724,
+          17805,
+          -9579,
+          -6328,
+          -11747,
+          4025,
+          -2250,
+          -493,
+          -79,
+          3400,
+          1000,
+          null,
+          452478
+        ]
+      },
+      {
+        "kortkode": "KHiO",
+        "kortkode_norm": "KHIO",
+        "verdier": [
+          414682,
+          16169,
+          null,
+          null,
+          1102,
+          null,
+          -1283,
+          -378,
+          -5,
+          null,
+          null,
+          null,
+          430287
+        ]
+      },
+      {
+        "kortkode": "NHH",
+        "kortkode_norm": "NHH",
+        "verdier": [
+          639465,
+          24448,
+          -7622,
+          -4218,
+          -4660,
+          2448,
+          -2203,
+          -1724,
+          -1227,
+          600,
+          null,
+          null,
+          645307
+        ]
+      },
+      {
+        "kortkode": "NIH",
+        "kortkode_norm": "NIH",
+        "verdier": [
+          271572,
+          10514,
+          4056,
+          -1055,
+          9336,
+          null,
+          -572,
+          null,
+          -19,
+          null,
+          null,
+          10000,
+          303832
+        ]
+      },
+      {
+        "kortkode": "NMBU",
+        "kortkode_norm": "NMBU",
+        "verdier": [
+          1576922,
+          60943,
+          -16111,
+          -15819,
+          31301,
+          12918,
+          -4890,
+          -3177,
+          -355,
+          1300,
+          1513,
+          null,
+          1644545
+        ]
+      },
+      {
+        "kortkode": "NMH",
+        "kortkode_norm": "NMH",
+        "verdier": [
+          334470,
+          13028,
+          -3421,
+          -2109,
+          -793,
+          null,
+          -1035,
+          -463,
+          -46,
+          null,
+          null,
+          -304,
+          339327
+        ]
+      },
+      {
+        "kortkode": "NTNU",
+        "kortkode_norm": "NTNU",
+        "verdier": [
+          7981643,
+          306234,
+          -25390,
+          -30583,
+          5070,
+          23186,
+          -26651,
+          -12910,
+          -3634,
+          13100,
+          3307,
+          11265,
+          8244637
+        ]
+      },
+      {
+        "kortkode": "NU",
+        "kortkode_norm": "NU",
+        "verdier": [
+          1878541,
+          72884,
+          -9229,
+          -10546,
+          -43578,
+          5372,
+          -7561,
+          -2492,
+          -832,
+          11500,
+          500,
+          -47531,
+          1847028
+        ]
+      },
+      {
+        "kortkode": "OM",
+        "kortkode_norm": "OM",
+        "verdier": [
+          3057020,
+          118509,
+          -24688,
+          -21091,
+          -16327,
+          12613,
+          -10572,
+          -4555,
+          -972,
+          8800,
+          3779,
+          5674,
+          3128190
+        ]
+      },
+      {
+        "kortkode": "SA",
+        "kortkode_norm": "SA",
+        "verdier": [
+          118602,
+          4586,
+          -1089,
+          -1055,
+          -233,
+          350,
+          -469,
+          -54,
+          null,
+          400,
+          null,
+          8114,
+          129152
+        ]
+      },
+      {
+        "kortkode": "UiA",
+        "kortkode_norm": "UIA",
+        "verdier": [
+          1836781,
+          71313,
+          173,
+          -5273,
+          10107,
+          5565,
+          -8022,
+          -2717,
+          -1565,
+          10700,
+          1520,
+          -545,
+          1918037
+        ]
+      },
+      {
+        "kortkode": "UiB",
+        "kortkode_norm": "UIB",
+        "verdier": [
+          4301359,
+          166280,
+          -9550,
+          -16873,
+          13233,
+          15747,
+          -16820,
+          -7108,
+          -2148,
+          3100,
+          3545,
+          1255,
+          4452020
+        ]
+      },
+      {
+        "kortkode": "UiO",
+        "kortkode_norm": "UIO",
+        "verdier": [
+          6423058,
+          248184,
+          -13848,
+          -20037,
+          8900,
+          15637,
+          -18049,
+          -13870,
+          -2051,
+          null,
+          3307,
+          -1681,
+          6629550
+        ]
+      },
+      {
+        "kortkode": "UiS",
+        "kortkode_norm": "UIS",
+        "verdier": [
+          1981487,
+          76668,
+          -21777,
+          -16873,
+          -14613,
+          9103,
+          -7657,
+          -8176,
+          -776,
+          5800,
+          null,
+          7720,
+          2010906
+        ]
+      },
+      {
+        "kortkode": "UiT",
+        "kortkode_norm": "UIT",
+        "verdier": [
+          4061059,
+          157470,
+          -17034,
+          -24255,
+          -25307,
+          20487,
+          -17329,
+          -5653,
+          -1091,
+          20800,
+          520,
+          -14214,
+          4155453
+        ]
+      },
+      {
+        "kortkode": "USN",
+        "kortkode_norm": "USN",
+        "verdier": [
+          2290922,
+          88830,
+          -21016,
+          -18982,
+          -39177,
+          9959,
+          -9097,
+          -4980,
+          -832,
+          9200,
+          1279,
+          4000,
+          2310106
+        ]
+      }
+    ],
+    "kontroll": {
+      "alle_rader_summerer": true,
+      "antall_rader": 21,
+      "forventet_rader": 21,
+      "antall_band": 13,
+      "antall_overskrifter": 13,
+      "utgangspunkt_gjenkjent": true,
+      "sum_gjenkjent": true,
+      "kryss": {
+        "status": "ikke_mulig",
+        "referanse": null,
+        "avvik": []
+      }
+    }
+  },
+  "prisjustering": {
+    "sats_prosent": 3.8,
+    "sitat": "Kolonnen Prisjustering viser prisjusteringa av Saldert budsjett 2024 og tilbakeføring av prisjusteringa som blei redusert i budsjettforliket i 2024. Satsen for prisjustering for 2025 er 3,8 pst. som for andre 50- og 70-postar i statsbudsjettet.",
+    "pdf_side": 11,
+    "kolonne_indeks": 1,
+    "uit_kolonne": 157470,
+    "uit_beregnet": 154320,
+    "avvik": 3150,
+    "ren_sats": false
+  },
+  "resultat": {
+    "pdf_side": 24,
+    "kolonner": [
+      "Studiepoeng",
+      "Doktorgradar",
+      "Fullføring",
+      "Sum"
+    ],
+    "sumkolonner": [
+      3
+    ],
+    "rader": [
+      {
+        "kortkode": "AHO",
+        "kortkode_norm": "AHO",
+        "verdier": [
+          1399,
+          -1933,
+          -833,
+          -1367
+        ]
+      },
+      {
+        "kortkode": "HIM",
+        "kortkode_norm": "HIM",
+        "verdier": [
+          331,
+          967,
+          -2830,
+          -1532
+        ]
+      },
+      {
+        "kortkode": "HINN",
+        "kortkode_norm": "HINN",
+        "verdier": [
+          -55252,
+          387,
+          -2213,
+          -57078
+        ]
+      },
+      {
+        "kortkode": "HiØ",
+        "kortkode_norm": "HIØ",
+        "verdier": [
+          -4744,
+          97,
+          -2199,
+          -6846
+        ]
+      },
+      {
+        "kortkode": "HVL",
+        "kortkode_norm": "HVL",
+        "verdier": [
+          -41060,
+          -2030,
+          -2912,
+          -46002
+        ]
+      },
+      {
+        "kortkode": "HVO",
+        "kortkode_norm": "HVO",
+        "verdier": [
+          -11191,
+          -290,
+          -266,
+          -11747
+        ]
+      },
+      {
+        "kortkode": "KHiO",
+        "kortkode_norm": "KHIO",
+        "verdier": [
+          null,
+          null,
+          1102,
+          1102
+        ]
+      },
+      {
+        "kortkode": "NHH",
+        "kortkode_norm": "NHH",
+        "verdier": [
+          -3804,
+          483,
+          -1339,
+          -4660
+        ]
+      },
+      {
+        "kortkode": "NIH",
+        "kortkode_norm": "NIH",
+        "verdier": [
+          9044,
+          null,
+          292,
+          9336
+        ]
+      },
+      {
+        "kortkode": "NMBU",
+        "kortkode_norm": "NMBU",
+        "verdier": [
+          23717,
+          7732,
+          -148,
+          31301
+        ]
+      },
+      {
+        "kortkode": "NMH",
+        "kortkode_norm": "NMH",
+        "verdier": [
+          1027,
+          -483,
+          -1337,
+          -793
+        ]
+      },
+      {
+        "kortkode": "NTNU",
+        "kortkode_norm": "NTNU",
+        "verdier": [
+          -9592,
+          14304,
+          358,
+          5070
+        ]
+      },
+      {
+        "kortkode": "NU",
+        "kortkode_norm": "NU",
+        "verdier": [
+          -41076,
+          -2706,
+          204,
+          -43578
+        ]
+      },
+      {
+        "kortkode": "OM",
+        "kortkode_norm": "OM",
+        "verdier": [
+          -10297,
+          967,
+          -6997,
+          -16327
+        ]
+      },
+      {
+        "kortkode": "SA",
+        "kortkode_norm": "SA",
+        "verdier": [
+          -91,
+          null,
+          -142,
+          -233
+        ]
+      },
+      {
+        "kortkode": "UiA",
+        "kortkode_norm": "UIA",
+        "verdier": [
+          5397,
+          7249,
+          -2539,
+          10107
+        ]
+      },
+      {
+        "kortkode": "UiB",
+        "kortkode_norm": "UIB",
+        "verdier": [
+          17976,
+          -2416,
+          -2327,
+          13233
+        ]
+      },
+      {
+        "kortkode": "UiO",
+        "kortkode_norm": "UIO",
+        "verdier": [
+          19338,
+          1450,
+          -11888,
+          8900
+        ]
+      },
+      {
+        "kortkode": "UiS",
+        "kortkode_norm": "UIS",
+        "verdier": [
+          -11507,
+          483,
+          -3589,
+          -14613
+        ]
+      },
+      {
+        "kortkode": "UiT",
+        "kortkode_norm": "UIT",
+        "verdier": [
+          -21307,
+          -2996,
+          -1881,
+          -25307
+        ]
+      },
+      {
+        "kortkode": "USN",
+        "kortkode_norm": "USN",
+        "verdier": [
+          -27916,
+          -2803,
+          -8458,
+          -39177
+        ]
+      },
+      {
+        "kortkode": "AHS",
+        "kortkode_norm": "AHS",
+        "verdier": [
+          -314,
+          97,
+          200,
+          -17
+        ]
+      },
+      {
+        "kortkode": "BAS",
+        "kortkode_norm": "BAS",
+        "verdier": [
+          149,
+          null,
+          -115,
+          34
+        ]
+      },
+      {
+        "kortkode": "BI",
+        "kortkode_norm": "BI",
+        "verdier": [
+          3714,
+          4833,
+          -3341,
+          5206
+        ]
+      },
+      {
+        "kortkode": "DMMH",
+        "kortkode_norm": "DMMH",
+        "verdier": [
+          -6831,
+          null,
+          42,
+          -6789
+        ]
+      },
+      {
+        "kortkode": "FIH",
+        "kortkode_norm": "FIH",
+        "verdier": [
+          -349,
+          -97,
+          -653,
+          -1099
+        ]
+      },
+      {
+        "kortkode": "HGUt",
+        "kortkode_norm": "HGUT",
+        "verdier": [
+          -434,
+          null,
+          -142,
+          -576
+        ]
+      },
+      {
+        "kortkode": "HK",
+        "kortkode_norm": "HK",
+        "verdier": [
+          7733,
+          193,
+          -1156,
+          6770
+        ]
+      },
+      {
+        "kortkode": "HLT",
+        "kortkode_norm": "HLT",
+        "verdier": [
+          1040,
+          null,
+          -354,
+          686
+        ]
+      },
+      {
+        "kortkode": "LDH",
+        "kortkode_norm": "LDH",
+        "verdier": [
+          891,
+          193,
+          55,
+          1139
+        ]
+      },
+      {
+        "kortkode": "MF",
+        "kortkode_norm": "MF",
+        "verdier": [
+          -3473,
+          483,
+          -401,
+          -3391
+        ]
+      },
+      {
+        "kortkode": "NLA",
+        "kortkode_norm": "NLA",
+        "verdier": [
+          -5993,
+          null,
+          -2010,
+          -8003
+        ]
+      },
+      {
+        "kortkode": "STH",
+        "kortkode_norm": "STH",
+        "verdier": [
+          255,
+          null,
+          -43,
+          212
+        ]
+      },
+      {
+        "kortkode": "VID",
+        "kortkode_norm": "VID",
+        "verdier": [
+          -7779,
+          -1450,
+          335,
+          -8894
+        ]
+      }
+    ]
+  },
+  "satser": {
+    "open_ramme": {
+      "pdf_side": 21,
+      "tabeller": [
+        {
+          "tittel": "Satsar for studieplasstildelingar etter dei tidlegare kategoriane (tal i kroner)",
+          "kolonner": [
+            "Kategori",
+            "Utdanning",
+            "Sats for opptrapping av studieplasstildelingar"
+          ],
+          "rader": [
+            [
+              "A",
+              "Kliniske utdanningar o.a.",
+              302450
+            ],
+            [
+              "B",
+              "Utøvande musikkutdanning, arkitektur- og designutdanningar o.a.",
+              228100
+            ],
+            [
+              "C",
+              "Realfag på høgare grads nivå o.a.",
+              155100
+            ],
+            [
+              "D",
+              "Samfunnsvitskaplege og humanistiske fag på høgare grads nivå, grunnskulelærarutdanning, enkelte kostnadskrevjande helsefag- og faglærarutdanningar, praktiske mediefag",
+              108900
+            ],
+            [
+              "E",
+              "Helsefag-, lærar- og realfagsutdanningar på lågare grads nivå",
+              93600
+            ],
+            [
+              "F",
+              "Teorifag og sosialfaglege utdanningar på lågare grads nivå",
+              78100
+            ]
+          ]
+        },
+        {
+          "tittel": "Kategoriar og satsar for studiepoengindikatoren og studieplasstildelingar for 2025 (tal i kroner)",
+          "kolonner": [
+            "Kat.",
+            "Fagområde",
+            "Sats for resultatbasert utteljing per 60-studiepoengeining",
+            "Studieplasstildeling"
+          ],
+          "rader": [
+            [
+              "1",
+              "Humaniora, samfunnsfag og økonomisk-administrative fag",
+              56600,
+              null
+            ],
+            [
+              "2",
+              "Realfag, teknologi, helse-, sosial- og idrettsfag, lærarutdanning, utøvande kunst- og mediefag",
+              84900,
+              null
+            ],
+            [
+              "3",
+              "Medisin, odontologi og veterinærmedisin",
+              198150,
+              302450
+            ],
+            [
+              "Ordinær studieplasstildeling",
+              null,
+              null,
+              103900
+            ]
+          ]
+        },
+        {
+          "tittel": "Satsar for resultatbasert utteljing for øvrige indikatorar for 2025 (tal i kroner)",
+          "kolonner": [
+            "Indikator",
+            "Sats"
+          ],
+          "rader": [
+            [
+              "Doktorgradar",
+              483250
+            ],
+            [
+              "Fullføring av gradsprogram",
+              51900
+            ]
+          ]
+        }
+      ]
+    },
+    "lukket_ramme": null
+  },
+  "institusjoner": {
+    "pdf_side": 4,
+    "liste": [
+      {
+        "kortkode": "AHS",
+        "kortkode_norm": "AHS",
+        "navn": "Ansgar høyskole for teologi, musikk og psykologi",
+        "universitet": false,
+        "statlig": false,
+        "kilde": "navneregel"
+      },
+      {
+        "kortkode": "AHO",
+        "kortkode_norm": "AHO",
+        "navn": "Arkitektur- og designhøgskolen i Oslo",
+        "universitet": false,
+        "statlig": true,
+        "kilde": "navneregel"
+      },
+      {
+        "kortkode": "BDM",
+        "kortkode_norm": "BDM",
+        "navn": "Barratt Due musikkinstitutt",
+        "universitet": false,
+        "statlig": false,
+        "kilde": "navneregel"
+      },
+      {
+        "kortkode": "BAS",
+        "kortkode_norm": "BAS",
+        "navn": "Bergen Arkitekthøgskole",
+        "universitet": false,
+        "statlig": false,
+        "kilde": "navneregel"
+      },
+      {
+        "kortkode": "DMMH",
+        "kortkode_norm": "DMMH",
+        "navn": "Dronning Mauds Minne Høgskole for barnehagelærerutdanning",
+        "universitet": false,
+        "statlig": false,
+        "kilde": "navneregel"
+      },
+      {
+        "kortkode": "FIH",
+        "kortkode_norm": "FIH",
+        "navn": "Fjellhaug Internasjonale Høgskole",
+        "universitet": false,
+        "statlig": false,
+        "kilde": "navneregel"
+      },
+      {
+        "kortkode": "BI",
+        "kortkode_norm": "BI",
+        "navn": "Handelshøyskolen BI",
+        "universitet": false,
+        "statlig": false,
+        "kilde": "navneregel"
+      },
+      {
+        "kortkode": "HINN",
+        "kortkode_norm": "HINN",
+        "navn": "Høgskolen i Innlandet",
+        "universitet": false,
+        "statlig": true,
+        "kilde": "navneregel"
+      },
+      {
+        "kortkode": "HiM",
+        "kortkode_norm": "HIM",
+        "navn": "Høgskolen i Molde, vitskapleg høgskole i logistikk",
+        "universitet": false,
+        "statlig": true,
+        "kilde": "navneregel"
+      },
+      {
+        "kortkode": "HiØ",
+        "kortkode_norm": "HIØ",
+        "navn": "Høgskolen i Østfold",
+        "universitet": false,
+        "statlig": true,
+        "kilde": "navneregel"
+      },
+      {
+        "kortkode": "HGUt",
+        "kortkode_norm": "HGUT",
+        "navn": "Høgskulen for grøn utvikling",
+        "universitet": false,
+        "statlig": false,
+        "kilde": "navneregel"
+      },
+      {
+        "kortkode": "HVO",
+        "kortkode_norm": "HVO",
+        "navn": "Høgskulen i Volda",
+        "universitet": false,
+        "statlig": true,
+        "kilde": "navneregel"
+      },
+      {
+        "kortkode": "HVL",
+        "kortkode_norm": "HVL",
+        "navn": "Høgskulen på Vestlandet",
+        "universitet": false,
+        "statlig": true,
+        "kilde": "navneregel"
+      },
+      {
+        "kortkode": "HFDK",
+        "kortkode_norm": "HFDK",
+        "navn": "Høyskolen for dansekunst",
+        "universitet": false,
+        "statlig": false,
+        "kilde": "navneregel"
+      },
+      {
+        "kortkode": "HLT",
+        "kortkode_norm": "HLT",
+        "navn": "Høyskolen for ledelse og teologi",
+        "universitet": false,
+        "statlig": false,
+        "kilde": "navneregel"
+      },
+      {
+        "kortkode": "HK",
+        "kortkode_norm": "HK",
+        "navn": "Høyskolen Kristiania",
+        "universitet": false,
+        "statlig": false,
+        "kilde": "navneregel"
+      },
+      {
+        "kortkode": "KHiO",
+        "kortkode_norm": "KHIO",
+        "navn": "Kunsthøgskolen i Oslo",
+        "universitet": false,
+        "statlig": true,
+        "kilde": "navneregel"
+      },
+      {
+        "kortkode": "LDH",
+        "kortkode_norm": "LDH",
+        "navn": "Lovisenberg diakonale høgskole",
+        "universitet": false,
+        "statlig": false,
+        "kilde": "navneregel"
+      },
+      {
+        "kortkode": "MF",
+        "kortkode_norm": "MF",
+        "navn": "MF vitenskapelig høyskole",
+        "universitet": false,
+        "statlig": false,
+        "kilde": "navneregel"
+      },
+      {
+        "kortkode": "NLA",
+        "kortkode_norm": "NLA",
+        "navn": "NLA Høgskolen",
+        "universitet": false,
+        "statlig": false,
+        "kilde": "navneregel"
+      },
+      {
+        "kortkode": "NU",
+        "kortkode_norm": "NU",
+        "navn": "Nord universitet",
+        "universitet": true,
+        "statlig": true,
+        "kilde": "navneregel"
+      },
+      {
+        "kortkode": "NHH",
+        "kortkode_norm": "NHH",
+        "navn": "Noregs handelshøgskole",
+        "universitet": false,
+        "statlig": true,
+        "kilde": "navneregel"
+      },
+      {
+        "kortkode": "NIH",
+        "kortkode_norm": "NIH",
+        "navn": "Noregs idrettshøgskole",
+        "universitet": false,
+        "statlig": true,
+        "kilde": "navneregel"
+      },
+      {
+        "kortkode": "NMBU",
+        "kortkode_norm": "NMBU",
+        "navn": "Noregs miljø- og biovitskaplege universitet",
+        "universitet": true,
+        "statlig": true,
+        "kilde": "navneregel"
+      },
+      {
+        "kortkode": "NMH",
+        "kortkode_norm": "NMH",
+        "navn": "Noregs musikkhøgskole",
+        "universitet": false,
+        "statlig": true,
+        "kilde": "navneregel"
+      },
+      {
+        "kortkode": "NTNU",
+        "kortkode_norm": "NTNU",
+        "navn": "Noregs teknisk-naturvitskaplege universitet",
+        "universitet": true,
+        "statlig": true,
+        "kilde": "navneregel"
+      },
+      {
+        "kortkode": "OM",
+        "kortkode_norm": "OM",
+        "navn": "OsloMet – storbyuniversitetet",
+        "universitet": true,
+        "statlig": true,
+        "kilde": "navneregel"
+      },
+      {
+        "kortkode": "SA",
+        "kortkode_norm": "SA",
+        "navn": "Samisk høgskole",
+        "universitet": false,
+        "statlig": true,
+        "kilde": "navneregel"
+      },
+      {
+        "kortkode": "STH",
+        "kortkode_norm": "STH",
+        "navn": "Steinerhøyskolen",
+        "universitet": false,
+        "statlig": false,
+        "kilde": "navneregel"
+      },
+      {
+        "kortkode": "UiA",
+        "kortkode_norm": "UIA",
+        "navn": "Universitetet i Agder",
+        "universitet": true,
+        "statlig": true,
+        "kilde": "navneregel"
+      },
+      {
+        "kortkode": "UiB",
+        "kortkode_norm": "UIB",
+        "navn": "Universitetet i Bergen",
+        "universitet": true,
+        "statlig": true,
+        "kilde": "navneregel"
+      },
+      {
+        "kortkode": "UiO",
+        "kortkode_norm": "UIO",
+        "navn": "Universitetet i Oslo",
+        "universitet": true,
+        "statlig": true,
+        "kilde": "navneregel"
+      },
+      {
+        "kortkode": "UiS",
+        "kortkode_norm": "UIS",
+        "navn": "Universitetet i Stavanger",
+        "universitet": true,
+        "statlig": true,
+        "kilde": "navneregel"
+      },
+      {
+        "kortkode": "USN",
+        "kortkode_norm": "USN",
+        "navn": "Universitetet i Søraust-Noreg",
+        "universitet": true,
+        "statlig": true,
+        "kilde": "navneregel"
+      },
+      {
+        "kortkode": "UiT",
+        "kortkode_norm": "UIT",
+        "navn": "Universitetet i Tromsø – Noregs arktiske universitet",
+        "universitet": true,
+        "statlig": true,
+        "kilde": "navneregel"
+      },
+      {
+        "kortkode": "VID",
+        "kortkode_norm": "VID",
+        "navn": "VID vitenskapelige høgskole",
+        "universitet": false,
+        "statlig": false,
+        "kilde": "navneregel"
+      }
+    ]
+  },
+  "skript": {
+    "navn": "les_blaatt_hefte.py",
+    "versjon": "1",
+    "kjort_utc": "2026-09-16T00:00:00Z"
+  }
+}

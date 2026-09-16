@@ -1,0 +1,680 @@
+{
+  "fasit_versjon": "1",
+  "kilde": {
+    "filnavn": "slide3-5-ole.xlsx",
+    "sha256": "a6b17d4e9f19b89bfb5835127173d30a56a5d828e3eafa9421e2b9a85c86e5d2",
+    "ark": [
+      "Bud.ramme",
+      "Hovedpost.",
+      "Resultatkomp.",
+      "Sammenligning",
+      "NyeSatser"
+    ],
+    "beskrivelse": "Innebygd arbeidsbok fra «Presentasjon av statsbudsjett 2024 v.0.99.pptx» (lysark 3, 6, 7, 8)."
+  },
+  "omraader": [
+    {
+      "ark": "Hovedpost.",
+      "omraader": [
+        "D3:D19",
+        "I3:I19"
+      ]
+    },
+    {
+      "ark": "Resultatkomp.",
+      "omraader": [
+        "C15:C17"
+      ]
+    },
+    {
+      "ark": "Sammenligning",
+      "omraader": [
+        "B4:E12"
+      ]
+    },
+    {
+      "ark": "NyeSatser",
+      "omraader": [
+        "C5:C8"
+      ]
+    }
+  ],
+  "celler": [
+    {
+      "ark": "Hovedpost.",
+      "celle": "D3",
+      "etikett": "Vedtak 2023 UiT",
+      "verdi": 3806533,
+      "formel": null,
+      "tallformat": "_-* #,##0_-;\\-* #,##0_-;_-* \"-\"_-;_-@_-"
+    },
+    {
+      "ark": "Hovedpost.",
+      "celle": "D4",
+      "etikett": "RNB 2023",
+      "verdi": 3892733,
+      "formel": "=D3+86200",
+      "tallformat": "_-* #,##0_-;\\-* #,##0_-;_-* \"-\"_-;_-@_-"
+    },
+    {
+      "ark": "Hovedpost.",
+      "celle": "D5",
+      "etikett": "Lønns og prisjustering 4,4 % inkludert RNB",
+      "verdi": 250434,
+      "formel": null,
+      "tallformat": "#,##0"
+    },
+    {
+      "ark": "Hovedpost.",
+      "celle": "D7",
+      "etikett": "Studieplasser 2019-2023 (inkl. utfasing av utd.løftet)",
+      "verdi": 2839,
+      "formel": null,
+      "tallformat": "#,##0"
+    },
+    {
+      "ark": "Hovedpost.",
+      "celle": "D8",
+      "etikett": "Endring resultatbasert uttelling",
+      "verdi": -5085,
+      "formel": null,
+      "tallformat": "#,##0"
+    },
+    {
+      "ark": "Hovedpost.",
+      "celle": "D9",
+      "etikett": "Utfasing av rekr.stillinger",
+      "verdi": -11684,
+      "formel": null,
+      "tallformat": "#,##0"
+    },
+    {
+      "ark": "Hovedpost.",
+      "celle": "D10",
+      "etikett": "Inndekning satsinger",
+      "verdi": -42056,
+      "formel": null,
+      "tallformat": "#,##0"
+    },
+    {
+      "ark": "Hovedpost.",
+      "celle": "D11",
+      "etikett": "Rammeøkning - avvikling av ordningar i HK-dir",
+      "verdi": 47724,
+      "formel": null,
+      "tallformat": "#,##0"
+    },
+    {
+      "ark": "Hovedpost.",
+      "celle": "D12",
+      "etikett": "Omfordeling Ukraina",
+      "verdi": -734,
+      "formel": null,
+      "tallformat": "#,##0"
+    },
+    {
+      "ark": "Hovedpost.",
+      "celle": "D13",
+      "etikett": "Studieavgift utenfra EØS",
+      "verdi": -10891,
+      "formel": null,
+      "tallformat": "#,##0"
+    },
+    {
+      "ark": "Hovedpost.",
+      "celle": "D14",
+      "etikett": "Andre endringer",
+      "verdi": 8742,
+      "formel": null,
+      "tallformat": "#,##0"
+    },
+    {
+      "ark": "Hovedpost.",
+      "celle": "D15",
+      "etikett": "Forslag 2024 med prisjustering og videreføring",
+      "verdi": 4045822,
+      "formel": "=D3+SUM(D5:D14)",
+      "tallformat": "#,##0"
+    },
+    {
+      "ark": "Hovedpost.",
+      "celle": "D17",
+      "etikett": "Endring i NOK",
+      "verdi": 239289,
+      "formel": "=D15-D3",
+      "tallformat": "_-* #,##0_-;\\-* #,##0_-;_-* \"-\"_-;_-@_-"
+    },
+    {
+      "ark": "Hovedpost.",
+      "celle": "D18",
+      "etikett": "Nominell endring",
+      "verdi": 0.06286271523194466,
+      "formel": "=D17/D3",
+      "tallformat": "0.0\\ %"
+    },
+    {
+      "ark": "Hovedpost.",
+      "celle": "D19",
+      "etikett": "Realvekst",
+      "verdi": 0.01886271523194466,
+      "formel": "=D18-0.044",
+      "tallformat": "0.0\\ %"
+    },
+    {
+      "ark": "Hovedpost.",
+      "celle": "I3",
+      "etikett": "Vedtak 2023 UiT",
+      "verdi": 3806533,
+      "formel": null,
+      "tallformat": "_-* #,##0_-;\\-* #,##0_-;_-* \"-\"_-;_-@_-"
+    },
+    {
+      "ark": "Hovedpost.",
+      "celle": "I4",
+      "etikett": "Justert for RNB 2023",
+      "verdi": 3892733,
+      "formel": "=I3+86200",
+      "tallformat": "_-* #,##0_-;\\-* #,##0_-;_-* \"-\"_-;_-@_-"
+    },
+    {
+      "ark": "Hovedpost.",
+      "celle": "I5",
+      "etikett": "Lønns og prisjustering 3,0 %",
+      "verdi": 250434,
+      "formel": null,
+      "tallformat": "#,##0"
+    },
+    {
+      "ark": "Hovedpost.",
+      "celle": "I7",
+      "etikett": "Studieplasser 2019-2023",
+      "verdi": 2839,
+      "formel": null,
+      "tallformat": "#,##0"
+    },
+    {
+      "ark": "Hovedpost.",
+      "celle": "I8",
+      "etikett": "Endring resultatbasert uttelling",
+      "verdi": -5085,
+      "formel": null,
+      "tallformat": "#,##0"
+    },
+    {
+      "ark": "Hovedpost.",
+      "celle": "I9",
+      "etikett": "Utfasing av rekr.stillinger",
+      "verdi": -11684,
+      "formel": null,
+      "tallformat": "#,##0"
+    },
+    {
+      "ark": "Hovedpost.",
+      "celle": "I10",
+      "etikett": "Inndekning satsinger",
+      "verdi": -42056,
+      "formel": null,
+      "tallformat": "#,##0"
+    },
+    {
+      "ark": "Hovedpost.",
+      "celle": "I11",
+      "etikett": "Rammeøkning - avvikling av ordningar i HK-dir",
+      "verdi": 47724,
+      "formel": null,
+      "tallformat": "#,##0"
+    },
+    {
+      "ark": "Hovedpost.",
+      "celle": "I12",
+      "etikett": "Omfordeling Ukraina",
+      "verdi": -734,
+      "formel": null,
+      "tallformat": "#,##0"
+    },
+    {
+      "ark": "Hovedpost.",
+      "celle": "I13",
+      "etikett": "Studieavgift utenfra EØS",
+      "verdi": -10891,
+      "formel": null,
+      "tallformat": "#,##0"
+    },
+    {
+      "ark": "Hovedpost.",
+      "celle": "I14",
+      "etikett": "Andre endringer",
+      "verdi": 8742,
+      "formel": null,
+      "tallformat": "#,##0"
+    },
+    {
+      "ark": "Hovedpost.",
+      "celle": "I15",
+      "etikett": "Forslag 2024 med prisjustering og videreføring",
+      "verdi": 4132022,
+      "formel": "=I4+SUM(I5:I14)",
+      "tallformat": "#,##0"
+    },
+    {
+      "ark": "Hovedpost.",
+      "celle": "I17",
+      "etikett": "Endring i NOK",
+      "verdi": 239289,
+      "formel": "=I15-I4",
+      "tallformat": "_-* #,##0_-;\\-* #,##0_-;_-* \"-\"_-;_-@_-"
+    },
+    {
+      "ark": "Hovedpost.",
+      "celle": "I18",
+      "etikett": "Nominell endring",
+      "verdi": 0.061470694239753924,
+      "formel": "=I17/I4",
+      "tallformat": "0.0\\ %"
+    },
+    {
+      "ark": "Hovedpost.",
+      "celle": "I19",
+      "etikett": "Realvekst",
+      "verdi": -0.0028630270814874793,
+      "formel": "=(I17-I5)/I4",
+      "tallformat": "0.0\\ %"
+    },
+    {
+      "ark": "Resultatkomp.",
+      "celle": "C15",
+      "etikett": "Uttelling åpen ramme (RBF)",
+      "verdi": 7277,
+      "formel": "=D5+C6+C7+D8",
+      "tallformat": "#,##0"
+    },
+    {
+      "ark": "Resultatkomp.",
+      "celle": "C16",
+      "etikett": "Uttelling lukket ramme (RBO)",
+      "verdi": -12362,
+      "formel": "=C9+D10+D11+D12",
+      "tallformat": "#,##0"
+    },
+    {
+      "ark": "Resultatkomp.",
+      "celle": "C17",
+      "etikett": null,
+      "verdi": -5085,
+      "formel": "=SUM(C15:C16)",
+      "tallformat": "#,##0"
+    },
+    {
+      "ark": "Sammenligning",
+      "celle": "B4",
+      "etikett": null,
+      "verdi": "NU",
+      "formel": null,
+      "tallformat": "General"
+    },
+    {
+      "ark": "Sammenligning",
+      "celle": "C4",
+      "etikett": "NU",
+      "verdi": 1711143,
+      "formel": null,
+      "tallformat": "#,##0"
+    },
+    {
+      "ark": "Sammenligning",
+      "celle": "D4",
+      "etikett": "NU",
+      "verdi": 1882114,
+      "formel": null,
+      "tallformat": "#,##0"
+    },
+    {
+      "ark": "Sammenligning",
+      "celle": "E4",
+      "etikett": "NU",
+      "verdi": 0.09991625480745911,
+      "formel": "=(D4-C4)/C4",
+      "tallformat": "0.0\\ %"
+    },
+    {
+      "ark": "Sammenligning",
+      "celle": "B5",
+      "etikett": null,
+      "verdi": "NMBU",
+      "formel": null,
+      "tallformat": "General"
+    },
+    {
+      "ark": "Sammenligning",
+      "celle": "C5",
+      "etikett": "NMBU",
+      "verdi": 1533426,
+      "formel": null,
+      "tallformat": "#,##0"
+    },
+    {
+      "ark": "Sammenligning",
+      "celle": "D5",
+      "etikett": "NMBU",
+      "verdi": 1579762,
+      "formel": null,
+      "tallformat": "#,##0"
+    },
+    {
+      "ark": "Sammenligning",
+      "celle": "E5",
+      "etikett": "NMBU",
+      "verdi": 0.030217304258568722,
+      "formel": "=(D5-C5)/C5",
+      "tallformat": "0.0\\ %"
+    },
+    {
+      "ark": "Sammenligning",
+      "celle": "B6",
+      "etikett": null,
+      "verdi": "NTNU",
+      "formel": null,
+      "tallformat": "General"
+    },
+    {
+      "ark": "Sammenligning",
+      "celle": "C6",
+      "etikett": "NTNU",
+      "verdi": 7546995,
+      "formel": null,
+      "tallformat": "#,##0"
+    },
+    {
+      "ark": "Sammenligning",
+      "celle": "D6",
+      "etikett": "NTNU",
+      "verdi": 7992874,
+      "formel": null,
+      "tallformat": "#,##0"
+    },
+    {
+      "ark": "Sammenligning",
+      "celle": "E6",
+      "etikett": "NTNU",
+      "verdi": 0.0590803359482814,
+      "formel": "=(D6-C6)/C6",
+      "tallformat": "0.0\\ %"
+    },
+    {
+      "ark": "Sammenligning",
+      "celle": "B7",
+      "etikett": null,
+      "verdi": "UiA",
+      "formel": null,
+      "tallformat": "General"
+    },
+    {
+      "ark": "Sammenligning",
+      "celle": "C7",
+      "etikett": "UiA",
+      "verdi": 1708137,
+      "formel": null,
+      "tallformat": "#,##0"
+    },
+    {
+      "ark": "Sammenligning",
+      "celle": "D7",
+      "etikett": "UiA",
+      "verdi": 1837205,
+      "formel": null,
+      "tallformat": "#,##0"
+    },
+    {
+      "ark": "Sammenligning",
+      "celle": "E7",
+      "etikett": "UiA",
+      "verdi": 0.0755606839498237,
+      "formel": "=(D7-C7)/C7",
+      "tallformat": "0.0\\ %"
+    },
+    {
+      "ark": "Sammenligning",
+      "celle": "B8",
+      "etikett": null,
+      "verdi": "UiB",
+      "formel": null,
+      "tallformat": "General"
+    },
+    {
+      "ark": "Sammenligning",
+      "celle": "C8",
+      "etikett": "UiB",
+      "verdi": 4088175,
+      "formel": null,
+      "tallformat": "#,##0"
+    },
+    {
+      "ark": "Sammenligning",
+      "celle": "D8",
+      "etikett": "UiB",
+      "verdi": 4313795,
+      "formel": null,
+      "tallformat": "#,##0"
+    },
+    {
+      "ark": "Sammenligning",
+      "celle": "E8",
+      "etikett": "UiB",
+      "verdi": 0.05518843982950828,
+      "formel": "=(D8-C8)/C8",
+      "tallformat": "0.0\\ %"
+    },
+    {
+      "ark": "Sammenligning",
+      "celle": "B9",
+      "etikett": null,
+      "verdi": "UiO",
+      "formel": null,
+      "tallformat": "General"
+    },
+    {
+      "ark": "Sammenligning",
+      "celle": "C9",
+      "etikett": "UiO",
+      "verdi": 6116002,
+      "formel": null,
+      "tallformat": "#,##0"
+    },
+    {
+      "ark": "Sammenligning",
+      "celle": "D9",
+      "etikett": "UiO",
+      "verdi": 6431779,
+      "formel": null,
+      "tallformat": "#,##0"
+    },
+    {
+      "ark": "Sammenligning",
+      "celle": "E9",
+      "etikett": "UiO",
+      "verdi": 0.051631278080026786,
+      "formel": "=(D9-C9)/C9",
+      "tallformat": "0.0\\ %"
+    },
+    {
+      "ark": "Sammenligning",
+      "celle": "B10",
+      "etikett": null,
+      "verdi": "UiS",
+      "formel": null,
+      "tallformat": "General"
+    },
+    {
+      "ark": "Sammenligning",
+      "celle": "C10",
+      "etikett": "UiS",
+      "verdi": 1892644,
+      "formel": null,
+      "tallformat": "#,##0"
+    },
+    {
+      "ark": "Sammenligning",
+      "celle": "D10",
+      "etikett": "UiS",
+      "verdi": 1985798,
+      "formel": null,
+      "tallformat": "#,##0"
+    },
+    {
+      "ark": "Sammenligning",
+      "celle": "E10",
+      "etikett": "UiS",
+      "verdi": 0.04921897620471679,
+      "formel": "=(D10-C10)/C10",
+      "tallformat": "0.0\\ %"
+    },
+    {
+      "ark": "Sammenligning",
+      "celle": "B11",
+      "etikett": null,
+      "verdi": "OM",
+      "formel": null,
+      "tallformat": "General"
+    },
+    {
+      "ark": "Sammenligning",
+      "celle": "C11",
+      "etikett": "OM",
+      "verdi": 2877595,
+      "formel": null,
+      "tallformat": "#,##0"
+    },
+    {
+      "ark": "Sammenligning",
+      "celle": "D11",
+      "etikett": "OM",
+      "verdi": 3061116,
+      "formel": null,
+      "tallformat": "#,##0"
+    },
+    {
+      "ark": "Sammenligning",
+      "celle": "E11",
+      "etikett": "OM",
+      "verdi": 0.06377582668860629,
+      "formel": "=(D11-C11)/C11",
+      "tallformat": "0.0\\ %"
+    },
+    {
+      "ark": "Sammenligning",
+      "celle": "B12",
+      "etikett": null,
+      "verdi": "UiT",
+      "formel": null,
+      "tallformat": "General"
+    },
+    {
+      "ark": "Sammenligning",
+      "celle": "C12",
+      "etikett": "UiT",
+      "verdi": 3806533,
+      "formel": null,
+      "tallformat": "#,##0"
+    },
+    {
+      "ark": "Sammenligning",
+      "celle": "D12",
+      "etikett": "UiT",
+      "verdi": 4045822,
+      "formel": null,
+      "tallformat": "#,##0"
+    },
+    {
+      "ark": "Sammenligning",
+      "celle": "E12",
+      "etikett": "UiT",
+      "verdi": 0.06286271523194466,
+      "formel": "=(D12-C12)/C12",
+      "tallformat": "0.0\\ %"
+    },
+    {
+      "ark": "NyeSatser",
+      "celle": "C5",
+      "etikett": "Publisering",
+      "verdi": 698791,
+      "formel": null,
+      "tallformat": "#,##0"
+    },
+    {
+      "ark": "NyeSatser",
+      "celle": "C6",
+      "etikett": "EU-midler",
+      "verdi": 634133,
+      "formel": null,
+      "tallformat": "#,##0"
+    },
+    {
+      "ark": "NyeSatser",
+      "celle": "C7",
+      "etikett": "NFR og RFF",
+      "verdi": 380486,
+      "formel": null,
+      "tallformat": "#,##0"
+    },
+    {
+      "ark": "NyeSatser",
+      "celle": "C8",
+      "etikett": "Øvrig BOA",
+      "verdi": 380627,
+      "formel": null,
+      "tallformat": "#,##0"
+    }
+  ],
+  "realvekst": [
+    {
+      "navn": "metode a uten RNB",
+      "verdi_prosent": 1.89,
+      "kildecelle": "Hovedpost.!D19",
+      "utregning": "D18 − 4,4 % = 6,29 % − 4,4 %",
+      "forklaring": "Nominell endring minus prisjusteringssatsen. Presentasjonen viste dette som 1,9 %."
+    },
+    {
+      "navn": "metode b uten RNB",
+      "verdi_prosent": -0.29,
+      "kildecelle": null,
+      "utregning": "(239 289 − 250 434) / 3 806 533",
+      "forklaring": "Endring minus heftets prisjusteringsbeløp, delt på utgangspunktet. Ikke egen celle i arbeidsboken."
+    },
+    {
+      "navn": "metode a med RNB",
+      "verdi_prosent": 1.75,
+      "kildecelle": "Hovedpost.!I18",
+      "utregning": "I18 − 4,4 % = 6,15 % − 4,4 %",
+      "forklaring": "Som metode a, men nominell endring regnet mot utgangspunkt pluss RNB-tillegget 86 200."
+    },
+    {
+      "navn": "metode b med RNB",
+      "verdi_prosent": -0.29,
+      "kildecelle": "Hovedpost.!I19",
+      "utregning": "(239 289 − 250 434) / 3 892 733",
+      "forklaring": "Presentasjonen viste dette som «−0,3 % justert for RNB»."
+    }
+  ],
+  "tillatte_avvik": [
+    {
+      "id": "A1",
+      "gjelder": "Hovedpost.!D12, Hovedpost.!I12",
+      "tekst": "Omfordeling Ukraina −734 står i forslagsheftet, men ikke som egen kolonne i rammearket."
+    },
+    {
+      "id": "A2",
+      "gjelder": "Sammenligning!B4:E12",
+      "tekst": "USN mangler i presentasjonens sektortabell. Rammearket har alle statlige institusjoner."
+    },
+    {
+      "id": "A3",
+      "gjelder": "NyeSatser!D5:D8, F5:F8, H5:H8",
+      "tekst": "Satskolonnen er ramme delt på DBH-produksjon og kan ikke avledes fra blått hefte. Bare rammekolonnene (C, E, G) er kontrollgrunnlag."
+    },
+    {
+      "id": "A4",
+      "gjelder": "Hovedpost.!G5",
+      "tekst": "Kjent feil i presentasjonen: blokk 2 er merket «3,0 %», men bruker 4,4 %-tallet 250 434 (samme verdi som D5)."
+    }
+  ]
+}

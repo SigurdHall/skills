@@ -1,0 +1,56 @@
+{
+ "budsjettaar": 2026,
+ "utgave": "forslag",
+ "kolonner": [
+  "Saldert budsjett 2025",
+  "Prisjustering",
+  "Resultatbasert utteljing",
+  "Studieplassar 2020–2025",
+  "Nye studieplassar",
+  "Bu- og reisestønad",
+  "Reduksjon",
+  "Andre endringar",
+  "Forslag rammeløyving 2026"
+ ],
+ "antall_rader": 21,
+ "uit_rad": [
+  4175449,
+  150316,
+  -27919,
+  -20294,
+  null,
+  9500,
+  -33997,
+  23509,
+  4276564
+ ],
+ "sats_prosent": 3.6,
+ "ren_sats": true,
+ "resultat_kolonner": [
+  "Studiepoeng",
+  "Doktorgradar",
+  "Fullføring",
+  "Sum"
+ ],
+ "resultat_uit": [
+  -12395,
+  -2904,
+  -12620,
+  -27919
+ ],
+ "lukket_ramme": false,
+ "universiteter": [
+  "INN",
+  "NMBU",
+  "NTNU",
+  "NU",
+  "OM",
+  "UIA",
+  "UIB",
+  "UIO",
+  "UIS",
+  "UIT",
+  "USN"
+ ],
+ "prosjekt_pdf": "/home/sihal7953/repos/uit-statsbudsjett/analyse/kilder/blaatt-hefte/2026/blaatt-hefte-2026-forslag.pdf"
+}

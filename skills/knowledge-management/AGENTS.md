@@ -10,6 +10,7 @@ Current skills:
 - `strategic-plan-analysis`
 - `vault-forvalter`
 - `weekly-production-review`
+- `blatt-hefte`
 
 Archived 2026-09-16: the earlier UiT statsbudsjett skills (`uit-statsbudsjett-analyse`, `uit-statsbudsjett-proeve`, `codex-uit-statsbudsjett-proeve`), their workflows and tests live in `archive/2026-09-16-uit-statsbudsjett/` and are not active skills.
 
@@ -24,3 +25,7 @@ Archived 2026-09-16: the earlier UiT statsbudsjett skills (`uit-statsbudsjett-an
 - `weekly-production-review` → weekly meta-summary of the two above. Not a
   full-career summary (that's `accomplishment-log` Mode 2).
 - `strategic-plan-analysis` → governance/strategy document critique.
+- `blatt-hefte` → UiT's rammeark from KD's blått hefte: one command, Excel
+  workbook with the deck tables derivable from the hefte, status prompt, under
+  two minutes. Year data and deliveries live in the local `uit-statsbudsjett`
+  project, not here. No Prop. 1 S, no departmental review.

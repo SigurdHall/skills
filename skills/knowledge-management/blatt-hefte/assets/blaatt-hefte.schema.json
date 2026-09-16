@@ -1,0 +1,179 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "blaatt-hefte.schema.json",
+  "title": "Kontrakt mellom les_blaatt_hefte.py og bygg_rammeark.py",
+  "description": "Ett blått hefte (én utgave for ett budsjettår) gir ett dokument som følger dette skjemaet. Alle beløp er heltall i 1 000 kroner slik heftet oppgir dem. Kolonne-, indikator- og kategorinavn er heftets egne, normalisert bare ved å reparere bindestrek-deling og slå sammen linjer. Valideres av scripts/kontrakt.py (ingen eksterne pakker).",
+  "type": "object",
+  "required": ["kontrakt_versjon", "kilde", "hovedtabell", "prisjustering", "resultat", "satser", "institusjoner", "skript"],
+  "additionalProperties": false,
+  "properties": {
+    "kontrakt_versjon": {"const": "1"},
+    "kilde": {
+      "type": "object",
+      "required": ["budsjettaar", "utgave", "tittel", "url", "sha256", "content_length", "hentet_utc", "sider", "filnavn"],
+      "additionalProperties": false,
+      "properties": {
+        "budsjettaar": {"type": "integer", "minimum": 2014, "maximum": 2100, "description": "Året bevilgningen gjelder, ikke publiseringsåret."},
+        "utgave": {"enum": ["forslag", "vedtak"], "description": "forslag = regjeringens forslag (oktober Y−1); vedtak = etter vedtak i Stortinget (desember Y−1 / januar Y)."},
+        "tittel": {"type": ["string", "null"], "description": "Lenketekst eller dokumenttittel fra heftets forside."},
+        "url": {"type": ["string", "null"], "description": "Null når heftet ble gitt som lokal fil (--pdf)."},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "content_length": {"type": ["integer", "null"]},
+        "hentet_utc": {"type": ["string", "null"], "description": "ISO 8601 med Z. Null for lokal fil uten manifest."},
+        "sider": {"type": "integer", "minimum": 1},
+        "filnavn": {"type": "string"}
+      }
+    },
+    "hovedtabell": {
+      "type": "object",
+      "description": "Hovedtabellen for kap. 260 post 50: én rad per statlig institusjon, første kolonne er utgangspunktet (saldert/rammeløyving Y−1), siste kolonne er ramme/forslag Y, kolonnene mellom er årets justeringer.",
+      "required": ["pdf_side", "trykt_side", "kolonner", "utgangspunkt_indeks", "sum_indeks", "rader", "kontroll"],
+      "additionalProperties": false,
+      "properties": {
+        "pdf_side": {"type": "integer", "minimum": 1, "description": "1-basert PDF-side."},
+        "trykt_side": {"type": ["integer", "null"], "description": "Sidetall fra sidefoten når det ble lest, ellers null."},
+        "kolonner": {"type": "array", "minItems": 3, "items": {"type": "string", "minLength": 1}, "description": "Overskrifter for tallkolonnene i heftets rekkefølge. Inneholder ikke institusjonskolonnen."},
+        "utgangspunkt_indeks": {"const": 0},
+        "sum_indeks": {"type": "integer", "minimum": 2, "description": "Indeks i kolonner/verdier for ramme/forslag Y. Alltid siste."},
+        "rader": {
+          "type": "array", "minItems": 10,
+          "items": {"$ref": "#/$defs/rad"}
+        },
+        "kontroll": {
+          "type": "object",
+          "required": ["alle_rader_summerer", "antall_rader", "forventet_rader", "antall_band", "antall_overskrifter", "utgangspunkt_gjenkjent", "sum_gjenkjent", "kryss"],
+          "additionalProperties": false,
+          "properties": {
+            "alle_rader_summerer": {"type": "boolean", "description": "Kontroll A: sum(verdier[1..n−1]) == verdier[n] for hver rad, null teller 0."},
+            "antall_rader": {"type": "integer"},
+            "forventet_rader": {"type": "integer", "description": "Antall statlige institusjoner i heftets forkortingsliste."},
+            "antall_band": {"type": "integer", "description": "Kontroll B: kolonnebånd funnet på høyrekant."},
+            "antall_overskrifter": {"type": "integer", "description": "Kontroll B: ikke-tomme overskrifter tilordnet bånd. Skal være lik antall_band."},
+            "utgangspunkt_gjenkjent": {"type": "boolean", "description": "Kontroll B: første overskrift matcher saldert|rammel[øo]yving|budsjett + Y−1."},
+            "sum_gjenkjent": {"type": "boolean", "description": "Kontroll B: siste overskrift matcher rammel[øo]yving + Y."},
+            "kryss": {
+              "type": "object",
+              "description": "Kontroll C: utgangspunktet mot sluttkolonnen i forrige hefte (Y−1 vedtak) når det finnes lokalt.",
+              "required": ["status", "referanse", "avvik"],
+              "additionalProperties": false,
+              "properties": {
+                "status": {"enum": ["ok", "avvik", "ikke_mulig"]},
+                "referanse": {"type": ["string", "null"], "description": "Filnavn eller sha256 for heftet som ble brukt som referanse."},
+                "avvik": {"type": "array", "items": {
+                  "type": "object", "required": ["kortkode_norm", "forrige", "naa"], "additionalProperties": false,
+                  "properties": {"kortkode_norm": {"type": "string"}, "forrige": {"type": ["integer", "null"]}, "naa": {"type": ["integer", "null"]}}
+                }}
+              }
+            }
+          }
+        }
+      }
+    },
+    "prisjustering": {
+      "type": "object",
+      "required": ["sats_prosent", "sitat", "pdf_side", "kolonne_indeks", "uit_kolonne", "uit_beregnet", "avvik", "ren_sats"],
+      "additionalProperties": false,
+      "properties": {
+        "sats_prosent": {"type": ["number", "null"], "description": "F.eks. 3.8 for «3,8 pst.»"},
+        "sitat": {"type": ["string", "null"], "description": "Hele avsnittet som forklarer prisjusteringskolonnen, ordrett."},
+        "pdf_side": {"type": ["integer", "null"]},
+        "kolonne_indeks": {"type": ["integer", "null"], "description": "Indeks i hovedtabell.kolonner for prisjusteringskolonnen."},
+        "uit_kolonne": {"type": ["integer", "null"], "description": "UiT-radens verdi i prisjusteringskolonnen."},
+        "uit_beregnet": {"type": ["integer", "null"], "description": "round(sats_prosent/100 × UiT utgangspunkt)."},
+        "avvik": {"type": ["integer", "null"], "description": "uit_kolonne − uit_beregnet."},
+        "ren_sats": {"type": ["boolean", "null"], "description": "abs(avvik) <= 0.0005 × utgangspunkt. Falsk når kolonnen inneholder mer enn satsen (RNB-videreføring 2024, forlik-tilbakeføring 2025)."}
+      }
+    },
+    "resultat": {
+      "type": ["object", "null"],
+      "description": "Tabellen «Endring i regelstyrt resultatutteljing» per institusjon. Null når den ikke ble funnet.",
+      "required": ["pdf_side", "kolonner", "sumkolonner", "rader"],
+      "additionalProperties": false,
+      "properties": {
+        "pdf_side": {"type": "integer"},
+        "kolonner": {"type": "array", "items": {"type": "string"}},
+        "sumkolonner": {"type": "array", "items": {"type": "integer"}, "description": "Indekser i kolonner som heftet selv merker som sum (f.eks. «Sum open ramme», «Sum lukka ramme», eller én «Sum»)."},
+        "rader": {"type": "array", "items": {"$ref": "#/$defs/rad"}}
+      }
+    },
+    "satser": {
+      "type": "object",
+      "required": ["open_ramme", "lukket_ramme"],
+      "additionalProperties": false,
+      "properties": {
+        "open_ramme": {
+          "type": ["object", "null"],
+          "required": ["pdf_side", "tabeller"],
+          "additionalProperties": false,
+          "properties": {
+            "pdf_side": {"type": "integer"},
+            "tabeller": {"type": "array", "items": {"$ref": "#/$defs/tabell"}}
+          }
+        },
+        "lukket_ramme": {
+          "type": ["object", "null"],
+          "description": "Null fra 2025 (lukket ramme avviklet).",
+          "required": ["pdf_side", "kolonner", "rader"],
+          "additionalProperties": false,
+          "properties": {
+            "pdf_side": {"type": "integer"},
+            "kolonner": {"type": "array", "items": {"type": "string"}},
+            "rader": {"type": "array", "items": {"type": "array", "items": {"type": ["string", "number", "null"]}}}
+          }
+        }
+      }
+    },
+    "institusjoner": {
+      "type": "object",
+      "required": ["pdf_side", "liste"],
+      "additionalProperties": false,
+      "properties": {
+        "pdf_side": {"type": ["integer", "null"]},
+        "liste": {
+          "type": "array", "minItems": 10,
+          "items": {
+            "type": "object",
+            "required": ["kortkode", "kortkode_norm", "navn", "universitet", "statlig", "kilde"],
+            "additionalProperties": false,
+            "properties": {
+              "kortkode": {"type": "string", "description": "Som skrevet i heftet."},
+              "kortkode_norm": {"type": "string", "description": "Store bokstaver, brukt til oppslag på tvers av år."},
+              "navn": {"type": "string"},
+              "universitet": {"type": "boolean"},
+              "statlig": {"type": "boolean", "description": "Sant for institusjoner under kap. 260 post 50."},
+              "kilde": {"enum": ["heftets inndeling", "navneregel", "institusjoner.json"]}
+            }
+          }
+        }
+      }
+    },
+    "skript": {
+      "type": "object",
+      "required": ["navn", "versjon", "kjort_utc"],
+      "additionalProperties": false,
+      "properties": {"navn": {"type": "string"}, "versjon": {"type": "string"}, "kjort_utc": {"type": "string"}}
+    }
+  },
+  "$defs": {
+    "rad": {
+      "type": "object",
+      "required": ["kortkode", "kortkode_norm", "verdier"],
+      "additionalProperties": false,
+      "properties": {
+        "kortkode": {"type": "string"},
+        "kortkode_norm": {"type": "string"},
+        "verdier": {"type": "array", "items": {"type": ["integer", "null"]}, "description": "Samme lengde som kolonner. Null = tom celle («-» eller ingen tekst)."}
+      }
+    },
+    "tabell": {
+      "type": "object",
+      "required": ["tittel", "kolonner", "rader"],
+      "additionalProperties": false,
+      "properties": {
+        "tittel": {"type": "string"},
+        "kolonner": {"type": "array", "items": {"type": "string"}},
+        "rader": {"type": "array", "items": {"type": "array", "items": {"type": ["string", "number", "null"]}}}
+      }
+    }
+  }
+}
