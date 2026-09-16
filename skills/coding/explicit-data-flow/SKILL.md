@@ -64,6 +64,16 @@ in the file is needed.
    used again: `regnskap`, `budsjett_med_versjon`. Otherwise keep chaining.
 8. **Comments are short working notes** on the line above the step they
    explain: why a column is dropped, why a check exists, which order matters.
+9. **Only the table output has to survive a rebuild.** Progress tables that
+   are read back, incremental merges with keys, commit stamps, locks and
+   "previous step finished" checks are machinery, not output. Rebuild each
+   table from the source's current state every run. If a run log is wanted,
+   append one row per table after its write. Pipeline order is the guarantee
+   that the previous step ran. A check stops the run only when the output
+   would be wrong without it: a key that must be unique, a business rule on
+   the rows. Incremental writing needs a measured cost to justify it, and
+   then it is a few lines in that one cell, such as `replaceWhere` on the
+   partitions present in today's changes, never a mechanism.
 
 ## Loops
 
@@ -85,7 +95,7 @@ across them is the pattern this skill removes.
 Do not wrap chains in functions to get a `try/except` around them. Each Delta
 overwrite is atomic on its own; a failure stops the notebook at the failing
 cell and leaves earlier tables written and later ones from the previous run.
-Handle that outside the chains: write the status row last, and add a small
+Handle that outside the chains: write the status rows last, and add a small
 separate restore notebook as the next pipeline step that puts every table
 back to the version it had at the last status write, drops tables created
 after it, and does nothing after a successful run. A check that must not
