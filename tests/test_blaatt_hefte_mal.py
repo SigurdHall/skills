@@ -92,7 +92,7 @@ def test_feil_sumindeks_gir_feil(eksempel):
 # --- malspesifikasjonen mot malen -----------------------------------------------------
 
 def test_arkrekkefolge(malbok):
-    assert malbok.sheetnames == ["Hovedtall", "Hovedposter", "Resultat",
+    assert malbok.sheetnames == ["Hovedtall", "Budsjettløp", "Hovedposter", "Resultat",
                                  "Sektor", "Satser", "Kilder", "_meta"]
 
 

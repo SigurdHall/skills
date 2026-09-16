@@ -21,7 +21,46 @@ HER = Path(__file__).resolve().parent
 sys.path.insert(0, str(HER))
 import mal  # noqa: E402
 
-VERSJON = "1.0"
+VERSJON = "1.1"
+BASE_STI = HER.parent / "references" / "budsjettbase.json"
+
+
+def last_base(sti: Path | None = None) -> dict:
+    sti = sti or BASE_STI
+    return json.loads(sti.read_text(encoding="utf-8")) if sti.exists() else {"aar": {}}
+
+
+def rnb_fra_base(base: dict, budsjettaar: int) -> tuple[int | None, str]:
+    """RNB-tillegget for året før budsjettåret (det som løfter utgangspunktet), med kildetekst."""
+    post = base.get("aar", {}).get(str(budsjettaar - 1), {}).get("rnb")
+    if not post or post.get("tillegg") is None:
+        return None, f"ingen RNB {budsjettaar - 1} i budsjettbasen"
+    k = post.get("kilde", {})
+    belop = f"{post['tillegg']:,}".replace(",", " ")
+    return post["tillegg"], (f"RNB {budsjettaar - 1}: {belop} (1 000 kr) fra {k.get('dokument')}, "
+                             f"{k.get('dato') or 'dato ukjent'}; {k.get('status', '')}")
+
+
+def budsjettloep_rader(base: dict, dok: dict) -> list[dict]:
+    """Én rad per budsjettår til og med heftets år; heftets eget tall fylles inn når basen mangler året."""
+    aar_naa = dok["kilde"]["budsjettaar"]
+    uit = uit_rad(dok)
+    rader = []
+    for aar, post in sorted(base.get("aar", {}).items()):
+        if int(aar) > aar_naa:
+            continue
+        r = post.get("rnb") or {}
+        rader.append({"aar": aar,
+                      "forslag": (post.get("forslag") or {}).get("ramme"),
+                      "vedtatt": (post.get("vedtatt") or {}).get("ramme"),
+                      "rnb": r.get("tillegg"),
+                      "rnb_kilde": (r.get("kilde") or {}).get("dokument") if r else None})
+    if not any(r["aar"] == str(aar_naa) for r in rader):
+        rader.append({"aar": str(aar_naa), "forslag": None, "vedtatt": None, "rnb": None, "rnb_kilde": None})
+    egen = next(r for r in rader if r["aar"] == str(aar_naa))
+    nokkel = "forslag" if dok["kilde"]["utgave"] == "forslag" else "vedtatt"
+    egen[nokkel] = egen[nokkel] or uit["verdier"][dok["hovedtabell"]["sum_indeks"]]
+    return rader
 
 
 def uit_rad(dok: dict) -> dict:
@@ -112,9 +151,15 @@ def radantall_for(dok: dict) -> dict[str, int]:
 
 
 def bygg(dok: dict, output: Path, rnb: int | None = None, finn_rapport: dict | None = None,
-         spec: dict | None = None) -> dict:
+         spec: dict | None = None, base: dict | None = None) -> dict:
     spec = spec or mal.last_spec()
+    base = base if base is not None else last_base()
+    rnb_kilde = "oppgitt med --rnb"
+    if rnb is None:
+        rnb, rnb_kilde = rnb_fra_base(base, dok["kilde"]["budsjettaar"])
+    loep = budsjettloep_rader(base, dok)
     radantall = radantall_for(dok)
+    radantall["budsjettloep"] = len(loep)
     layout = mal.legg_ut(spec, radantall)
     output = Path(output)
     output.parent.mkdir(parents=True, exist_ok=True)
@@ -122,6 +167,7 @@ def bygg(dok: dict, output: Path, rnb: int | None = None, finn_rapport: dict | N
 
     wb = openpyxl.load_workbook(output)
     avledede = avledet(dok, finn_rapport)
+    avledede["rnb.kilde_tekst"] = rnb_kilde if rnb is not None else f"ikke oppgitt ({rnb_kilde})"
     uit = uit_rad(dok)
     univ, alle = institusjonsrader(dok)
     open_rader, lukket_rader = satsblokker(dok)
@@ -142,19 +188,22 @@ def bygg(dok: dict, output: Path, rnb: int | None = None, finn_rapport: dict | N
                     if r.get("inndata") and rnb is not None:
                         celle(r["navn"]).value = rnb
             elif blokk["type"] == "tabell":
-                _fyll_tabell(ws, blokk, layout, dok, uit, univ, alle)
+                _fyll_tabell(ws, blokk, layout, dok, uit, univ, alle, loep)
             elif blokk["type"] == "fritabeller":
                 rader = open_rader if blokk["navn"] == "satser_open_ramme" else lukket_rader
                 _fyll_fritabell(ws, blokk, layout, rader)
 
     # RNB-etiketten får riktig år
+    aar_foer = dok["kilde"]["budsjettaar"] - 1
     celle("hovedtall_rnb").offset(column=-1).value = (
-        f"Tillegg i RNB {dok['kilde']['budsjettaar'] - 1}, kap. 260 post 50, hentes fra RNB-proposisjonen; tom = ikke justert")
+        f"Tillegg i RNB {aar_foer} for UiT, kap. 260 post 50 (fra budsjettbasen, se Kilder og Budsjettløp; overstyres med --rnb)"
+        if rnb is not None else
+        f"Tillegg i RNB {aar_foer} for UiT, kap. 260 post 50: ikke i budsjettbasen ennå; fyll inn fra supplerende tildelingsbrev")
     wb.save(output)
-    return {"output": str(output), "radantall": radantall, "rnb": rnb}
+    return {"output": str(output), "radantall": radantall, "rnb": rnb, "rnb_kilde": rnb_kilde}
 
 
-def _fyll_tabell(ws, blokk: dict, layout: mal.Layout, dok: dict, uit: dict, univ: list, alle: list) -> None:
+def _fyll_tabell(ws, blokk: dict, layout: mal.Layout, dok: dict, uit: dict, univ: list, alle: list, loep: list) -> None:
     start = layout.radmerker[f"{blokk['navn']}_start"]
     kilde = blokk["radkilde"]
     if kilde == "hovedtabell.kolonner":
@@ -172,6 +221,8 @@ def _fyll_tabell(ws, blokk: dict, layout: mal.Layout, dok: dict, uit: dict, univ
         rader = univ
     elif kilde == "institusjoner.statlige":
         rader = alle
+    elif kilde == "budsjettbase.aar":
+        rader = loep
     else:
         raise ValueError(f"ukjent radkilde {kilde!r}")
 

@@ -1,0 +1,316 @@
+{
+ "beskrivelse": "UiT, kap. 260 post 50, 1 000 kroner. forslag og vedtatt er lest fra blått hefte (utgave forslag / etter vedtak); rnb er tillegget i revidert nasjonalbudsjett samme budsjettår, fra rnb-tillegg.json.",
+ "bygget_utc": "2026-09-16T11:15:45Z",
+ "rnb_kilde": "/home/sihal7953/repos/skills/skills/knowledge-management/blatt-hefte/references/rnb-tillegg.json",
+ "aar": {
+  "2021": {
+   "forslag": {
+    "ramme": 3607742,
+    "utgangspunkt": 3405234,
+    "utgangspunkt_etikett": "Saldert budsjett 2020",
+    "prisjustering": 108420,
+    "sats_prosent": 3.2,
+    "ren_sats": true,
+    "kilde": {
+     "filnavn": "blaatt-hefte-2021-forslag.pdf",
+     "sha256": "7e7df76e386213aaef1963d828fea0bfa71189c1580bdf7bf7260352ecc69e66",
+     "url": "https://www.regjeringen.no/contentassets/31af8e2c3a224ac2829e48cc91d89083/orientering-om-forslag-til-statsbudsjettet-2021-for-universitet-og-hogskular.pdf",
+     "pdf_side": 19,
+     "tittel": null
+    }
+   },
+   "vedtatt": {
+    "ramme": 3604321,
+    "utgangspunkt": 3405234,
+    "utgangspunkt_etikett": "Saldert budsjett 2020",
+    "prisjustering": 108420,
+    "sats_prosent": 3.2,
+    "ren_sats": true,
+    "kilde": {
+     "filnavn": "blaatt-hefte-2021-vedtak.pdf",
+     "sha256": "101e3ed6763988b00810c2fdcfef14aad46c3f68fb87d3befde75b0beb14a797",
+     "url": "https://www.regjeringen.no/contentassets/31af8e2c3a224ac2829e48cc91d89083/orientering-om-statsbudsjettet-2021-for-universitet-og-hogskular-etter-vedtak-i-stortinget-14.-desember-2020-til-publisering.pdf",
+     "pdf_side": 19,
+     "tittel": null
+    }
+   },
+   "rnb": null,
+   "vedtatt_inkl_rnb": null
+  },
+  "2022": {
+   "forslag": {
+    "ramme": 3648676,
+    "utgangspunkt": 3604321,
+    "utgangspunkt_etikett": "Rammeløyving 2021",
+    "prisjustering": 93255,
+    "sats_prosent": 2.6,
+    "ren_sats": true,
+    "kilde": {
+     "filnavn": "blaatt-hefte-2022-forslag.pdf",
+     "sha256": "6bf82951fc5c53fbf72f2c81d620d380fc0b713b9aba560f171f05906867610b",
+     "url": "https://www.regjeringen.no/contentassets/31af8e2c3a224ac2829e48cc91d89083/orientering-om-forslag-til-statsbudsjettet-2022-for-universitet-og-hogskular-korrigert-13.-okt-21.pdf",
+     "pdf_side": 19,
+     "tittel": null
+    }
+   },
+   "vedtatt": {
+    "ramme": 3647822,
+    "utgangspunkt": 3604321,
+    "utgangspunkt_etikett": "Rammeløyving 2021",
+    "prisjustering": 93255,
+    "sats_prosent": 2.6,
+    "ren_sats": true,
+    "kilde": {
+     "filnavn": "blaatt-hefte-2022-vedtak.pdf",
+     "sha256": "2a1b29d5a83eb213d7715d5cce47f2499716f5e3dadc185c255539c5be01c915",
+     "url": "https://www.regjeringen.no/contentassets/31af8e2c3a224ac2829e48cc91d89083/orientering-om-statsbudsjettet-2022-for-universitet-og-hogskular-etter-vedtak-i-stortinget-20.-desember-2021.pdf",
+     "pdf_side": 17,
+     "tittel": "Etter vedtak"
+    }
+   },
+   "rnb": null,
+   "vedtatt_inkl_rnb": null
+  },
+  "2023": {
+   "forslag": {
+    "ramme": 3806489,
+    "utgangspunkt": 3647822,
+    "utgangspunkt_etikett": "Saldert budsjett 2022",
+    "prisjustering": 109435,
+    "sats_prosent": 3.0,
+    "ren_sats": true,
+    "kilde": {
+     "filnavn": "blaatt-hefte-2023-forslag.pdf",
+     "sha256": "deac756554fdaf0afd87dc5659650d9940651162b6328a20f8bdfef920ce40e9",
+     "url": "https://www.regjeringen.no/contentassets/31af8e2c3a224ac2829e48cc91d89083/2022.09.28-forslag-til-orientering-2023-samlefil.pdf",
+     "pdf_side": 17,
+     "tittel": null
+    }
+   },
+   "vedtatt": {
+    "ramme": 3806533,
+    "utgangspunkt": 3647822,
+    "utgangspunkt_etikett": "Saldert budsjett 2022",
+    "prisjustering": 109435,
+    "sats_prosent": 3.0,
+    "ren_sats": true,
+    "kilde": {
+     "filnavn": "blaatt-hefte-2023-vedtak.pdf",
+     "sha256": "534345e37e294143ac817fe40da82c70af1529e8e1bfa741efada016fb2905fe",
+     "url": "https://www.regjeringen.no/contentassets/31af8e2c3a224ac2829e48cc91d89083/orientering-om-statsbudsjettet-2023-for-universitet-og-hogskular-etter-vedtak-i-stortinget-14.12.22.pdf",
+     "pdf_side": 17,
+     "tittel": null
+    }
+   },
+   "rnb": {
+    "tillegg": 86200,
+    "komponenter": [
+     {
+      "navn": "Ekstraordinær lønns- og prisjustering",
+      "belop": 77609
+     },
+     {
+      "navn": "Kompensasjon for økt arbeidsgiveravgift",
+      "belop": 7795
+     },
+     {
+      "navn": "Omfordeling av studieplasser knyttet til krigen i Ukraina",
+      "belop": -704
+     },
+     {
+      "navn": "Kompetanseutvikling og studietilbud i Øst-Finnmark",
+      "belop": 1500
+     }
+    ],
+    "proposisjon": {
+     "navn": "Prop. 118 S (2022–2023)",
+     "dato": "2023-05-11",
+     "sektortall_post_50": null
+    },
+    "kilde": {
+     "dokument": "UiTs arbeidsbok «Forslag til statsbudsjett 2024.xlsx», ark «RNB 2023»",
+     "url": null,
+     "sha256": null,
+     "dato": null,
+     "status": "ikke verifisert mot offentlig dokument; sektorbrevet for RNB 2023 ligger ikke på regjeringen.no sin årsside for tildelingsbrev 2023"
+    }
+   },
+   "vedtatt_inkl_rnb": 3892733
+  },
+  "2024": {
+   "forslag": {
+    "ramme": 4045822,
+    "utgangspunkt": 3806533,
+    "utgangspunkt_etikett": "Saldert budsjett 2023",
+    "prisjustering": 250434,
+    "sats_prosent": 4.4,
+    "ren_sats": false,
+    "kilde": {
+     "filnavn": "blaatt-hefte-2024-forslag.pdf",
+     "sha256": "7394abe6ef36dc2142a48033a03358bbe8ea106ab86db04e583a875b03a6f401",
+     "url": "https://www.regjeringen.no/contentassets/31af8e2c3a224ac2829e48cc91d89083/orientering-om-forslag-til-statsbudsjettet-2024-universitet-og-hogskular.pdf",
+     "pdf_side": 16,
+     "tittel": null
+    }
+   },
+   "vedtatt": {
+    "ramme": 4061059,
+    "utgangspunkt": 3806533,
+    "utgangspunkt_etikett": "Saldert budsjett 2023",
+    "prisjustering": 245987,
+    "sats_prosent": 4.4,
+    "ren_sats": false,
+    "kilde": {
+     "filnavn": "blaatt-hefte-2024-vedtak.pdf",
+     "sha256": "d2386b758737be69a32b1a68ddfb2fe057f01af2cd227559c335b22513f53799",
+     "url": "https://www.regjeringen.no/contentassets/31af8e2c3a224ac2829e48cc91d89083/v3.-orientering-om-statsbudsjettet-2024-for-universitet-og-hogskular.pdf",
+     "pdf_side": 16,
+     "tittel": null
+    }
+   },
+   "rnb": {
+    "tillegg": 8300,
+    "komponenter": [
+     {
+      "navn": "Pilotutdanning i Bardufoss, videreføring",
+      "belop": 7500
+     },
+     {
+      "navn": "Profesjonsnære utdanninger, forsterkede tiltak ved dispensasjon fra nivåkrav",
+      "belop": 800
+     }
+    ],
+    "proposisjon": {
+     "navn": "Prop. 104 S (2023–2024)",
+     "dato": "2024-05-14",
+     "url": "https://www.regjeringen.no/no/dokumenter/prop.-104-s-20232024/id3039096/",
+     "innstilling": "Innst. 447 S (2023–2024)",
+     "sektortall_post_50": 29100
+    },
+    "kilde": {
+     "dokument": "Supplerende tildelingsbrev, revidert nasjonalbudsjett 2024, kap. 260 post 50, statlige universiteter og høyskoler (ref. 23/4570)",
+     "url": "https://www.regjeringen.no/contentassets/13ee8262d9d14e789db11fef841a3f29/supplerende-tildelingsbrev-revidert-nasjonalbudsjett-2024-kap.-260-post-50-statlige-universiteter-og-2383249.pdf",
+     "sha256": "a62f33e10ff7b3003ab8bcafd60351547c56f4f0d5e7768f40383adf571a2528",
+     "dato": "2024-06-25",
+     "lokal_fil": "2024/supplerende-tildelingsbrev-rnb-2024.pdf",
+     "status": "verifisert 2026-09-16: «7,5 mill. kroner til Universitetet i Tromsø» (pkt. 3) og «Universitetet i Tromsø 800 000» (tabell pkt. 4)"
+    }
+   },
+   "vedtatt_inkl_rnb": 4069359
+  },
+  "2025": {
+   "forslag": {
+    "ramme": 4155453,
+    "utgangspunkt": 4061059,
+    "utgangspunkt_etikett": "Saldert budsjett 2024",
+    "prisjustering": 157470,
+    "sats_prosent": 3.8,
+    "ren_sats": false,
+    "kilde": {
+     "filnavn": "blaatt-hefte-2025-forslag.pdf",
+     "sha256": "5537b1083deed772c14f5a87c5fd045a97534ebb5e62be7644341c4b60502023",
+     "url": "https://www.regjeringen.no/contentassets/31af8e2c3a224ac2829e48cc91d89083/orientering-om-forslag-til-statsbudsjettet-2025-for-universitet-og-hogskular.pdf",
+     "pdf_side": 13,
+     "tittel": null
+    }
+   },
+   "vedtatt": {
+    "ramme": 4175449,
+    "utgangspunkt": 4061059,
+    "utgangspunkt_etikett": "Saldert budsjett 2024",
+    "prisjustering": 157470,
+    "sats_prosent": 3.8,
+    "ren_sats": false,
+    "kilde": {
+     "filnavn": "blaatt-hefte-2025-vedtak.pdf",
+     "sha256": "fd884a2073f94b614aafe1032fa99a858cfea1e8b730ff988fd5095299ca58dd",
+     "url": "https://www.regjeringen.no/contentassets/31af8e2c3a224ac2829e48cc91d89083/orientering-om-statsbudsjettet-2025-for-universitet-og-hogskular.pdf",
+     "pdf_side": 13,
+     "tittel": null
+    }
+   },
+   "rnb": {
+    "tillegg": -907,
+    "komponenter": [
+     {
+      "navn": "Egenbetaling for gjentak av beståtte eksamener: ny fordeling av budsjettreduksjonen (opprinnelig −1 091, ny −1 998)",
+      "belop": -907
+     }
+    ],
+    "proposisjon": {
+     "navn": "Prop. 146 S (2024–2025)",
+     "dato": "2025-05-15",
+     "url": "https://www.regjeringen.no/no/dokumenter/prop.-146-s-20242025/id3100917/",
+     "innstilling": "Innst. 540 S (2024–2025)",
+     "sektortall_post_50": -18700
+    },
+    "kilde": {
+     "dokument": "Supplerende tildelingsbrev nr. 1 til statlige universiteter og høyskoler, tilleggsbevilgninger og omprioriteringer i statsbudsjettet 2025 (ref. 24/5195)",
+     "url": "https://www.regjeringen.no/contentassets/13ee8262d9d14e789db11fef841a3f29/supplerende-tildelingsbrev-nr.1-til-statlige-universiteter-og-hoyskoler-tilleggsbevilgninger-og-omprioriteringer-statsbudsjettet2025.pdf",
+     "sha256": "d56a7394c9b820c0a99188f073c1e45dc93d3f00f7b0ff90dbf34da017d31e1a",
+     "dato": "2025-07-02",
+     "lokal_fil": "2025/supplerende-tildelingsbrev-rnb-2025.pdf",
+     "status": "verifisert 2026-09-16: tabell pkt. 1.1.1, UiT-raden −1 091 / −907 / −1 998; tildelingene over kap. 226 og 275 i samme brev gjelder ikke post 50"
+    }
+   },
+   "vedtatt_inkl_rnb": 4174542
+  },
+  "2026": {
+   "forslag": {
+    "ramme": 4276564,
+    "utgangspunkt": 4175449,
+    "utgangspunkt_etikett": "Saldert budsjett 2025",
+    "prisjustering": 150316,
+    "sats_prosent": 3.6,
+    "ren_sats": true,
+    "kilde": {
+     "filnavn": "blaatt-hefte-2026-forslag.pdf",
+     "sha256": "67fab392e11e4d8270752d7004e59b37fc37949673a0d2511282a89124154cb0",
+     "url": "https://www.regjeringen.no/contentassets/31af8e2c3a224ac2829e48cc91d89083/orientering-om-forslag-til-statsbudsjettet-2026-for-universitet-og-hogskular.pdf",
+     "pdf_side": 12,
+     "tittel": null
+    }
+   },
+   "vedtatt": {
+    "ramme": 4281564,
+    "utgangspunkt": 4175449,
+    "utgangspunkt_etikett": "Saldert budsjett 2025",
+    "prisjustering": 150316,
+    "sats_prosent": 3.6,
+    "ren_sats": true,
+    "kilde": {
+     "filnavn": "blaatt-hefte-2026-vedtak.pdf",
+     "sha256": "94ac6f1f1caab3969e0b892a9f4d4ac4569309d8a9ecf148436b6b3a9051584e",
+     "url": "https://www.regjeringen.no/contentassets/31af8e2c3a224ac2829e48cc91d89083/orientering-om-statsbudsjettet-2026-for-universitet-og-hogskular-etter-vedtak-i-stortinget-18.-desember-2025.pdf",
+     "pdf_side": 12,
+     "tittel": null
+    }
+   },
+   "rnb": {
+    "tillegg": 364,
+    "komponenter": [
+     {
+      "navn": "Nasjonalt BEGRENSET plattform (NBP), 364 000 kroner til hver statlig institusjon unntatt Nord universitet",
+      "belop": 364
+     }
+    ],
+    "proposisjon": {
+     "navn": "Prop. 96 S (2025–2026)",
+     "dato": "2026-05-12",
+     "url": "https://www.regjeringen.no/no/dokumenter/prop.-96-s-20252026/id3159643/",
+     "innstilling": "Innst. 450 S (2025–2026)",
+     "sektortall_post_50": 31100
+    },
+    "kilde": {
+     "dokument": "Supplerende tildelingsbrev nr. 1 til statlige universiteter og høyskoler om tilleggsbevilgninger og omprioriteringer i statsbudsjettet 2026 (ref. 25/5029)",
+     "url": "https://www.regjeringen.no/contentassets/35e08b38d60a46b9b1ef32ee999b853b/supplerende-tildelingsbrev-nr.-1-til-statlige-universiteter-og-hoyskoler-om-tilleggsbevilgninger-og-omprioriteringer-i-statsbuds.pdf",
+     "sha256": "4f52e7f27aef0dddc84954dcad7f5158a12213fe19fd1dac4c5c1b2eb6d6a3ef",
+     "dato": "2026-06-25",
+     "lokal_fil": "2026/supplerende-tildelingsbrev-rnb-2026.pdf",
+     "status": "verifisert 2026-09-16: pkt. 1.1 «364 000 kroner til hver av de statlige universitetene og høyskolene (unntatt Nord universitet)»"
+    }
+   },
+   "vedtatt_inkl_rnb": 4281928
+  }
+ }
+}

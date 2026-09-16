@@ -47,7 +47,7 @@ def ark_med_rnb(dok, tmp_path_factory):
 
 def test_seks_ark_i_rekkefolge(ark_uten_rnb):
     synlige = [ws.title for ws in ark_uten_rnb.worksheets if ws.sheet_state == "visible"]
-    assert synlige == ["Hovedtall", "Hovedposter", "Resultat", "Sektor", "Satser", "Kilder"]
+    assert synlige == ["Hovedtall", "Budsjettløp", "Hovedposter", "Resultat", "Sektor", "Satser", "Kilder"]
 
 
 def test_hovedposter_har_heftets_kolonner(dok, ark_uten_rnb):
@@ -78,12 +78,22 @@ def test_hovedtall_etiketter_og_verdier(dok, ark_uten_rnb):
     assert ws["C10"].value == pytest.approx(0.038)
     assert ws["C15"].value == 157470
     assert "nei" in ws["C18"].value
-    assert ws["C21"].value is None  # RNB ikke oppgitt
-    assert "ikke oppgitt" in ws["C12"].value  # formelen har fallback-teksten
+    assert ws["C21"].value == 8300  # RNB 2024 fra budsjettbasen (supplerende tildelingsbrev 25.06.2024)
+    assert "ikke oppgitt" in ws["C12"].value  # formelen har fallback-teksten når cellen tømmes
 
 
 def test_rnb_fylles_naar_oppgitt(ark_med_rnb):
-    assert ark_med_rnb["Hovedtall"]["C21"].value == 1000
+    assert ark_med_rnb["Hovedtall"]["C21"].value == 1000  # --rnb overstyrer basen
+
+
+def test_budsjettloep_har_aarene_til_og_med_heftets(ark_uten_rnb):
+    ws = ark_uten_rnb["Budsjettløp"]
+    aar = [ws[f"B{6 + i}"].value for i in range(6)]
+    assert aar == ["2021", "2022", "2023", "2024", "2025", None]
+    rad_2025 = 6 + aar.index("2025")
+    assert ws[f"C{rad_2025}"].value == 4155453 and ws[f"D{rad_2025}"].value == 4175449 and ws[f"E{rad_2025}"].value == -907
+    rad_2024 = 6 + aar.index("2024")
+    assert ws[f"E{rad_2024}"].value == 8300 and "tildelingsbrev" in ws[f"G{rad_2024}"].value
 
 
 def test_satser_uten_lukket_ramme_har_tekst(ark_uten_rnb):

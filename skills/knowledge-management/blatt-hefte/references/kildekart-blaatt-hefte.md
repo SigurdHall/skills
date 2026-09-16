@@ -166,3 +166,31 @@ Begge ligger langt under finn-budsjettet på 25 sekunder.
 ## Tidsmåling av hele kjeden, 2026-09-16
 
 `kjor_blaatt_hefte.py --year 2026 --stage forslag` med tom lokal cache, tre kjøringer fra WSL: vegg-til-vegg 0,94 / 0,85 / 0,85 s (finn 0,27–0,29 s, hent 0,25–0,34 s, les 0,11 s, bygg 0,03 s). Budsjettet er 120 s. `--year 2027` gir returkode 2 på 0,5 s.
+
+
+## Revidert nasjonalbudsjett (RNB) og budsjettløpet, kartlagt 2026-09-16
+
+Statsbudsjettet har tre tidspunkter for UiT på kap. 260 post 50: forslag (blått hefte, oktober året før), vedtatt (blått hefte etter vedtak i Stortinget, desember; tildelingsbrevet gjentar rammen som ett tall) og revidert (RNB, mai i budsjettåret). **UiTs RNB-tall står ikke i RNB-proposisjonen**, som bare har sektortall for post 50. De står i KDs **supplerende tildelingsbrev nr. 1 til statlige universiteter og høyskoler**, publisert på regjeringen.no ca. fem uker etter proposisjonen. Det finnes ingen RNB-utgave av blått hefte. Tallene vedlikeholdes i `rnb-tillegg.json` og bygges inn i `budsjettbase.json` med `bygg_base.py`.
+
+| Budsjettår | RNB-proposisjon | Supplerende tildelingsbrev | UiT-endring (1 000 kr) |
+|---|---|---|---|
+| 2023 | Prop. 118 S (2022–2023), 11.05.2023 | ikke funnet på regjeringen.no; tallet 86 200 er fra UiTs egen arbeidsbok 2024 | +86 200 (ikke verifisert offentlig) |
+| 2024 | [Prop. 104 S (2023–2024)](https://www.regjeringen.no/no/dokumenter/prop.-104-s-20232024/id3039096/), 14.05.2024, post 50 +29,1 mill. | [25.06.2024](https://www.regjeringen.no/contentassets/13ee8262d9d14e789db11fef841a3f29/supplerende-tildelingsbrev-revidert-nasjonalbudsjett-2024-kap.-260-post-50-statlige-universiteter-og-2383249.pdf) | +8 300 (Bardufoss 7 500, profesjonsnære 800) |
+| 2025 | [Prop. 146 S (2024–2025)](https://www.regjeringen.no/no/dokumenter/prop.-146-s-20242025/id3100917/), 15.05.2025, post 50 −18,7 mill. | [02.07.2025](https://www.regjeringen.no/contentassets/13ee8262d9d14e789db11fef841a3f29/supplerende-tildelingsbrev-nr.1-til-statlige-universiteter-og-hoyskoler-tilleggsbevilgninger-og-omprioriteringer-statsbudsjettet2025.pdf) | −907 (egenbetalingskuttet omfordelt: −1 091 → −1 998) |
+| 2026 | [Prop. 96 S (2025–2026)](https://www.regjeringen.no/no/dokumenter/prop.-96-s-20252026/id3159643/), 12.05.2026, post 50 +31,1 mill. | [25.06.2026](https://www.regjeringen.no/contentassets/35e08b38d60a46b9b1ef32ee999b853b/supplerende-tildelingsbrev-nr.-1-til-statlige-universiteter-og-hoyskoler-om-tilleggsbevilgninger-og-omprioriteringer-i-statsbuds.pdf) | +364 (NBP, flatt til alle unntatt Nord) |
+
+Brevene ligger lokalt i `uit-statsbudsjett/analyse/kilder/rnb/<år>/` med sha256 i `rnb-tillegg.json`. Brevet for 2025 inneholder også tildelinger over kap. 226 og 275 som ikke gjelder post 50.
+
+Navigasjonsveier for RNB (kontrollert 2026-09-16):
+
+| # | Vei | Vurdering |
+|---|---|---|
+| R1 | KDs samleside for tildelingsbrev `https://www.regjeringen.no/no/dokument/dep/kd/Tildelingsbrev/id753324/` med lenker til årssidene og til de supplerende sektorbrevene. Regex: `href="(/contentassets/[0-9a-f]{32}/supplerende-tildelingsbrev[^"]*statlige-universiteter[^"]*\.pdf)"` | stabil, beste inngang |
+| R2 | Nettstedssøk etter proposisjoner: `/no/sok/id86008/?documenttype=dokumenter%2Fproposisjoner&term=Tilleggsbevilgninger+og+omprioriteringer`. Regex: `href="(/no/dokumenter/prop\.-\d+-s-\d{8}/id\d+/)"` | stabil, følg 301 |
+| R3 | RNB-undersiden per år `/no/statsbudsjett/<år>/rnb/id<7 siffer>/` (2024 id3033175, 2025 id3095290, 2026 id3155542) | halvstabil, id-en er ny hvert år |
+| R4 | Proposisjonens dokumentside → PDF `prp<sesjon 8 siffer><propnr 4 siffer>000dddpdfs.pdf` | stabil struktur |
+| R5 | contentassets-mappen for brevene (2024 og 2025 samme GUID, 2026 ny) | ustabil, aldri hardkod |
+| R6 | Årssidene for tildelingsbrev `/no/dokumenter/tildelingsbrev-til-universiteter-og-hoyskoler-<år>/id…/` (2025 bryter mønsteret: `tildelingsbrev-2025/id3075320/`) | halvstabil |
+| R7 | Stortingets Innst. S til RNB (447 S 2023–2024, 540 S 2024–2025, 450 S 2025–2026) | kryssjekk, ikke per institusjon |
+
+Kalender: RNB-proposisjonen midten av mai, Stortingets vedtak medio juni, supplerende tildelingsbrev 25.06–02.07. Sjekk R1 fra 10. juni. Tildelingsbrevet for året (desember) gjentar vedtatt ramme som ett tall og viser til blått hefte for spesifikasjonen (2024: 4 061 059 000; 2025: 4 175 449 000; 2026: 4 281 564 000).

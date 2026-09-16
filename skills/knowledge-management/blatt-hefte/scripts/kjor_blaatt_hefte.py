@@ -121,6 +121,7 @@ def kjor(args: argparse.Namespace) -> int:
     status_sti = Path(args.status_output) if args.status_output else ut / f"status-{args.year}-{utgave}.md"
     returkode = 0
     dom, handling, merknader = "", [], []
+    rnb_brukt, rnb_kilde = args.rnb, ("oppgitt med --rnb" if args.rnb is not None else "ikke oppgitt")
     finn_rapport: dict | None = None
     pdf: Path | None = Path(args.pdf) if args.pdf else None
     kilde: dict | None = None
@@ -201,7 +202,8 @@ def kjor(args: argparse.Namespace) -> int:
         t = time.perf_counter()
         klokke.krev("bygg")
         ark_sti = Path(args.output) if args.output else ut / f"uit-ramme-{args.year}-{utgave}.xlsx"
-        bygg_rammeark.bygg(dok, ark_sti, rnb=args.rnb, finn_rapport=finn_rapport)
+        bygget = bygg_rammeark.bygg(dok, ark_sti, rnb=args.rnb, finn_rapport=finn_rapport)
+        rnb_brukt, rnb_kilde = bygget["rnb"], bygget["rnb_kilde"]
         klokke.maal("bygg", t)
         dom = dom or f"publisert; {utgave}sutgaven for {args.year} er hentet og lest"
         returkode = 10 if merknader else 0
@@ -216,7 +218,7 @@ def kjor(args: argparse.Namespace) -> int:
     # status
     t = time.perf_counter()
     handling = merknader + handling
-    tall = hovedtall(dok, args.rnb)
+    tall = hovedtall(dok, rnb_brukt)
     klokke.tider["status"] = round(time.perf_counter() - t, 2)
     felter = dict(
         budsjettaar=args.year, utgave=utgave, dom=dom or "ikke levert", returkode=returkode,
@@ -226,7 +228,8 @@ def kjor(args: argparse.Namespace) -> int:
         nominell_pst=fmt_pst(tall["nominell_pst"]),
         prissats=("ikke levert" if tall["prissats"] is None else f"{tall['prissats']:.1f} %".replace(".", ",")),
         realvekst_uten_rnb=fmt_pst(tall["realvekst_uten_rnb"]),
-        realvekst_med_rnb=("ikke oppgitt" if args.rnb is None else fmt_pst(tall["realvekst_med_rnb"])),
+        realvekst_med_rnb=("ikke oppgitt" if rnb_brukt is None
+                           else fmt_pst(tall["realvekst_med_rnb"]) + f" (RNB {args.year - 1}: {fmt_kr(rnb_brukt)})"),
         kontroll_a=kontrolltekst(dok, "alle_rader_summerer"), kontroll_b=kontroll_b_tekst(dok),
         kontroll_c=(dok["hovedtabell"]["kontroll"]["kryss"]["status"] if dok else "ikke levert"),
         ren_sats=("ikke levert" if dok is None else str(dok["prisjustering"]["ren_sats"])),

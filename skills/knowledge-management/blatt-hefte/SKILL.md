@@ -1,6 +1,6 @@
 ---
 name: blatt-hefte
-description: Bygg UiTs rammeark fra Kunnskapsdepartementets «blått hefte» (Orientering om forslag til statsbudsjettet for universitet og høgskular) på under to minutter. Bruk når brukeren ber om blått hefte, rammeark, statsbudsjettet for UiT, realvekst, kap. 260 post 50, eller vil vite om årets hefte er publisert. Leverer én Excel-arbeidsbok (Hovedtall, Hovedposter, Resultat, Sektor, Satser, Kilder) og en statusprompt. Ikke Prop. 1 S, ikke departementsgjennomgang, ikke UiTs styresak eller foreløpige fordeling.
+description: Bygg UiTs rammeark fra Kunnskapsdepartementets «blått hefte» (Orientering om forslag til statsbudsjettet for universitet og høgskular) på under to minutter. Bruk når brukeren ber om blått hefte, rammeark, statsbudsjettet for UiT, realvekst, kap. 260 post 50, eller vil vite om årets hefte er publisert. Leverer én Excel-arbeidsbok (Hovedtall, Budsjettløp, Hovedposter, Resultat, Sektor, Satser, Kilder) med RNB fra budsjettbasen, og en statusprompt. Ikke Prop. 1 S, ikke departementsgjennomgang, ikke UiTs styresak eller foreløpige fordeling.
 ---
 
 # blatt-hefte
@@ -18,8 +18,10 @@ MSYS_NO_PATHCONV=1 wsl.exe -e /home/sihal7953/.venvs/statsbudsjett/bin/python /h
 ```
 
 Fra WSL: samme skript med `~/.venvs/statsbudsjett/bin/python`. `--stage vedtak`
-gir utgaven etter vedtak i Stortinget. `--rnb <tusen kroner>` legger inn
-tillegget fra revidert nasjonalbudsjett året før, så realvekst med RNB fylles.
+gir utgaven etter vedtak i Stortinget. RNB-tillegget for året før hentes
+automatisk fra `references/budsjettbase.json` (UiTs endring i KDs supplerende
+tildelingsbrev etter revidert nasjonalbudsjett); `--rnb <tusen kroner>`
+overstyrer. Mangler året i basen, står RNB-cellen tom og arket sier det.
 `--year` er alltid budsjettåret: forslaget for 2027 legges fram i oktober 2026.
 
 Leveranse: `/home/sihal7953/repos/uit-statsbudsjett/leveranser/rammeark/`
@@ -53,12 +55,29 @@ Er regjeringen.no nede eller heftet lastet ned i nettleseren, kjør med
 Websøk som fallback når kode 2, 4 eller 5 kommer etter publiseringsdatoen:
 `site:regjeringen.no/contentassets orientering statsbudsjettet <år> universitet hogskular`.
 
+## Budsjettbasen
+
+`references/budsjettbase.json` har UiTs forslag, vedtatt og RNB-tillegg per
+budsjettår 2021–2026, alt sporet til dokument og sha256. Forslag og vedtatt
+leses fra heftene; RNB vedlikeholdes i `references/rnb-tillegg.json` fra det
+supplerende tildelingsbrevet (juni/juli) og bygges inn med:
+
+```text
+scripts/bygg_base.py --kilder /home/sihal7953/repos/uit-statsbudsjett/analyse/kilder/blaatt-hefte
+```
+
+Nytt RNB-år: last ned brevet fra KDs tildelingsbrev-side (se kildekartet, R1),
+legg UiTs endring med komponenter, url, sha256 og dato i `rnb-tillegg.json`,
+kjør `bygg_base.py`, commit.
+
 ## Hva arket inneholder
 
 Kolonner, indikatorer og kategorier er heftets egne for året, på nynorsk.
 Kolonnen «Egen etikett» er tom og kan fylles for hånd. Realvekst regnes som
-(endring − heftets prisjustering) / utgangspunkt, med og uten RNB; kontrollblokken
-i `Hovedtall` viser også nominell endring minus prissats. Når
+(endring − heftets prisjustering) / utgangspunkt, uten RNB og med RNB-tillegget
+for året før lagt til utgangspunktet; kontrollblokken i `Hovedtall` viser også
+nominell endring minus prissats. Arket `Budsjettløp` viser forslag, vedtatt,
+RNB-tillegg og vedtatt inkl. RNB per år med kilde. Når
 prisjusteringskolonnen inneholder mer enn satsen (2024, 2025), står avviket og
 heftets forklaring i arket.
 
@@ -70,6 +89,7 @@ heftets forklaring i arket.
 - `references/kildekart-blaatt-hefte.md`: hvor heftene ligger og hvordan nye oppdages.
 - `references/tabellkart-blaatt-hefte.md`: tabellenes plassering og kolonner per år.
 - `references/kjente-utgaver.json`: alle utgaver 2021–2026 med URL og hash.
+- `references/budsjettbase.json` og `rnb-tillegg.json`: forslag, vedtatt og RNB per år.
 - `references/presentasjon-2024-tabeller.md`: hvilke lysark arket speiler.
 
 Tester: `~/.venvs/statsbudsjett/bin/python -m pytest tests/test_blaatt_hefte_*.py -q` fra skills-repoet.

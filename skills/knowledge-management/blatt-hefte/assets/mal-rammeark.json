@@ -1,262 +1,735 @@
 {
-  "spesifikasjon_versjon": "1",
-  "beskrivelse": "Maskinlesbar spesifikasjon av rammearket. mal.py bygger assets/mal-rammeark.xlsx fra denne filen, og bygg_rammeark.py (fase 4) fyller den samme layouten med data fra et kontraktdokument. Alle adresser i xlsx-filen er utledet av denne filen alene.",
-  "layoutregler": {
-    "tittelrad": 2,
-    "enhetsrad": 3,
-    "etikettkolonne": "B",
-    "verdikolonne": "C",
-    "tomme_rader_etter_blokk": 1,
-    "plassholdere": {
-      "{rad}": "radnummeret for den aktuelle raden i en tabellblokk",
-      "{start}": "første datarad i blokken",
-      "{slutt}": "siste datarad i blokken",
-      "{nest_siste}": "nest siste datarad i blokken",
-      "{sum}": "radnummeret for sumraden i blokken",
-      "@navn": "erstattes med absolutt adresse til den navngitte cellen, f.eks. @hovedtall_rnb -> 'Hovedtall'!$C$21"
-    },
-    "radantall": "mal_radantall gjelder bare malen. bygg_mal(spec, output, radantall={blokknavn: n}) bygger samme layout med faktisk radantall, og _meta-arket viser hvor hver navngitt celle havnet."
+ "spesifikasjon_versjon": "1",
+ "beskrivelse": "Maskinlesbar spesifikasjon av rammearket. mal.py bygger assets/mal-rammeark.xlsx fra denne filen, og bygg_rammeark.py (fase 4) fyller den samme layouten med data fra et kontraktdokument. Alle adresser i xlsx-filen er utledet av denne filen alene.",
+ "layoutregler": {
+  "tittelrad": 2,
+  "enhetsrad": 3,
+  "etikettkolonne": "B",
+  "verdikolonne": "C",
+  "tomme_rader_etter_blokk": 1,
+  "plassholdere": {
+   "{rad}": "radnummeret for den aktuelle raden i en tabellblokk",
+   "{start}": "første datarad i blokken",
+   "{slutt}": "siste datarad i blokken",
+   "{nest_siste}": "nest siste datarad i blokken",
+   "{sum}": "radnummeret for sumraden i blokken",
+   "@navn": "erstattes med absolutt adresse til den navngitte cellen, f.eks. @hovedtall_rnb -> 'Hovedtall'!$C$21"
   },
-  "enhetstekst": "NOK i hele tusen",
-  "tallformat": {
-    "belop": "#,##0;-#,##0;\"-\"",
-    "prosent": "0.0 %",
-    "tekst": "General"
+  "radantall": "mal_radantall gjelder bare malen. bygg_mal(spec, output, radantall={blokknavn: n}) bygger samme layout med faktisk radantall, og _meta-arket viser hvor hver navngitt celle havnet."
+ },
+ "enhetstekst": "NOK i hele tusen",
+ "tallformat": {
+  "belop": "#,##0;-#,##0;\"-\"",
+  "prosent": "0.0 %",
+  "tekst": "General"
+ },
+ "stil": {
+  "overskrift_bakgrunn": "FF003349",
+  "overskrift_tekst": "FFFFFFFF",
+  "vis_rutenett": false,
+  "tittel": {
+   "storrelse": 14,
+   "fet": true
   },
-  "stil": {
-    "overskrift_bakgrunn": "FF003349",
-    "overskrift_tekst": "FFFFFFFF",
-    "vis_rutenett": false,
-    "tittel": {"storrelse": 14, "fet": true},
-    "enhet": {"storrelse": 9, "kursiv": true},
-    "frys_rute": "B4"
+  "enhet": {
+   "storrelse": 9,
+   "kursiv": true
   },
-  "ark": [
+  "frys_rute": "B4"
+ },
+ "ark": [
+  {
+   "navn": "Hovedtall",
+   "tittel": "Hovedtall for UiT, kap. 260 post 50",
+   "vis_enhet": true,
+   "kolonnebredder": {
+    "A": 2.5,
+    "B": 54,
+    "C": 18,
+    "D": 44
+   },
+   "startrad": 5,
+   "blokker": [
     {
-      "navn": "Hovedtall",
-      "tittel": "Hovedtall for UiT, kap. 260 post 50",
-      "vis_enhet": true,
-      "kolonnebredder": {"A": 2.5, "B": 54, "C": 18, "D": 44},
-      "startrad": 5,
-      "blokker": [
-        {
-          "navn": "hovedtall_hoveddel",
-          "type": "rader",
-          "overskrift": ["Hovedtall", "Verdi"],
-          "rader": [
-            {"navn": "hovedtall_utgangspunkt", "etikett": "Utgangspunkt (heftets første kolonne)", "etikett_navn": "hovedtall_etikett_utgangspunkt", "etikett_felt": "hovedtabell.kolonner[0]", "felt": "uit.utgangspunkt", "format": "belop"},
-            {"navn": "hovedtall_forslag", "etikett": "Forslag (heftets siste kolonne)", "etikett_navn": "hovedtall_etikett_forslag", "etikett_felt": "hovedtabell.kolonner[-1]", "felt": "uit.forslag", "format": "belop"},
-            {"navn": "hovedtall_endring", "etikett": "Endring i kroner", "formel": "=@hovedtall_forslag-@hovedtall_utgangspunkt", "format": "belop"},
-            {"navn": "hovedtall_nominell", "etikett": "Nominell endring", "formel": "=@hovedtall_endring/@hovedtall_utgangspunkt", "format": "prosent"},
-            {"navn": "hovedtall_prissats", "etikett": "Prisjusteringssats i heftet", "felt": "prisjustering.sats_prosent_desimal", "format": "prosent"},
-            {"navn": "hovedtall_realvekst_b", "etikett": "Realvekst (metode b, uten RNB)", "formel": "=(@hovedtall_endring-@hovedtall_prisjustering)/@hovedtall_utgangspunkt", "format": "prosent"},
-            {"navn": "hovedtall_realvekst_b_rnb", "etikett": "Realvekst (metode b, med RNB)", "formel": "=IF(@hovedtall_rnb=\"\",\"ikke oppgitt\",(@hovedtall_endring-@hovedtall_prisjustering)/(@hovedtall_utgangspunkt+@hovedtall_rnb))", "format": "prosent"}
-          ]
-        },
-        {
-          "navn": "hovedtall_kontroll",
-          "type": "rader",
-          "overskrift": ["Kontroll", "Verdi"],
-          "rader": [
-            {"navn": "hovedtall_prisjustering", "etikett": "Prisjustering i kroner fra heftet", "felt": "prisjustering.uit_kolonne", "format": "belop"},
-            {"navn": "hovedtall_sats_x_utgangspunkt", "etikett": "Sats x utgangspunkt", "formel": "=ROUND(@hovedtall_prissats*@hovedtall_utgangspunkt,0)", "format": "belop"},
-            {"navn": "hovedtall_prisavvik", "etikett": "Avvik (heftet minus sats x utgangspunkt)", "formel": "=@hovedtall_prisjustering-@hovedtall_sats_x_utgangspunkt", "format": "belop"},
-            {"navn": "hovedtall_ren_sats", "etikett": "Ren sats (avvik innenfor toleranse)", "felt": "prisjustering.ren_sats_tekst", "format": "tekst"},
-            {"navn": "hovedtall_realvekst_a", "etikett": "Realvekst (metode a, uten RNB)", "formel": "=@hovedtall_nominell-@hovedtall_prissats", "format": "prosent"},
-            {"navn": "hovedtall_realvekst_a_rnb", "etikett": "Realvekst (metode a, med RNB)", "formel": "=IF(@hovedtall_rnb=\"\",\"ikke oppgitt\",@hovedtall_endring/(@hovedtall_utgangspunkt+@hovedtall_rnb)-@hovedtall_prissats)", "format": "prosent"},
-            {"navn": "hovedtall_rnb", "etikett": "Tillegg i RNB <år-1>, kap. 260 post 50, hentes fra RNB-proposisjonen; tom = ikke justert", "inndata": true, "format": "belop"}
-          ]
-        }
-      ]
+     "navn": "hovedtall_hoveddel",
+     "type": "rader",
+     "overskrift": [
+      "Hovedtall",
+      "Verdi"
+     ],
+     "rader": [
+      {
+       "navn": "hovedtall_utgangspunkt",
+       "etikett": "Utgangspunkt (heftets første kolonne)",
+       "etikett_navn": "hovedtall_etikett_utgangspunkt",
+       "etikett_felt": "hovedtabell.kolonner[0]",
+       "felt": "uit.utgangspunkt",
+       "format": "belop"
+      },
+      {
+       "navn": "hovedtall_forslag",
+       "etikett": "Forslag (heftets siste kolonne)",
+       "etikett_navn": "hovedtall_etikett_forslag",
+       "etikett_felt": "hovedtabell.kolonner[-1]",
+       "felt": "uit.forslag",
+       "format": "belop"
+      },
+      {
+       "navn": "hovedtall_endring",
+       "etikett": "Endring i kroner",
+       "formel": "=@hovedtall_forslag-@hovedtall_utgangspunkt",
+       "format": "belop"
+      },
+      {
+       "navn": "hovedtall_nominell",
+       "etikett": "Nominell endring",
+       "formel": "=@hovedtall_endring/@hovedtall_utgangspunkt",
+       "format": "prosent"
+      },
+      {
+       "navn": "hovedtall_prissats",
+       "etikett": "Prisjusteringssats i heftet",
+       "felt": "prisjustering.sats_prosent_desimal",
+       "format": "prosent"
+      },
+      {
+       "navn": "hovedtall_realvekst_b",
+       "etikett": "Realvekst (metode b, uten RNB)",
+       "formel": "=(@hovedtall_endring-@hovedtall_prisjustering)/@hovedtall_utgangspunkt",
+       "format": "prosent"
+      },
+      {
+       "navn": "hovedtall_realvekst_b_rnb",
+       "etikett": "Realvekst (metode b, med RNB)",
+       "formel": "=IF(@hovedtall_rnb=\"\",\"ikke oppgitt\",(@hovedtall_endring-@hovedtall_prisjustering)/(@hovedtall_utgangspunkt+@hovedtall_rnb))",
+       "format": "prosent"
+      }
+     ]
     },
     {
-      "navn": "Hovedposter",
-      "tittel": "Hovedposter: heftets kolonner for UiT",
-      "vis_enhet": true,
-      "kolonnebredder": {"A": 2.5, "B": 44, "C": 34, "D": 18},
-      "startrad": 5,
-      "blokker": [
-        {
-          "navn": "hovedposter",
-          "type": "tabell",
-          "radkilde": "hovedtabell.kolonner",
-          "mal_radantall": 13,
-          "kolonner": [
-            {"kolonne": "B", "overskrift": "Post (heftets etikett)", "felt": "kolonnenavn", "format": "tekst"},
-            {"kolonne": "C", "overskrift": "Egen etikett", "felt": null, "format": "tekst"},
-            {"kolonne": "D", "overskrift": "UiT", "felt": "uit_verdi", "format": "belop"}
-          ],
-          "sumrad": {"navn": "hovedposter_sum", "etikett": "Sum utgangspunkt og endringar", "kolonne": "D", "formel": "=SUM(D{start}:D{nest_siste})", "format": "belop", "fet": true},
-          "kontrollrad": {"navn": "hovedposter_kontroll", "etikett": "Avvik mot heftets forslag (skal vere 0)", "kolonne": "D", "formel": "=D{sum}-D{slutt}", "format": "belop"}
-        },
-        {
-          "navn": "hovedposter_rnb",
-          "type": "rader",
-          "overskrift": ["Justert for RNB", "Verdi"],
-          "alltid_med": true,
-          "rader": [
-            {"navn": "hovedposter_rnb_utgangspunkt", "etikett": "Utgangspunkt inkl. RNB", "formel": "=IF(@hovedtall_rnb=\"\",\"ikke oppgitt\",D{hovedposter_start}+@hovedtall_rnb)", "format": "belop"},
-            {"navn": "hovedposter_rnb_forslag", "etikett": "Forslag inkl. RNB", "formel": "=IF(@hovedtall_rnb=\"\",\"ikke oppgitt\",D{hovedposter_slutt}+@hovedtall_rnb)", "format": "belop"},
-            {"navn": "hovedposter_rnb_nominell", "etikett": "Nominell endring inkl. RNB", "formel": "=IF(@hovedtall_rnb=\"\",\"ikke oppgitt\",(D{hovedposter_slutt}-D{hovedposter_start})/(D{hovedposter_start}+@hovedtall_rnb))", "format": "prosent"},
-            {"navn": "hovedposter_rnb_realvekst", "etikett": "Realvekst (metode b) inkl. RNB", "formel": "=IF(@hovedtall_rnb=\"\",\"ikke oppgitt\",(D{hovedposter_slutt}-D{hovedposter_start}-@hovedtall_prisjustering)/(D{hovedposter_start}+@hovedtall_rnb))", "format": "prosent"}
-          ]
-        }
-      ]
-    },
-    {
-      "navn": "Resultat",
-      "tittel": "Resultatbasert utteljing for UiT per indikator",
-      "vis_enhet": true,
-      "kolonnebredder": {"A": 2.5, "B": 40, "C": 34, "D": 18, "E": 18},
-      "startrad": 5,
-      "blokker": [
-        {
-          "navn": "resultat",
-          "type": "tabell",
-          "radkilde": "resultat.kolonner",
-          "mal_radantall": 4,
-          "kolonner": [
-            {"kolonne": "B", "overskrift": "Indikator (heftets etikett)", "felt": "kolonnenavn", "format": "tekst"},
-            {"kolonne": "C", "overskrift": "Egen etikett", "felt": null, "format": "tekst"},
-            {"kolonne": "D", "overskrift": "UiT", "felt": "uit_verdi", "format": "belop"},
-            {"kolonne": "E", "overskrift": "Sumkolonne i heftet", "felt": "er_sumkolonne", "format": "tekst"}
-          ]
-        },
-        {
-          "navn": "resultat_merknad",
-          "type": "fritekst",
-          "tekst": "Indikatorene og sumkolonnene er heftets egne for dette året. Malen har ingen faste indikatornavn."
-        }
-      ]
-    },
-    {
-      "navn": "Sektor",
-      "tittel": "Sammenligning med andre institusjoner",
-      "vis_enhet": true,
-      "kolonnebredder": {"A": 2.5, "B": 10, "C": 46, "D": 16, "E": 16, "F": 16, "G": 16, "H": 18},
-      "startrad": 5,
-      "blokker": [
-        {
-          "navn": "sektor_universiteter",
-          "type": "tabell",
-          "blokktittel": "Universiteta",
-          "radkilde": "institusjoner.universiteter",
-          "mal_radantall": 10,
-          "uthev_kortkode": "UIT",
-          "kolonner": [
-            {"kolonne": "B", "overskrift": "Kortkode", "felt": "kortkode", "format": "tekst"},
-            {"kolonne": "C", "overskrift": "Institusjon", "felt": "navn", "format": "tekst"},
-            {"kolonne": "D", "overskrift": "Utgangspunkt", "felt": "utgangspunkt", "format": "belop"},
-            {"kolonne": "E", "overskrift": "Forslag", "felt": "forslag", "format": "belop"},
-            {"kolonne": "F", "overskrift": "Nominell endring", "formel": "=(E{rad}-D{rad})/D{rad}", "format": "prosent"},
-            {"kolonne": "G", "overskrift": "Prisjustering", "felt": "prisjustering", "format": "belop"},
-            {"kolonne": "H", "overskrift": "Realvekst (metode b)", "formel": "=(E{rad}-D{rad}-G{rad})/D{rad}", "format": "prosent"}
-          ]
-        },
-        {
-          "navn": "sektor_alle",
-          "type": "tabell",
-          "blokktittel": "Alle statlege institusjonar",
-          "radkilde": "institusjoner.statlige",
-          "mal_radantall": 21,
-          "uthev_kortkode": "UIT",
-          "kolonner": [
-            {"kolonne": "B", "overskrift": "Kortkode", "felt": "kortkode", "format": "tekst"},
-            {"kolonne": "C", "overskrift": "Institusjon", "felt": "navn", "format": "tekst"},
-            {"kolonne": "D", "overskrift": "Utgangspunkt", "felt": "utgangspunkt", "format": "belop"},
-            {"kolonne": "E", "overskrift": "Forslag", "felt": "forslag", "format": "belop"},
-            {"kolonne": "F", "overskrift": "Nominell endring", "formel": "=(E{rad}-D{rad})/D{rad}", "format": "prosent"},
-            {"kolonne": "G", "overskrift": "Prisjustering", "felt": "prisjustering", "format": "belop"},
-            {"kolonne": "H", "overskrift": "Realvekst (metode b)", "formel": "=(E{rad}-D{rad}-G{rad})/D{rad}", "format": "prosent"}
-          ]
-        }
-      ]
-    },
-    {
-      "navn": "Satser",
-      "tittel": "Satsar og rammer slik heftet oppgir dei",
-      "vis_enhet": false,
-      "kolonnebredder": {"A": 2.5, "B": 34, "C": 60, "D": 22, "E": 22},
-      "startrad": 5,
-      "blokker": [
-        {
-          "navn": "satser_open_ramme",
-          "type": "fritabeller",
-          "blokktittel": "Open ramme",
-          "radkilde": "satser.open_ramme.tabeller",
-          "mal_radantall": 24,
-          "kolonner": ["B", "C", "D", "E"],
-          "tomtekst": "Open ramme finst ikkje i heftet for dette året."
-        },
-        {
-          "navn": "satser_lukket_ramme",
-          "type": "fritabeller",
-          "blokktittel": "Lukka ramme",
-          "radkilde": "satser.lukket_ramme",
-          "mal_radantall": 12,
-          "kolonner": ["B", "C", "D", "E"],
-          "tomtekst": "Lukket ramme finnes ikke i heftet for dette året."
-        },
-        {
-          "navn": "satser_merknad",
-          "type": "fritekst",
-          "tekst": "Satskolonne for lukka ramme: ikke i heftet, krever produksjonstall fra DBH."
-        }
-      ]
-    },
-    {
-      "navn": "Kilder",
-      "tittel": "Kilder og kontrollspor",
-      "vis_enhet": false,
-      "kolonnebredder": {"A": 2.5, "B": 40, "C": 96},
-      "startrad": 5,
-      "blokker": [
-        {
-          "navn": "kilder_dokument",
-          "type": "rader",
-          "overskrift": ["Kilde", "Verdi"],
-          "rader": [
-            {"navn": "kilder_budsjettaar", "etikett": "Budsjettår", "felt": "kilde.budsjettaar", "format": "tekst"},
-            {"navn": "kilder_utgave", "etikett": "Utgave", "felt": "kilde.utgave", "format": "tekst"},
-            {"navn": "kilder_tittel", "etikett": "Tittel", "felt": "kilde.tittel", "format": "tekst"},
-            {"navn": "kilder_url", "etikett": "URL", "felt": "kilde.url", "format": "tekst"},
-            {"navn": "kilder_filnavn", "etikett": "Filnavn", "felt": "kilde.filnavn", "format": "tekst"},
-            {"navn": "kilder_sha256", "etikett": "SHA-256", "felt": "kilde.sha256", "format": "tekst"},
-            {"navn": "kilder_content_length", "etikett": "Filstørrelse (byte)", "felt": "kilde.content_length", "format": "belop"},
-            {"navn": "kilder_hentet", "etikett": "Hentet (UTC)", "felt": "kilde.hentet_utc", "format": "tekst"},
-            {"navn": "kilder_sider", "etikett": "Sider i PDF-en", "felt": "kilde.sider", "format": "belop"}
-          ]
-        },
-        {
-          "navn": "kilder_tabellsider",
-          "type": "rader",
-          "overskrift": ["Side per tabell", "PDF-side"],
-          "rader": [
-            {"navn": "kilder_side_hovedtabell", "etikett": "Hovedtabell (kap. 260 post 50)", "felt": "hovedtabell.pdf_side", "format": "belop"},
-            {"navn": "kilder_side_trykt", "etikett": "Hovedtabell, trykt sidetall", "felt": "hovedtabell.trykt_side", "format": "belop"},
-            {"navn": "kilder_side_prisjustering", "etikett": "Prisjustering (kolonneforklaring)", "felt": "prisjustering.pdf_side", "format": "belop"},
-            {"navn": "kilder_side_resultat", "etikett": "Resultatbasert utteljing", "felt": "resultat.pdf_side", "format": "belop"},
-            {"navn": "kilder_side_satser", "etikett": "Satsar, open ramme", "felt": "satser.open_ramme.pdf_side", "format": "belop"},
-            {"navn": "kilder_side_lukket", "etikett": "Satsar, lukka ramme", "felt": "satser.lukket_ramme.pdf_side", "format": "belop"},
-            {"navn": "kilder_side_institusjoner", "etikett": "Forkortingsliste", "felt": "institusjoner.pdf_side", "format": "belop"}
-          ]
-        },
-        {
-          "navn": "kilder_kontroll",
-          "type": "rader",
-          "overskrift": ["Kontroll og skript", "Verdi"],
-          "rader": [
-            {"navn": "kilder_sitat", "etikett": "Prissats-sitat", "felt": "prisjustering.sitat", "format": "tekst"},
-            {"navn": "kilder_kontroll_a", "etikett": "Kontroll A (alle rader summerer)", "felt": "hovedtabell.kontroll.alle_rader_summerer", "format": "tekst"},
-            {"navn": "kilder_kontroll_b", "etikett": "Kontroll B (bånd mot overskrifter)", "felt": "hovedtabell.kontroll.b_tekst", "format": "tekst"},
-            {"navn": "kilder_kontroll_c", "etikett": "Kontroll C (kryss mot forrige hefte)", "felt": "hovedtabell.kontroll.kryss.status", "format": "tekst"},
-            {"navn": "kilder_skript", "etikett": "Skript", "felt": "skript.navn", "format": "tekst"},
-            {"navn": "kilder_skriptversjon", "etikett": "Skriptversjon", "felt": "skript.versjon", "format": "tekst"},
-            {"navn": "kilder_kjort", "etikett": "Kjørt (UTC)", "felt": "skript.kjort_utc", "format": "tekst"},
-            {"navn": "kilder_finn_dom", "etikett": "Dom fra finn_blaatt_hefte.py", "felt": "finn.dom", "format": "tekst"}
-          ]
-        }
-      ]
+     "navn": "hovedtall_kontroll",
+     "type": "rader",
+     "overskrift": [
+      "Kontroll",
+      "Verdi"
+     ],
+     "rader": [
+      {
+       "navn": "hovedtall_prisjustering",
+       "etikett": "Prisjustering i kroner fra heftet",
+       "felt": "prisjustering.uit_kolonne",
+       "format": "belop"
+      },
+      {
+       "navn": "hovedtall_sats_x_utgangspunkt",
+       "etikett": "Sats x utgangspunkt",
+       "formel": "=ROUND(@hovedtall_prissats*@hovedtall_utgangspunkt,0)",
+       "format": "belop"
+      },
+      {
+       "navn": "hovedtall_prisavvik",
+       "etikett": "Avvik (heftet minus sats x utgangspunkt)",
+       "formel": "=@hovedtall_prisjustering-@hovedtall_sats_x_utgangspunkt",
+       "format": "belop"
+      },
+      {
+       "navn": "hovedtall_ren_sats",
+       "etikett": "Ren sats (avvik innenfor toleranse)",
+       "felt": "prisjustering.ren_sats_tekst",
+       "format": "tekst"
+      },
+      {
+       "navn": "hovedtall_realvekst_a",
+       "etikett": "Realvekst (metode a, uten RNB)",
+       "formel": "=@hovedtall_nominell-@hovedtall_prissats",
+       "format": "prosent"
+      },
+      {
+       "navn": "hovedtall_realvekst_a_rnb",
+       "etikett": "Realvekst (metode a, med RNB)",
+       "formel": "=IF(@hovedtall_rnb=\"\",\"ikke oppgitt\",@hovedtall_endring/(@hovedtall_utgangspunkt+@hovedtall_rnb)-@hovedtall_prissats)",
+       "format": "prosent"
+      },
+      {
+       "navn": "hovedtall_rnb",
+       "etikett": "Tillegg i RNB <år-1>, kap. 260 post 50, hentes fra RNB-proposisjonen; tom = ikke justert",
+       "inndata": true,
+       "format": "belop"
+      }
+     ]
     }
-  ]
+   ]
+  },
+  {
+   "navn": "Budsjettløp",
+   "tittel": "Budsjettløpet for UiT: forslag, vedtatt og revidert",
+   "vis_enhet": true,
+   "startrad": 5,
+   "kolonnebredder": {
+    "A": 2.5,
+    "B": 12,
+    "C": 18,
+    "D": 18,
+    "E": 16,
+    "F": 18,
+    "G": 70
+   },
+   "blokker": [
+    {
+     "navn": "budsjettloep",
+     "type": "tabell",
+     "radkilde": "budsjettbase.aar",
+     "mal_radantall": 6,
+     "kolonner": [
+      {
+       "kolonne": "B",
+       "overskrift": "Budsjettår",
+       "felt": "aar",
+       "format": "tekst"
+      },
+      {
+       "kolonne": "C",
+       "overskrift": "Forslag (blått hefte)",
+       "felt": "forslag",
+       "format": "belop"
+      },
+      {
+       "kolonne": "D",
+       "overskrift": "Vedtatt (etter Stortinget)",
+       "felt": "vedtatt",
+       "format": "belop"
+      },
+      {
+       "kolonne": "E",
+       "overskrift": "RNB-tillegg",
+       "felt": "rnb",
+       "format": "belop"
+      },
+      {
+       "kolonne": "F",
+       "overskrift": "Vedtatt inkl. RNB",
+       "formel": "=IF(OR(D{rad}=\"\",E{rad}=\"\"),\"ikke oppgitt\",D{rad}+E{rad})",
+       "format": "belop"
+      },
+      {
+       "kolonne": "G",
+       "overskrift": "RNB-kilde",
+       "felt": "rnb_kilde",
+       "format": "tekst"
+      }
+     ]
+    },
+    {
+     "navn": "budsjettloep_merknad",
+     "type": "fritekst",
+     "tekst": "RNB-tillegget er UiTs endring på kap. 260 post 50 i KDs supplerende tildelingsbrev nr. 1 etter revidert nasjonalbudsjett (juni/juli). Proposisjonen har bare sektortall, og blått hefte har ingen RNB-utgave. Realvekst «med RNB» i Hovedtall bruker RNB-tillegget for året før som del av utgangspunktet."
+    }
+   ]
+  },
+  {
+   "navn": "Hovedposter",
+   "tittel": "Hovedposter: heftets kolonner for UiT",
+   "vis_enhet": true,
+   "kolonnebredder": {
+    "A": 2.5,
+    "B": 44,
+    "C": 34,
+    "D": 18
+   },
+   "startrad": 5,
+   "blokker": [
+    {
+     "navn": "hovedposter",
+     "type": "tabell",
+     "radkilde": "hovedtabell.kolonner",
+     "mal_radantall": 13,
+     "kolonner": [
+      {
+       "kolonne": "B",
+       "overskrift": "Post (heftets etikett)",
+       "felt": "kolonnenavn",
+       "format": "tekst"
+      },
+      {
+       "kolonne": "C",
+       "overskrift": "Egen etikett",
+       "felt": null,
+       "format": "tekst"
+      },
+      {
+       "kolonne": "D",
+       "overskrift": "UiT",
+       "felt": "uit_verdi",
+       "format": "belop"
+      }
+     ],
+     "sumrad": {
+      "navn": "hovedposter_sum",
+      "etikett": "Sum utgangspunkt og endringar",
+      "kolonne": "D",
+      "formel": "=SUM(D{start}:D{nest_siste})",
+      "format": "belop",
+      "fet": true
+     },
+     "kontrollrad": {
+      "navn": "hovedposter_kontroll",
+      "etikett": "Avvik mot heftets forslag (skal vere 0)",
+      "kolonne": "D",
+      "formel": "=D{sum}-D{slutt}",
+      "format": "belop"
+     }
+    },
+    {
+     "navn": "hovedposter_rnb",
+     "type": "rader",
+     "overskrift": [
+      "Justert for RNB",
+      "Verdi"
+     ],
+     "alltid_med": true,
+     "rader": [
+      {
+       "navn": "hovedposter_rnb_utgangspunkt",
+       "etikett": "Utgangspunkt inkl. RNB",
+       "formel": "=IF(@hovedtall_rnb=\"\",\"ikke oppgitt\",D{hovedposter_start}+@hovedtall_rnb)",
+       "format": "belop"
+      },
+      {
+       "navn": "hovedposter_rnb_forslag",
+       "etikett": "Forslag inkl. RNB",
+       "formel": "=IF(@hovedtall_rnb=\"\",\"ikke oppgitt\",D{hovedposter_slutt}+@hovedtall_rnb)",
+       "format": "belop"
+      },
+      {
+       "navn": "hovedposter_rnb_nominell",
+       "etikett": "Nominell endring inkl. RNB",
+       "formel": "=IF(@hovedtall_rnb=\"\",\"ikke oppgitt\",(D{hovedposter_slutt}-D{hovedposter_start})/(D{hovedposter_start}+@hovedtall_rnb))",
+       "format": "prosent"
+      },
+      {
+       "navn": "hovedposter_rnb_realvekst",
+       "etikett": "Realvekst (metode b) inkl. RNB",
+       "formel": "=IF(@hovedtall_rnb=\"\",\"ikke oppgitt\",(D{hovedposter_slutt}-D{hovedposter_start}-@hovedtall_prisjustering)/(D{hovedposter_start}+@hovedtall_rnb))",
+       "format": "prosent"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "navn": "Resultat",
+   "tittel": "Resultatbasert utteljing for UiT per indikator",
+   "vis_enhet": true,
+   "kolonnebredder": {
+    "A": 2.5,
+    "B": 40,
+    "C": 34,
+    "D": 18,
+    "E": 18
+   },
+   "startrad": 5,
+   "blokker": [
+    {
+     "navn": "resultat",
+     "type": "tabell",
+     "radkilde": "resultat.kolonner",
+     "mal_radantall": 4,
+     "kolonner": [
+      {
+       "kolonne": "B",
+       "overskrift": "Indikator (heftets etikett)",
+       "felt": "kolonnenavn",
+       "format": "tekst"
+      },
+      {
+       "kolonne": "C",
+       "overskrift": "Egen etikett",
+       "felt": null,
+       "format": "tekst"
+      },
+      {
+       "kolonne": "D",
+       "overskrift": "UiT",
+       "felt": "uit_verdi",
+       "format": "belop"
+      },
+      {
+       "kolonne": "E",
+       "overskrift": "Sumkolonne i heftet",
+       "felt": "er_sumkolonne",
+       "format": "tekst"
+      }
+     ]
+    },
+    {
+     "navn": "resultat_merknad",
+     "type": "fritekst",
+     "tekst": "Indikatorene og sumkolonnene er heftets egne for dette året. Malen har ingen faste indikatornavn."
+    }
+   ]
+  },
+  {
+   "navn": "Sektor",
+   "tittel": "Sammenligning med andre institusjoner",
+   "vis_enhet": true,
+   "kolonnebredder": {
+    "A": 2.5,
+    "B": 10,
+    "C": 46,
+    "D": 16,
+    "E": 16,
+    "F": 16,
+    "G": 16,
+    "H": 18
+   },
+   "startrad": 5,
+   "blokker": [
+    {
+     "navn": "sektor_universiteter",
+     "type": "tabell",
+     "blokktittel": "Universiteta",
+     "radkilde": "institusjoner.universiteter",
+     "mal_radantall": 10,
+     "uthev_kortkode": "UIT",
+     "kolonner": [
+      {
+       "kolonne": "B",
+       "overskrift": "Kortkode",
+       "felt": "kortkode",
+       "format": "tekst"
+      },
+      {
+       "kolonne": "C",
+       "overskrift": "Institusjon",
+       "felt": "navn",
+       "format": "tekst"
+      },
+      {
+       "kolonne": "D",
+       "overskrift": "Utgangspunkt",
+       "felt": "utgangspunkt",
+       "format": "belop"
+      },
+      {
+       "kolonne": "E",
+       "overskrift": "Forslag",
+       "felt": "forslag",
+       "format": "belop"
+      },
+      {
+       "kolonne": "F",
+       "overskrift": "Nominell endring",
+       "formel": "=(E{rad}-D{rad})/D{rad}",
+       "format": "prosent"
+      },
+      {
+       "kolonne": "G",
+       "overskrift": "Prisjustering",
+       "felt": "prisjustering",
+       "format": "belop"
+      },
+      {
+       "kolonne": "H",
+       "overskrift": "Realvekst (metode b)",
+       "formel": "=(E{rad}-D{rad}-G{rad})/D{rad}",
+       "format": "prosent"
+      }
+     ]
+    },
+    {
+     "navn": "sektor_alle",
+     "type": "tabell",
+     "blokktittel": "Alle statlege institusjonar",
+     "radkilde": "institusjoner.statlige",
+     "mal_radantall": 21,
+     "uthev_kortkode": "UIT",
+     "kolonner": [
+      {
+       "kolonne": "B",
+       "overskrift": "Kortkode",
+       "felt": "kortkode",
+       "format": "tekst"
+      },
+      {
+       "kolonne": "C",
+       "overskrift": "Institusjon",
+       "felt": "navn",
+       "format": "tekst"
+      },
+      {
+       "kolonne": "D",
+       "overskrift": "Utgangspunkt",
+       "felt": "utgangspunkt",
+       "format": "belop"
+      },
+      {
+       "kolonne": "E",
+       "overskrift": "Forslag",
+       "felt": "forslag",
+       "format": "belop"
+      },
+      {
+       "kolonne": "F",
+       "overskrift": "Nominell endring",
+       "formel": "=(E{rad}-D{rad})/D{rad}",
+       "format": "prosent"
+      },
+      {
+       "kolonne": "G",
+       "overskrift": "Prisjustering",
+       "felt": "prisjustering",
+       "format": "belop"
+      },
+      {
+       "kolonne": "H",
+       "overskrift": "Realvekst (metode b)",
+       "formel": "=(E{rad}-D{rad}-G{rad})/D{rad}",
+       "format": "prosent"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "navn": "Satser",
+   "tittel": "Satsar og rammer slik heftet oppgir dei",
+   "vis_enhet": false,
+   "kolonnebredder": {
+    "A": 2.5,
+    "B": 34,
+    "C": 60,
+    "D": 22,
+    "E": 22
+   },
+   "startrad": 5,
+   "blokker": [
+    {
+     "navn": "satser_open_ramme",
+     "type": "fritabeller",
+     "blokktittel": "Open ramme",
+     "radkilde": "satser.open_ramme.tabeller",
+     "mal_radantall": 24,
+     "kolonner": [
+      "B",
+      "C",
+      "D",
+      "E"
+     ],
+     "tomtekst": "Open ramme finst ikkje i heftet for dette året."
+    },
+    {
+     "navn": "satser_lukket_ramme",
+     "type": "fritabeller",
+     "blokktittel": "Lukka ramme",
+     "radkilde": "satser.lukket_ramme",
+     "mal_radantall": 12,
+     "kolonner": [
+      "B",
+      "C",
+      "D",
+      "E"
+     ],
+     "tomtekst": "Lukket ramme finnes ikke i heftet for dette året."
+    },
+    {
+     "navn": "satser_merknad",
+     "type": "fritekst",
+     "tekst": "Satskolonne for lukka ramme: ikke i heftet, krever produksjonstall fra DBH."
+    }
+   ]
+  },
+  {
+   "navn": "Kilder",
+   "tittel": "Kilder og kontrollspor",
+   "vis_enhet": false,
+   "kolonnebredder": {
+    "A": 2.5,
+    "B": 40,
+    "C": 96
+   },
+   "startrad": 5,
+   "blokker": [
+    {
+     "navn": "kilder_dokument",
+     "type": "rader",
+     "overskrift": [
+      "Kilde",
+      "Verdi"
+     ],
+     "rader": [
+      {
+       "navn": "kilder_budsjettaar",
+       "etikett": "Budsjettår",
+       "felt": "kilde.budsjettaar",
+       "format": "tekst"
+      },
+      {
+       "navn": "kilder_utgave",
+       "etikett": "Utgave",
+       "felt": "kilde.utgave",
+       "format": "tekst"
+      },
+      {
+       "navn": "kilder_tittel",
+       "etikett": "Tittel",
+       "felt": "kilde.tittel",
+       "format": "tekst"
+      },
+      {
+       "navn": "kilder_url",
+       "etikett": "URL",
+       "felt": "kilde.url",
+       "format": "tekst"
+      },
+      {
+       "navn": "kilder_filnavn",
+       "etikett": "Filnavn",
+       "felt": "kilde.filnavn",
+       "format": "tekst"
+      },
+      {
+       "navn": "kilder_sha256",
+       "etikett": "SHA-256",
+       "felt": "kilde.sha256",
+       "format": "tekst"
+      },
+      {
+       "navn": "kilder_content_length",
+       "etikett": "Filstørrelse (byte)",
+       "felt": "kilde.content_length",
+       "format": "belop"
+      },
+      {
+       "navn": "kilder_hentet",
+       "etikett": "Hentet (UTC)",
+       "felt": "kilde.hentet_utc",
+       "format": "tekst"
+      },
+      {
+       "navn": "kilder_sider",
+       "etikett": "Sider i PDF-en",
+       "felt": "kilde.sider",
+       "format": "belop"
+      }
+     ]
+    },
+    {
+     "navn": "kilder_tabellsider",
+     "type": "rader",
+     "overskrift": [
+      "Side per tabell",
+      "PDF-side"
+     ],
+     "rader": [
+      {
+       "navn": "kilder_side_hovedtabell",
+       "etikett": "Hovedtabell (kap. 260 post 50)",
+       "felt": "hovedtabell.pdf_side",
+       "format": "belop"
+      },
+      {
+       "navn": "kilder_side_trykt",
+       "etikett": "Hovedtabell, trykt sidetall",
+       "felt": "hovedtabell.trykt_side",
+       "format": "belop"
+      },
+      {
+       "navn": "kilder_side_prisjustering",
+       "etikett": "Prisjustering (kolonneforklaring)",
+       "felt": "prisjustering.pdf_side",
+       "format": "belop"
+      },
+      {
+       "navn": "kilder_side_resultat",
+       "etikett": "Resultatbasert utteljing",
+       "felt": "resultat.pdf_side",
+       "format": "belop"
+      },
+      {
+       "navn": "kilder_side_satser",
+       "etikett": "Satsar, open ramme",
+       "felt": "satser.open_ramme.pdf_side",
+       "format": "belop"
+      },
+      {
+       "navn": "kilder_side_lukket",
+       "etikett": "Satsar, lukka ramme",
+       "felt": "satser.lukket_ramme.pdf_side",
+       "format": "belop"
+      },
+      {
+       "navn": "kilder_side_institusjoner",
+       "etikett": "Forkortingsliste",
+       "felt": "institusjoner.pdf_side",
+       "format": "belop"
+      }
+     ]
+    },
+    {
+     "navn": "kilder_kontroll",
+     "type": "rader",
+     "overskrift": [
+      "Kontroll og skript",
+      "Verdi"
+     ],
+     "rader": [
+      {
+       "navn": "kilder_rnb",
+       "etikett": "RNB-tillegg brukt i Hovedtall (året før, kilde)",
+       "felt": "rnb.kilde_tekst",
+       "format": "tekst"
+      },
+      {
+       "navn": "kilder_sitat",
+       "etikett": "Prissats-sitat",
+       "felt": "prisjustering.sitat",
+       "format": "tekst"
+      },
+      {
+       "navn": "kilder_kontroll_a",
+       "etikett": "Kontroll A (alle rader summerer)",
+       "felt": "hovedtabell.kontroll.alle_rader_summerer",
+       "format": "tekst"
+      },
+      {
+       "navn": "kilder_kontroll_b",
+       "etikett": "Kontroll B (bånd mot overskrifter)",
+       "felt": "hovedtabell.kontroll.b_tekst",
+       "format": "tekst"
+      },
+      {
+       "navn": "kilder_kontroll_c",
+       "etikett": "Kontroll C (kryss mot forrige hefte)",
+       "felt": "hovedtabell.kontroll.kryss.status",
+       "format": "tekst"
+      },
+      {
+       "navn": "kilder_skript",
+       "etikett": "Skript",
+       "felt": "skript.navn",
+       "format": "tekst"
+      },
+      {
+       "navn": "kilder_skriptversjon",
+       "etikett": "Skriptversjon",
+       "felt": "skript.versjon",
+       "format": "tekst"
+      },
+      {
+       "navn": "kilder_kjort",
+       "etikett": "Kjørt (UTC)",
+       "felt": "skript.kjort_utc",
+       "format": "tekst"
+      },
+      {
+       "navn": "kilder_finn_dom",
+       "etikett": "Dom fra finn_blaatt_hefte.py",
+       "felt": "finn.dom",
+       "format": "tekst"
+      }
+     ]
+    }
+   ]
+  }
+ ]
 }
