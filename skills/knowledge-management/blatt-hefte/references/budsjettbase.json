@@ -1,6 +1,6 @@
 {
  "beskrivelse": "UiT, kap. 260 post 50, 1 000 kroner. forslag og vedtatt er lest fra blått hefte (utgave forslag / etter vedtak); rnb er endringen i revidert nasjonalbudsjett samme budsjettår, fra rnb-tillegg.json.",
- "bygget_utc": "2026-09-16T11:25:48Z",
+ "bygget_utc": "2026-09-16T11:28:41Z",
  "rnb_kilde": "/home/sihal7953/repos/skills/skills/knowledge-management/blatt-hefte/references/rnb-tillegg.json",
  "aar": {
   "2021": {
@@ -206,8 +206,9 @@
     },
     "tildelingsbrev": {
      "ramme": 4061059,
-     "dato": "2023-12-20",
-     "url": "https://www.regjeringen.no/contentassets/35697bb9bdbd44bf983e63286871da40/tildelingsbrev-2024-uit-norges-arktiske-universitet_v2.pdf"
+     "dato": "2024-02-06",
+     "url": "https://www.regjeringen.no/contentassets/35697bb9bdbd44bf983e63286871da40/tildelingsbrev-2024-uit-norges-arktiske-universitet_v2.pdf",
+     "merknad": "Publisert fil er v2 datert 6. februar 2024; det opprinnelige tildelingsbrevet var datert 20. desember 2023. Rammen 4 061 059 000 er den samme."
     },
     "kilde": {
      "dokument": "Supplerende tildelingsbrev, revidert nasjonalbudsjett 2024, kap. 260 post 50, statlige universiteter og høyskoler (ref. 23/4570)",
@@ -269,6 +270,12 @@
      }
     ],
     "andre_poster": [
+     {
+      "kap": 231,
+      "post": 21,
+      "belop": 1000,
+      "navn": "Tiltak for å styrke rekrutteringen til lærerutdanningene (1 mill. til hver av fem institusjoner)"
+     },
      {
       "kap": 226,
       "post": 22,

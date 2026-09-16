@@ -8,17 +8,43 @@
       "endring": 86200,
       "verifisert": false,
       "komponenter": [
-        {"navn": "Ekstraordinær lønns- og prisjustering", "belop": 77609, "post": "260.50", "varig": true},
-        {"navn": "Kompensasjon for økt arbeidsgiveravgift", "belop": 7795, "post": "260.50", "varig": null},
-        {"navn": "Omfordeling av studieplasser knyttet til krigen i Ukraina", "belop": -704, "post": "260.50", "varig": null},
-        {"navn": "Kompetanseutvikling og studietilbud i Øst-Finnmark", "belop": 1500, "post": "260.50", "varig": null}
+        {
+          "navn": "Ekstraordinær lønns- og prisjustering",
+          "belop": 77609,
+          "post": "260.50",
+          "varig": true
+        },
+        {
+          "navn": "Kompensasjon for økt arbeidsgiveravgift",
+          "belop": 7795,
+          "post": "260.50",
+          "varig": null
+        },
+        {
+          "navn": "Omfordeling av studieplasser knyttet til krigen i Ukraina",
+          "belop": -704,
+          "post": "260.50",
+          "varig": null
+        },
+        {
+          "navn": "Kompetanseutvikling og studietilbud i Øst-Finnmark",
+          "belop": 1500,
+          "post": "260.50",
+          "varig": null
+        }
       ],
       "andre_poster": [],
-      "proposisjon": {"navn": "Prop. 118 S (2022–2023)", "dato": "2023-05-11", "sektortall_post_50": null},
+      "proposisjon": {
+        "navn": "Prop. 118 S (2022–2023)",
+        "dato": "2023-05-11",
+        "sektortall_post_50": null
+      },
       "tildelingsbrev": null,
       "kilde": {
         "dokument": "UiTs arbeidsbok «Forslag til statsbudsjett 2024.xlsx», ark «RNB 2023» (uverifisert)",
-        "url": null, "sha256": null, "dato": null,
+        "url": null,
+        "sha256": null,
+        "dato": null,
         "status": "ikke verifisert mot offentlig dokument; sektorbrevet for RNB 2023 ligger ikke på regjeringen.no sin årsside for tildelingsbrev 2023. Beholdt fordi 2024-presentasjonens RNB-justerte tall (nevner 3 892 733) bygger på det."
       }
     },
@@ -26,12 +52,33 @@
       "endring": 8300,
       "verifisert": true,
       "komponenter": [
-        {"navn": "Pilotutdanning i Bardufoss, videreføring", "belop": 7500, "post": "260.50", "varig": null},
-        {"navn": "Profesjonsnære utdanninger, forsterkede tiltak ved dispensasjon fra nivåkrav", "belop": 800, "post": "260.50", "varig": false}
+        {
+          "navn": "Pilotutdanning i Bardufoss, videreføring",
+          "belop": 7500,
+          "post": "260.50",
+          "varig": null
+        },
+        {
+          "navn": "Profesjonsnære utdanninger, forsterkede tiltak ved dispensasjon fra nivåkrav",
+          "belop": 800,
+          "post": "260.50",
+          "varig": false
+        }
       ],
       "andre_poster": [],
-      "proposisjon": {"navn": "Prop. 104 S (2023–2024)", "dato": "2024-05-14", "url": "https://www.regjeringen.no/no/dokumenter/prop.-104-s-20232024/id3039096/", "innstilling": "Innst. 447 S (2023–2024)", "sektortall_post_50": 29100},
-      "tildelingsbrev": {"ramme": 4061059, "dato": "2023-12-20", "url": "https://www.regjeringen.no/contentassets/35697bb9bdbd44bf983e63286871da40/tildelingsbrev-2024-uit-norges-arktiske-universitet_v2.pdf"},
+      "proposisjon": {
+        "navn": "Prop. 104 S (2023–2024)",
+        "dato": "2024-05-14",
+        "url": "https://www.regjeringen.no/no/dokumenter/prop.-104-s-20232024/id3039096/",
+        "innstilling": "Innst. 447 S (2023–2024)",
+        "sektortall_post_50": 29100
+      },
+      "tildelingsbrev": {
+        "ramme": 4061059,
+        "dato": "2024-02-06",
+        "url": "https://www.regjeringen.no/contentassets/35697bb9bdbd44bf983e63286871da40/tildelingsbrev-2024-uit-norges-arktiske-universitet_v2.pdf",
+        "merknad": "Publisert fil er v2 datert 6. februar 2024; det opprinnelige tildelingsbrevet var datert 20. desember 2023. Rammen 4 061 059 000 er den samme."
+      },
       "kilde": {
         "dokument": "Supplerende tildelingsbrev, revidert nasjonalbudsjett 2024, kap. 260 post 50, statlige universiteter og høyskoler (ref. 23/4570)",
         "url": "https://www.regjeringen.no/contentassets/13ee8262d9d14e789db11fef841a3f29/supplerende-tildelingsbrev-revidert-nasjonalbudsjett-2024-kap.-260-post-50-statlige-universiteter-og-2383249.pdf",
@@ -44,16 +91,52 @@
     "2025": {
       "endring": -907,
       "verifisert": true,
-      "basis_i_vedtatt": {"belop": -1091, "kolonne": "Eigenbetaling for gjentak", "dokument": "blått hefte 2025 (forslag og etter vedtak), hovedtabellen", "merknad": "Brevets tabell: opprinnelig fordeling −1 091, endring −907, ny fordeling −1 998. Basen holder endringen, ikke nivået."},
+      "basis_i_vedtatt": {
+        "belop": -1091,
+        "kolonne": "Eigenbetaling for gjentak",
+        "dokument": "blått hefte 2025 (forslag og etter vedtak), hovedtabellen",
+        "merknad": "Brevets tabell: opprinnelig fordeling −1 091, endring −907, ny fordeling −1 998. Basen holder endringen, ikke nivået."
+      },
       "komponenter": [
-        {"navn": "Egenbetaling for gjentak av beståtte eksamener: ny fordeling av budsjettreduksjonen", "belop": -907, "post": "260.50", "varig": true}
+        {
+          "navn": "Egenbetaling for gjentak av beståtte eksamener: ny fordeling av budsjettreduksjonen",
+          "belop": -907,
+          "post": "260.50",
+          "varig": true
+        }
       ],
       "andre_poster": [
-        {"kap": 226, "post": 22, "belop": 825, "navn": "Forsøksordning for lærerkvalifisering"},
-        {"kap": 275, "post": 21, "belop": 975, "navn": "Forsøksordning for lærerkvalifisering"}
+        {
+          "kap": 231,
+          "post": 21,
+          "belop": 1000,
+          "navn": "Tiltak for å styrke rekrutteringen til lærerutdanningene (1 mill. til hver av fem institusjoner)"
+        },
+        {
+          "kap": 226,
+          "post": 22,
+          "belop": 825,
+          "navn": "Forsøksordning for lærerkvalifisering"
+        },
+        {
+          "kap": 275,
+          "post": 21,
+          "belop": 975,
+          "navn": "Forsøksordning for lærerkvalifisering"
+        }
       ],
-      "proposisjon": {"navn": "Prop. 146 S (2024–2025)", "dato": "2025-05-15", "url": "https://www.regjeringen.no/no/dokumenter/prop.-146-s-20242025/id3100917/", "innstilling": "Innst. 540 S (2024–2025)", "sektortall_post_50": -18700},
-      "tildelingsbrev": {"ramme": 4175449, "dato": "2024-12-20", "url": "https://www.regjeringen.no/contentassets/51e8b6fdb35141658a1559190a88b13e/tildelingsbrev-2025-til-universitetet-i-tromso-norges-arktiske-universitet2454322.pdf"},
+      "proposisjon": {
+        "navn": "Prop. 146 S (2024–2025)",
+        "dato": "2025-05-15",
+        "url": "https://www.regjeringen.no/no/dokumenter/prop.-146-s-20242025/id3100917/",
+        "innstilling": "Innst. 540 S (2024–2025)",
+        "sektortall_post_50": -18700
+      },
+      "tildelingsbrev": {
+        "ramme": 4175449,
+        "dato": "2024-12-20",
+        "url": "https://www.regjeringen.no/contentassets/51e8b6fdb35141658a1559190a88b13e/tildelingsbrev-2025-til-universitetet-i-tromso-norges-arktiske-universitet2454322.pdf"
+      },
       "kilde": {
         "dokument": "Supplerende tildelingsbrev nr. 1 til statlige universiteter og høyskoler, tilleggsbevilgninger og omprioriteringer i statsbudsjettet 2025 (ref. 24/5195)",
         "url": "https://www.regjeringen.no/contentassets/13ee8262d9d14e789db11fef841a3f29/supplerende-tildelingsbrev-nr.1-til-statlige-universiteter-og-hoyskoler-tilleggsbevilgninger-og-omprioriteringer-statsbudsjettet2025.pdf",
@@ -67,11 +150,26 @@
       "endring": 364,
       "verifisert": true,
       "komponenter": [
-        {"navn": "Nasjonalt BEGRENSET plattform (NBP), 364 000 kroner til hver statlig institusjon unntatt Nord universitet", "belop": 364, "post": "260.50", "varig": false}
+        {
+          "navn": "Nasjonalt BEGRENSET plattform (NBP), 364 000 kroner til hver statlig institusjon unntatt Nord universitet",
+          "belop": 364,
+          "post": "260.50",
+          "varig": false
+        }
       ],
       "andre_poster": [],
-      "proposisjon": {"navn": "Prop. 96 S (2025–2026)", "dato": "2026-05-12", "url": "https://www.regjeringen.no/no/dokumenter/prop.-96-s-20252026/id3159643/", "innstilling": "Innst. 450 S (2025–2026)", "sektortall_post_50": 31100},
-      "tildelingsbrev": {"ramme": 4281564, "dato": "2025-12-19", "url": "https://www.regjeringen.no/contentassets/bd39e5357ca74704a531e63be939a233/tildelingsbrev-2026-universitetet-i-tromso-norges-arktiske-universitet.pdf"},
+      "proposisjon": {
+        "navn": "Prop. 96 S (2025–2026)",
+        "dato": "2026-05-12",
+        "url": "https://www.regjeringen.no/no/dokumenter/prop.-96-s-20252026/id3159643/",
+        "innstilling": "Innst. 450 S (2025–2026)",
+        "sektortall_post_50": 31100
+      },
+      "tildelingsbrev": {
+        "ramme": 4281564,
+        "dato": "2025-12-19",
+        "url": "https://www.regjeringen.no/contentassets/bd39e5357ca74704a531e63be939a233/tildelingsbrev-2026-universitetet-i-tromso-norges-arktiske-universitet.pdf"
+      },
       "kilde": {
         "dokument": "Supplerende tildelingsbrev nr. 1 til statlige universiteter og høyskoler om tilleggsbevilgninger og omprioriteringer i statsbudsjettet 2026 (ref. 25/5029)",
         "url": "https://www.regjeringen.no/contentassets/35e08b38d60a46b9b1ef32ee999b853b/supplerende-tildelingsbrev-nr.-1-til-statlige-universiteter-og-hoyskoler-om-tilleggsbevilgninger-og-omprioriteringer-i-statsbuds.pdf",
@@ -81,5 +179,6 @@
         "status": "verifisert 2026-09-16: pkt. 1.1 «364 000 kroner til hver av de statlige universitetene og høyskolene (unntatt Nord universitet)»"
       }
     }
-  }
+  },
+  "sammenlignet_med": "Codex-leveransen uit-statsbudsjett/leveranser/uit-budsjett-2024-2026/grunnlag.json (2026-09-16): identiske forslag, vedtatt og RNB-endringer 2024–2026, identiske sha256 for hefter og RNB-brev."
 }
