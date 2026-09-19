@@ -11,3 +11,4 @@ Current skills:
 - `present-complex-results`
 - `prompt-engineering`
 - `readable-python-code`
+- `typesafe-ai`
