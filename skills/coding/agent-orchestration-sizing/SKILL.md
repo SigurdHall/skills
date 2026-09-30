@@ -27,10 +27,8 @@ Orchestration is a cost, not a default. Prefer the smallest shape that meets the
 - **Irreversible or shared-production step:** independent adversarial reviewers before a deploy, schema change or migration are worth their cost.
 - **Beyond one context:** the material cannot fit or be reasoned about in one agent.
 
-**Pure build:** when the user has already decided the design, the job is to build it. Do no planning, no extra proposals, no judges and no separate review. The builder runs its own tests and validation. Add one reviewer subagent only for a schema change, a migration or an irreversible step in shared production, and never a workflow for it.
-
 **Not a workflow:**
-- One build plus one review. Use one subagent, and a reviewer only under the pure-build exception above.
+- One build plus one review. Use one subagent, then one reviewer subagent.
 - Work the user is steering turn by turn. Their next message will redirect it; wait for the decision, or run a short inline mock-up.
 - Anything justified only by "ultracode is on".
 
