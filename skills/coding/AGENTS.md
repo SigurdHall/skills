@@ -5,6 +5,7 @@ model-assisted development workflows.
 
 Current skills:
 
+- `agent-orchestration-sizing`
 - `agent-work-order-handoff`
 - `explicit-data-flow`
 - `green-level2-containers`
