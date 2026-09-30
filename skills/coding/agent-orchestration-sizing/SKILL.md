@@ -1,6 +1,6 @@
 ---
 name: agent-orchestration-sizing
-description: Decide how much orchestration a task needs and which model and effort each agent gets, before calling the Agent tool or the Workflow tool. Chooses between doing the work inline, one subagent, or a multi-agent workflow, and sets model/effort per stage instead of filling every slot with copies of the main model. Use whenever you are about to spawn subagents or write a workflow script, when ultracode is on, when planning fan-out, judge panels, proposal rounds or adversarial review, and when the user asks about model tier, effort, token cost, "copies of yourself", or why everything became a workflow. Norwegian triggers: hvilken modell, hvilken effort, subagent eller workflow, for mange agenter, bruker workflows til alt. Not for writing the work order itself (agent-work-order-handoff) or choosing Codex (using-codex).
+description: Decide inline vs one subagent vs a workflow, and the model and effort for each agent, before calling the Agent or Workflow tool. Use when spawning subagents, writing workflow scripts, when ultracode is on, for fan-out, judge panels or adversarial review, and when asked about model tier, effort, token cost or why everything became a workflow (subagent eller workflow, hvilken modell). Not for writing work orders (agent-work-order-handoff) or choosing Codex (using-codex).
 ---
 
 # Agent orchestration sizing
