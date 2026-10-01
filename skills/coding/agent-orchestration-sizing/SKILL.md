@@ -52,6 +52,13 @@ Allowed Claude tiers: **Opus 5.5** (`opus`) and **Sonnet 5.5** (`sonnet`).
 | Standing project rules that name a tier (for example powerbi-modeling-mcp through Opus subagents) | as the rule says | as the rule says |
 
 Rules:
+- **Arbeidsordre → Sonnet, oppdrag → Opus** (user rule, 01.10.2026).
+  - An *arbeidsordre* (work order) is a direct change where the method is given. It goes to Sonnet.
+  - An *oppdrag* (mission) is a goal with an open method that needs judgment. It goes to Opus.
+  - A small oppdrag whose answer is a lookup also goes to Sonnet.
+  - An arbeidsordre that touches shared production (a schema change or a migration) is built by Sonnet and gets one Opus check.
+  - If Sonnet fails the same arbeidsordre twice, escalate to Opus and tell the user. It was probably an oppdrag.
+  - Tell the user when the rule seems to give the wrong answer.
 - Match the prompt to the tier. If you have already written the method (formulas, file list, exact steps), the judgment is done and what remains is mechanical, so use Sonnet. An Opus or Fable brief gives the goal, the constraints and the acceptance criteria, and leaves the method to the agent. A fully specified prompt on Opus pays for capability that is never used.
 - The Agent tool takes `model` but no per-call effort. An agent started that way runs at the session effort. When effort matters, use a Workflow `agent()` call or an agent type whose definition sets it.
 - Omitting `model` means a copy of the main model. Omit it only for stages in the inherit rows.
