@@ -52,6 +52,8 @@ Allowed Claude tiers: **Opus 5.5** (`opus`) and **Sonnet 5.5** (`sonnet`).
 | Standing project rules that name a tier (for example powerbi-modeling-mcp through Opus subagents) | as the rule says | as the rule says |
 
 Rules:
+- Match the prompt to the tier. If you have already written the method (formulas, file list, exact steps), the judgment is done and what remains is mechanical, so use Sonnet. An Opus or Fable brief gives the goal, the constraints and the acceptance criteria, and leaves the method to the agent. A fully specified prompt on Opus pays for capability that is never used.
+- The Agent tool takes `model` but no per-call effort. An agent started that way runs at the session effort. When effort matters, use a Workflow `agent()` call or an agent type whose definition sets it.
 - Omitting `model` means a copy of the main model. Omit it only for stages in the inherit rows.
 - Set `model` and `effort` explicitly on every other `agent()` call and Agent tool call. In a workflow, also add `model` to that phase in `meta.phases`.
 - Cross-family review (Codex) goes through `using-codex`, not through this table.
