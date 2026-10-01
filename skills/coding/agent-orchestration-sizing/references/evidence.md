@@ -22,3 +22,8 @@ Dated observations. Add a line when a run says something about shape, tier or ef
 - **Duplicate agent:** answering a workflow builder's question with SendMessage resumed it as a second background agent. Two copies edited `tr_maal.py` at once until the copy was stopped with TaskStop.
 - **Agents refusing the task:** in a resumed workflow, the data, method and judge agents refused because the user's latest message was an unrelated question. Quoting the user's request verbatim in the prompt fixed it.
 - **Production review paid off again:** the Opus reviewer of the søknad silver branch found no blockers and flagged a changed periodisation rule for explicit acceptance, plus seven minor gaps (an empty comment, the 2099 deadline placeholder, a missing phase guard). All were fixed before deploy.
+- **After the fix, same day:** three workflows ran with the new rules.
+  - R2a, knappetips and toppteksten: 1 Sonnet builder and 1 Opus reviewer. Clean in the first round.
+  - M2, søknad measures and palette in the model: 1 Sonnet builder and 1 Opus reviewer. Clean in the first round, with every answer-key number matched against the live model.
+  - R2b, palette, the Søknader view and a new report page: 4 Sonnet and 4 Opus. Two Sonnet builders, then a Sonnet fixer, then an Opus fixer after the second failed review (the escalation rule), and 3 Opus reviews. The last review was clean.
+  - Sonnet builders with full specs held up, and the escalation step was needed only for the largest round.
