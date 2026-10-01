@@ -1,6 +1,6 @@
 ---
 name: agent-orchestration-sizing
-description: Decide inline vs one subagent vs a workflow, and the model and effort for each agent, before calling the Agent or Workflow tool. Use when spawning subagents, writing workflow scripts, when ultracode is on, for fan-out, judge panels or adversarial review, and when asked about model tier, effort, token cost or why everything became a workflow (subagent eller workflow, hvilken modell). Not for writing work orders (agent-work-order-handoff) or choosing Codex (using-codex).
+description: Load before EVERY Agent tool call and EVERY Workflow script, and before loading workflow-authoring. Decides inline vs one subagent vs a workflow, and sets model and effort on every agent() and Agent call (Sonnet for work orders, builders, fixers, Fabric/query runners with a given plan, docs; Opus for open missions, judges, reviewers, synthesis). Use when spawning or fanning out subagents, writing or resuming a workflow script, setting agent() opts, when ultracode is on, for judge panels, build→review→fix loops, adversarial or production review, and when the user asks about model tier, effort, token cost, why agents ran on Opus, or why everything became a workflow. Norwegian triggers: subagent eller workflow, hvilken modell, Sonnet eller Opus, arbeidsordre, oppdrag, modellvalg, effort, «bare opus-agenter». Not for writing the work order text itself (agent-work-order-handoff) or choosing Codex (using-codex).
 ---
 
 # Agent orchestration sizing
@@ -43,12 +43,15 @@ Allowed Claude tiers: **Opus 5.5** (`opus`) and **Sonnet 5.5** (`sonnet`).
 | Stage | Model | Effort |
 |---|---|---|
 | Mechanical execution: run tests or scripts, render mock-ups, regenerate files, collect outputs | sonnet | low–medium |
+| Single external-system runner with a given query or deploy plan (Fabric DAX/SQL, REST) | sonnet | medium |
 | Retrieval: docs lookup, schema or capability lookup, grep sweeps | sonnet | medium |
 | Documentation in an existing house style (for example report guidelines) | sonnet | medium |
 | Many parallel proposal generators in a judge panel | sonnet | medium–high |
-| Implementation with judgment: notebook, model or code changes | inherit (opus) | default |
+| Implementation, arbeidsordre: the prompt gives files, method and acceptance criteria (generators, notebooks, TMDL, code) | sonnet | medium–high |
+| Fixer in a build → review → fix loop | sonnet | medium–high |
+| Implementation, oppdrag: goal and constraints only, the method is open | opus | default |
 | Judges, adversarial review, verification before production | opus | high |
-| Synthesis and final decision | inherit (opus) | default |
+| Synthesis, design of a query plan or method, final decision | opus | high |
 | Standing project rules that name a tier (for example powerbi-modeling-mcp through Opus subagents) | as the rule says | as the rule says |
 
 Rules:
@@ -61,8 +64,11 @@ Rules:
   - Tell the user when the rule seems to give the wrong answer.
 - Match the prompt to the tier. If you have already written the method (formulas, file list, exact steps), the judgment is done and what remains is mechanical, so use Sonnet. An Opus or Fable brief gives the goal, the constraints and the acceptance criteria, and leaves the method to the agent. A fully specified prompt on Opus pays for capability that is never used.
 - The Agent tool takes `model` but no per-call effort. An agent started that way runs at the session effort. When effort matters, use a Workflow `agent()` call or an agent type whose definition sets it.
-- Omitting `model` means a copy of the main model. Omit it only for stages in the inherit rows.
-- Set `model` and `effort` explicitly on every other `agent()` call and Agent tool call. In a workflow, also add `model` to that phase in `meta.phases`.
+- **Never omit `model`.** Omitting it means a copy of the main model, which is Opus in these sessions. The Workflow tool's own guidance ("default to omitting it") does not apply here. On 01.10.2026, 23 of 33 workflow agents ran on Opus because builders, fixers and runners had no `model`, and about 14 of them were Sonnet work.
+- Set `model` and `effort` explicitly on every `agent()` call. Set `model` on every Agent tool call. In a workflow, also add `model` to each phase in `meta.phases`.
+- **Ultracode adds Opus reviewers and judges, not Opus builders.** It never turns an arbeidsordre into an Opus job.
+- A detailed spec (exact files, formulas, item list such as C1–C8) is an arbeidsordre even when it is long. Length is not judgment.
+- A fixer runs on Sonnet. Escalate the fixer to Opus only after two review rounds have failed, and tell the user.
 - Cross-family review (Codex) goes through `using-codex`, not through this table.
 - When a choice is uncertain and recurs, measure it instead of arguing it. The `workflows` repo binds roles to model and effort in profiles (ADR 0005), and its `benchmark` flow scores a model matrix against a hidden answer key.
 
@@ -70,8 +76,13 @@ Rules:
 
 1. Name the shape and the criterion that justifies it.
 2. Estimate agents and tokens. Keep a workflow under about 10 agents unless the user asked for scale.
-3. Give each agent its tier and effort from the table, and write in each prompt whether it may call external systems and how many calls it gets.
+3. Give each agent its tier and effort from the table, and write in each prompt whether it may call external systems and how many calls it gets. Before the Workflow or Agent call, write a short table in the message: agent, model, effort, arbeidsordre or oppdrag, and why. A builder or runner without `sonnet` needs a written reason.
 4. For a proposal or judge round, check that the user is not mid-decision. If they are, show one inline mock-up first.
-5. After the run, report agents used, tokens and what the verification found. Add a line to `references/evidence.md` when the outcome says something about sizing.
+5. After the run, report agents used per model, tokens and what the verification found. Add a line to `references/evidence.md` when the outcome says something about sizing.
+
+## 4. While a workflow runs
+
+- Do not answer a workflow agent with SendMessage. It resumes the agent as a separate background copy, and the copy works in the same files as the original. Put the answer in the spec of the next run, or let the review and fix rounds handle it. If it has happened, find the copy with ListAgents and stop it with TaskStop.
+- An agent inside a workflow sees the session's latest user message. If that message is unrelated (for example "er rc på?"), quote the user's actual request in the prompt, or the agent may refuse the task as unrequested.
 
 See `references/evidence.md` for dated observations behind these rules.
