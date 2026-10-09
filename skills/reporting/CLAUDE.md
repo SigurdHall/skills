@@ -18,7 +18,7 @@ Categories:
 
 Current skills:
 
-- powerbi: `powerbi-pbip`, `semantic-model-metadata`
+- powerbi: `powerbi-pbip`, `semantic-model-metadata`, `okonomimodell-sporringer`
 - presentation: `html-report-builder`, `presentation-factory`, `uit-deck-generator`
 - orchestration: `design-bi-report-wireframes`, `pbip-full-report`, `powerbi-report-production-loop`, `semantic-model-migration`
 - fabric: `fabric-documentation` (hub) + doc-type skills
@@ -43,6 +43,9 @@ Current skills:
 - Report layout, MCP/Desktop available → `powerbi-report-authoring` (Fabric) +
   UiT theme/labels from `norms/uit-powerbi-reporting`.
 - Offline / no MCP, raw PBIP/PBIR/TMDL edit → `powerbi/powerbi-pbip` (fallback).
+- Any DAX query against Okonomimodell (control, measure test, smoke test, data
+  exploration) → `powerbi/okonomimodell-sporringer` first: PPU copy by default,
+  live F8 model only for 5 small smoke-test calls per day.
 - Build a complete report end to end → `orchestration/pbip-full-report`, pulling
   mechanics from Fabric skills.
 - Design or regenerate a report across Power BI, React, and/or HTML →
