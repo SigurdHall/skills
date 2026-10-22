@@ -1,6 +1,6 @@
 ---
 name: okonomimodell-sporringer
-description: SKAL brukes før alle DAX-spørringer mot Okonomimodell, enten formålet er kontroll, verifisering, test av mål, røyktest etter deploy eller utforsking av sammenhenger i dataene. Ruter all DAX til PPU-kopien (okonomimodell_ppu), deler opp eller flytter til SQL-endepunktet når spørringen sprenger minnetaket, og slipper bare 5 små røyktestkall per dag mot den levende modellen på F8. Triggere er kontroller mot økonomimodellen, sjekk tallene, test målet, utforsk dataene, finn sammenheng, røyktest, deploy-sjekk, executeQueries, DAX mot Okonomimodell og okonomimodell_ppu. Ikke for modellendringer (semantic-model-authoring) eller rapportlayout.
+description: SKAL brukes før alle DAX-spørringer mot Okonomimodell, enten formålet er kontroll, verifisering, test av mål, røyktest etter deploy eller utforsking av sammenhenger i dataene. Ruter all DAX til PPU-kopiene (okonomimodell_ppu, og ledelsesrapportmodell_ppu for målene til Ledelsesrapport økonomidata), deler opp eller flytter til SQL-endepunktet når spørringen sprenger minnetaket, og slipper bare 5 små røyktestkall per dag mot den levende modellen på F8. Triggere er kontroller mot økonomimodellen, sjekk tallene, test målet, utforsk dataene, finn sammenheng, røyktest, deploy-sjekk, executeQueries, DAX mot Okonomimodell og okonomimodell_ppu. Ikke for modellendringer (semantic-model-authoring) eller rapportlayout.
 ---
 
 # Spørringer mot Okonomimodell
@@ -12,9 +12,10 @@ ID-er, vertsnavn og de målte spørringene står i `references/private/okonomimo
 ## Ruting
 
 1. **PPU er standard.** Alle kontroller, mål-tester og utforsking går mot `okonomimodell_ppu`. Den er en importkopi som genereres fra Okonomimodell sin TMDL og oppdateres daglig fra samme gold-data. PPU belaster ikke F8.
-2. **Mål som ikke er deployet til PPU ennå**, testes med `DEFINE MEASURE` foran `EVALUATE` mot PPU. Definer hele kjeden, fordi modellmål ikke ser skyggede definisjoner.
-3. **Minnefeil på PPU** («Resource Governance … memory limit»): del spørringen opp etter år, `dim_periode[periode_aar]`, og kjør år for år. Feiler ett år også, skriv spørringen som aggregert T-SQL mot SQL-endepunktet til gold-lakehouset. Den regnes som bakgrunns-CU.
-4. **F8 bare for røyktest og deploy.** Høyst 5 kall per dag. Hvert kall skal være av klasse S (se under) og må først være kjørt på PPU. Skriptet håndhever begge deler.
+2. **Rapportmålene går til `ledelsesrapportmodell_ppu`.** Etter fase 10 i planen for egen modell ligger målene og hjelpetabellene til Ledelsesrapport økonomidata bare i Ledelsesrapportmodell, ikke i Okonomimodell. De testes mot importkopien `ledelsesrapportmodell_ppu` med `--mal ledelse`. Røyktester mot Ledelsesrapportmodell på F8 går gjennom `tr_test.py` i uit-powerbi-okonomi, som spør den modellen som standard. Grensen på 5 kall per dag gjelder også der.
+3. **Mål som ikke er deployet til PPU ennå**, testes med `DEFINE MEASURE` foran `EVALUATE` mot PPU. Definer hele kjeden, fordi modellmål ikke ser skyggede definisjoner.
+4. **Minnefeil på PPU** («Resource Governance … memory limit»): del spørringen opp etter år, `dim_periode[periode_aar]`, og kjør år for år. Feiler ett år også, skriv spørringen som aggregert T-SQL mot SQL-endepunktet til gold-lakehouset. Den regnes som bakgrunns-CU.
+5. **F8 bare for røyktest og deploy.** Høyst 5 kall per dag. Hvert kall skal være av klasse S (se under) og må først være kjørt på PPU. Skriptet håndhever begge deler.
 
 ## Størrelsesklasser
 
@@ -45,6 +46,7 @@ Spørringene legges i en `.dax`-fil som blokker. Hver blokk starter med `-- <KOD
 ```bash
 python -I scripts/okonomimodell_dax.py --fil sporringer.dax                 # PPU, alle blokker
 python -I scripts/okonomimodell_dax.py --fil sporringer.dax K03 K07         # PPU, utvalgte blokker
+python -I scripts/okonomimodell_dax.py --fil rapportmaal.dax --mal ledelse   # ledelsesrapportmodell_ppu
 python -I scripts/okonomimodell_dax.py --fil roykttest.dax --mal f8         # F8, bare klasse S som er kjørt på PPU
 ```
 

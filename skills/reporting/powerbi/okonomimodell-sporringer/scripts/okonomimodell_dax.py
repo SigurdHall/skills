@@ -142,7 +142,7 @@ def i_f8_ko(kall):
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--fil", required=True, type=pathlib.Path)
-    parser.add_argument("--mal", choices=["ppu", "f8"], default="ppu")
+    parser.add_argument("--mal", choices=["ppu", "ledelse", "f8"], default="ppu")  # ledelse: ledelsesrapportmodell_ppu
     parser.add_argument("--ut", type=pathlib.Path, default=pathlib.Path("ut") / "okonomimodell")
     parser.add_argument("koder", nargs="*")
     args = parser.parse_args()
@@ -150,7 +150,12 @@ def main() -> int:
     if not KONFIG.exists():
         print(f"Mangler {KONFIG}. Spør brukeren om arbeidsområde- og modell-id.", file=sys.stderr)
         return 2
-    modell = json.loads(KONFIG.read_text(encoding="utf-8"))[args.mal]
+    konfig = json.loads(KONFIG.read_text(encoding="utf-8"))
+    if args.mal not in konfig:
+        print(f"{KONFIG} mangler '{args.mal}'. ledelsesrapportmodell_ppu opprettes ved deploy av fase 10. Legg da inn workspace, dataset og navn.",
+              file=sys.stderr)
+        return 2
+    modell = konfig[args.mal]
 
     blokker = [(k, d) for k, d in les_blokker(args.fil.read_text(encoding="utf-8")) if not args.koder or k in args.koder]
 
