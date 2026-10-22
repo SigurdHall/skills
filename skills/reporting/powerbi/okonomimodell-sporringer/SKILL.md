@@ -1,6 +1,6 @@
 ---
 name: okonomimodell-sporringer
-description: SKAL brukes før alle DAX-spørringer mot Okonomimodell, enten formålet er kontroll, verifisering, test av mål, røyktest etter deploy eller utforsking av sammenhenger i dataene. Ruter all DAX til PPU-kopiene (okonomimodell_ppu, og ledelsesrapportmodell_ppu for målene til Ledelsesrapport økonomidata), deler opp eller flytter til SQL-endepunktet når spørringen sprenger minnetaket, og slipper bare 5 små røyktestkall per dag mot den levende modellen på F8. Triggere er kontroller mot økonomimodellen, sjekk tallene, test målet, utforsk dataene, finn sammenheng, røyktest, deploy-sjekk, executeQueries, DAX mot Okonomimodell og okonomimodell_ppu. Ikke for modellendringer (semantic-model-authoring) eller rapportlayout.
+description: SKAL brukes før alle DAX-spørringer mot Okonomimodell, enten formålet er kontroll, verifisering, test av mål, røyktest etter deploy eller utforsking av sammenhenger i dataene. Ruter all DAX til PPU-kopiene (okonomimodell_ppu, ledelsesrapportmodell_ppu for målene til Ledelsesrapport økonomidata, og bevcontroller for BEV-controllerrapporten), deler opp eller flytter til SQL-endepunktet når spørringen sprenger minnetaket, og slipper bare 5 små røyktestkall per dag mot den levende modellen på F8. Triggere er kontroller mot økonomimodellen, sjekk tallene, test målet, utforsk dataene, finn sammenheng, røyktest, deploy-sjekk, executeQueries, DAX mot Okonomimodell og okonomimodell_ppu. Ikke for modellendringer (semantic-model-authoring) eller rapportlayout.
 ---
 
 # Spørringer mot Okonomimodell
@@ -13,9 +13,10 @@ ID-er, vertsnavn og de målte spørringene står i `references/private/okonomimo
 
 1. **PPU er standard.** Alle kontroller, mål-tester og utforsking går mot `okonomimodell_ppu`. Den er en importkopi som genereres fra Okonomimodell sin TMDL og oppdateres daglig fra samme gold-data. PPU belaster ikke F8.
 2. **Rapportmålene går til `ledelsesrapportmodell_ppu`.** Etter fase 10 i planen for egen modell ligger målene og hjelpetabellene til Ledelsesrapport økonomidata bare i Ledelsesrapportmodell, ikke i Okonomimodell. De testes mot importkopien `ledelsesrapportmodell_ppu` med `--mal ledelse`. Røyktester mot Ledelsesrapportmodell på F8 går gjennom `tr_test.py` i uit-powerbi-okonomi, som spør den modellen som standard. Grensen på 5 kall per dag gjelder også der.
-3. **Mål som ikke er deployet til PPU ennå**, testes med `DEFINE MEASURE` foran `EVALUATE` mot PPU. Definer hele kjeden, fordi modellmål ikke ser skyggede definisjoner.
-4. **Minnefeil på PPU** («Resource Governance … memory limit»): del spørringen opp etter år, `dim_periode[periode_aar]`, og kjør år for år. Feiler ett år også, skriv spørringen som aggregert T-SQL mot SQL-endepunktet til gold-lakehouset. Den regnes som bakgrunns-CU.
-5. **F8 bare for røyktest og deploy.** Høyst 5 kall per dag. Hvert kall skal være av klasse S (se under) og må først være kjørt på PPU. Skriptet håndhever begge deler.
+3. **BEV-controllerrapporten har egne modeller.** `bevcontroller` er importkopien i PPU for utvikling og tester, og kjøres med `--mal bevcontroller`. `bevcontroller-f8` er produksjonsmodellen (Direct Lake på samme F8-kapasitet som Okonomimodell) og kjøres med `--mal bevcontroller-f8`. ID-ene ligger i `okonomimodell.json`.
+4. **Mål som ikke er deployet til PPU ennå**, testes med `DEFINE MEASURE` foran `EVALUATE` mot PPU. Definer hele kjeden, fordi modellmål ikke ser skyggede definisjoner.
+5. **Minnefeil på PPU** («Resource Governance … memory limit»): del spørringen opp etter år, `dim_periode[periode_aar]`, og kjør år for år. Feiler ett år også, skriv spørringen som aggregert T-SQL mot SQL-endepunktet til gold-lakehouset. Den regnes som bakgrunns-CU.
+6. **F8 bare for røyktest og deploy.** Høyst 5 kall per dag. Hvert kall skal være av klasse S (se under) og må først være kjørt på PPU-målet som hører til: `f8` mot `ppu`, `bevcontroller-f8` mot `bevcontroller`. `bevcontroller-f8` deler F8-budsjettet med `f8`, så de to målene bruker til sammen 5 kall per dag. Skriptet håndhever alt dette.
 
 ## Størrelsesklasser
 
@@ -47,14 +48,21 @@ Spørringene legges i en `.dax`-fil som blokker. Hver blokk starter med `-- <KOD
 python -I scripts/okonomimodell_dax.py --fil sporringer.dax                 # PPU, alle blokker
 python -I scripts/okonomimodell_dax.py --fil sporringer.dax K03 K07         # PPU, utvalgte blokker
 python -I scripts/okonomimodell_dax.py --fil rapportmaal.dax --mal ledelse   # ledelsesrapportmodell_ppu
-python -I scripts/okonomimodell_dax.py --fil roykttest.dax --mal f8         # F8, bare klasse S som er kjørt på PPU
+python -I scripts/okonomimodell_dax.py --fil rapportmaal.dax --mal bevcontroller   # bevcontroller (PPU)
+python -I scripts/okonomimodell_dax.py --fil roykttest.dax --mal f8         # F8, bare klasse S som er kjørt på ppu
+python -I scripts/okonomimodell_dax.py --fil roykttest.dax --mal bevcontroller-f8   # F8, bare klasse S som er kjørt på bevcontroller
+python -I scripts/okonomimodell_dax.py --fil kontroll.dax --forvent          # returkode 1 ved feil eller [ok] = False
 ```
 
-Skriptet kjører blokkene én og én og skriver en JSON-linje per blokk med sekunder, antall rader, de tre første radene, eventuell feil og klassen. Svarene lagres under `--ut`, som standard `./ut/okonomimodell`. Kjøringer mot PPU logges i `~/.fabric_ko/okonomimodell_ppu_logg.jsonl`. Mot F8 gjør skriptet dette:
+Skriptet kjører blokkene én og én og skriver en JSON-linje per blokk med sekunder, antall rader, de tre første radene, eventuell feil og klassen. Svarene lagres under `--ut`, som standard `./ut/okonomimodell`. Kjøringer mot `ppu` og `bevcontroller` logges i `~/.fabric_ko/okonomimodell_ppu_logg.jsonl`, med feltet `mal`. Loggrader uten `mal` regnes som `ppu`. Mot F8 (`f8` og `bevcontroller-f8`) gjør skriptet dette:
 
-- avviser spørringer som ikke er kjørt på PPU de siste 7 dagene med klasse S
-- teller kall per dag i `~/.fabric_ko/` og stopper etter 5
-- bruker den samme låsen og 20 s-pausen som `fabric-cu-glatting`
+- avviser spørringer som ikke er kjørt med klasse S de siste 7 dagene på det tilhørende PPU-målet (`ppu` for `f8`, `bevcontroller` for `bevcontroller-f8`)
+- teller kall per dag i `~/.fabric_ko/` og stopper etter 5, én teller for begge F8-målene
+- bruker den samme låsen og 20 s-pausen som `fabric-cu-glatting`, én kø for begge F8-målene
+
+`--forvent` gjør skriptet til en kontroll. Alle blokkene kjøres uansett, og returkoden er 1 hvis minst én blokk feilet eller har kolonnen `[ok]` (fra `ROW ( "ok", … )`) lik False eller 0 i en rad. Kodene som feilet står på en linje til stderr. Uten flagget er returkoden 0 etter kjøring.
+
+Miljøvariabelen `OKONOMIMODELL_KONFIG` overstyrer stien til konfigurasjonsfilen. Bruk den i en worktree, der `references/private/` ikke finnes.
 
 ## Rapportering
 

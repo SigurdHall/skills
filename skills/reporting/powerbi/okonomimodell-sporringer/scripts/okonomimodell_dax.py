@@ -1,7 +1,10 @@
-"""Kjør DAX-blokker mot okonomimodell_ppu (standard) eller den levende Okonomimodell på F8 (bare røyktest).
+"""Kjør DAX-blokker mot okonomimodell_ppu (standard), importkopiene ledelse og bevcontroller, eller F8 (bare røyktest).
 
-Blokkene i --fil starter med en linje "-- <KODE> <beskrivelse>". Mot F8 slippes bare spørringer som er kjørt på PPU
-de siste 7 dagene med klasse S, og høyst F8_PER_DAG kall per dag, gjennom samme kø og pause som fabric-cu-glatting.
+Blokkene i --fil starter med en linje "-- <KODE> <beskrivelse>". Mot F8 (f8 og bevcontroller-f8) slippes bare spørringer
+som er kjørt som klasse S de siste 7 dagene på det tilhørende PPU-målet (F8_GODKJENNES_MOT), og høyst F8_PER_DAG kall
+per dag til sammen for begge F8-målene, gjennom samme kø og pause som fabric-cu-glatting.
+Med --forvent returnerer skriptet 1 hvis en blokk feiler eller har [ok] = False i en rad.
+Miljøvariabelen OKONOMIMODELL_KONFIG overstyrer stien til konfigurasjonsfilen.
 """
 from __future__ import annotations
 
@@ -24,6 +27,7 @@ else:
 
 SKILL = pathlib.Path(__file__).resolve().parent.parent
 KONFIG = SKILL / "references" / "private" / "okonomimodell.json"
+KONFIG_MILJOEVARIABEL = "OKONOMIMODELL_KONFIG"
 AZ = r"C:\Program Files\Microsoft SDKs\Azure\CLI2\wbin\az.cmd" if os.name == "nt" else "az"
 
 KO = pathlib.Path.home() / ".fabric_ko"
@@ -31,6 +35,10 @@ PPU_LOGG = KO / "okonomimodell_ppu_logg.jsonl"
 F8_PER_DAG = 5
 F8_PAUSE = 20.0
 GYLDIG_PPU_DAGER = 7
+# F8-målene deler dagstelleren og køen (samme kapasitet), men hvert godkjennes mot sitt eget PPU-mål.
+F8_GODKJENNES_MOT = {"f8": "ppu", "bevcontroller-f8": "bevcontroller"}
+LOGGES_MAL = frozenset(F8_GODKJENNES_MOT.values())
+MAL = ["ppu", "ledelse", "bevcontroller", *F8_GODKJENNES_MOT]
 S_SEKUNDER = 1.0
 S_RADER = 500
 
@@ -59,11 +67,27 @@ def klasse(sekunder: float, rader: int | None, feil) -> str:
     return "L"
 
 
-def godkjent_for_f8(dax: str, logg: list[dict], naa: float) -> bool:
-    """Spørringen må ha gått som klasse S på PPU de siste GYLDIG_PPU_DAGER dagene."""
+def godkjent_for_f8(dax: str, logg: list[dict], naa: float, ppu_mal: str = "ppu") -> bool:
+    """Spørringen må ha gått som klasse S på ppu_mal de siste GYLDIG_PPU_DAGER dagene.
+
+    Loggrader uten "mal" er skrevet før bevcontroller fantes og regnes som ppu.
+    """
     n = noekkel(dax)
     grense = naa - GYLDIG_PPU_DAGER * 86400
-    return any(r["noekkel"] == n and r["klasse"] == "S" and r["tid"] >= grense for r in logg)
+    return any(r["noekkel"] == n and r["klasse"] == "S" and r["tid"] >= grense and r.get("mal", "ppu") == ppu_mal
+               for r in logg)
+
+
+def blokk_ok(svar: dict) -> bool:
+    """False hvis blokken feilet, eller hvis kolonnen [ok] (ROW("ok", ...)) er False eller 0 i minst én rad."""
+    if svar["feil"]:
+        return False
+    return not any("[ok]" in rad and rad["[ok]"] in (False, 0) for rad in svar.get("alle") or [])
+
+
+def konfig_sti() -> pathlib.Path:
+    """OKONOMIMODELL_KONFIG overstyrer standardstien (worktrees har ikke den private mappen)."""
+    return pathlib.Path(os.environ.get(KONFIG_MILJOEVARIABEL) or KONFIG)
 
 
 def les_logg() -> list[dict]:
@@ -139,31 +163,38 @@ def i_f8_ko(kall):
         os.close(fd)
 
 
-def main() -> int:
+def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--fil", required=True, type=pathlib.Path)
-    parser.add_argument("--mal", choices=["ppu", "ledelse", "f8"], default="ppu")  # ledelse: ledelsesrapportmodell_ppu
+    # ledelse: ledelsesrapportmodell_ppu. bevcontroller: importkopi i PPU. bevcontroller-f8: produksjonsmodellen på F8.
+    parser.add_argument("--mal", choices=MAL, default="ppu")
     parser.add_argument("--ut", type=pathlib.Path, default=pathlib.Path("ut") / "okonomimodell")
+    parser.add_argument("--forvent", action="store_true",
+                        help="Returner 1 hvis en blokk feiler eller har [ok] = False i en rad")
     parser.add_argument("koder", nargs="*")
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
 
-    if not KONFIG.exists():
-        print(f"Mangler {KONFIG}. Spør brukeren om arbeidsområde- og modell-id.", file=sys.stderr)
+    konfig_fil = konfig_sti()
+    if not konfig_fil.exists():
+        print(f"Mangler {konfig_fil}. Spør brukeren om arbeidsområde- og modell-id.", file=sys.stderr)
         return 2
-    konfig = json.loads(KONFIG.read_text(encoding="utf-8"))
+    konfig = json.loads(konfig_fil.read_text(encoding="utf-8"))
     if args.mal not in konfig:
-        print(f"{KONFIG} mangler '{args.mal}'. ledelsesrapportmodell_ppu opprettes ved deploy av fase 10. Legg da inn workspace, dataset og navn.",
+        print(f"{konfig_fil} mangler nøkkelen '{args.mal}'. Legg inn workspace, dataset og navn for '{args.mal}'.",
               file=sys.stderr)
         return 2
     modell = konfig[args.mal]
 
     blokker = [(k, d) for k, d in les_blokker(args.fil.read_text(encoding="utf-8")) if not args.koder or k in args.koder]
 
-    if args.mal == "f8":
+    er_f8 = args.mal in F8_GODKJENNES_MOT
+    if er_f8:
+        ppu_mal = F8_GODKJENNES_MOT[args.mal]
         logg = les_logg()
-        avvist = [k for k, d in blokker if not godkjent_for_f8(d, logg, time.time())]
+        avvist = [k for k, d in blokker if not godkjent_for_f8(d, logg, time.time(), ppu_mal)]
         if avvist:
-            print(f"Avvist mot F8, ikke kjørt som klasse S på PPU siste {GYLDIG_PPU_DAGER} dager: {avvist}", file=sys.stderr)
+            print(f"Avvist mot F8, ikke kjørt som klasse S på {ppu_mal} siste {GYLDIG_PPU_DAGER} dager: {avvist}",
+                  file=sys.stderr)
             return 3
         teller = f8_teller_sti()
         brukt = json.loads(teller.read_text())["kall"] if teller.exists() else 0
@@ -173,8 +204,9 @@ def main() -> int:
 
     token = hent_token()
     args.ut.mkdir(parents=True, exist_ok=True)
+    feilet = []
     for kode, dax in blokker:
-        if args.mal == "f8":
+        if er_f8:
             svar = i_f8_ko(lambda: kjor_dax(token, modell["workspace"], modell["dataset"], dax))
             KO.mkdir(exist_ok=True)
             teller = f8_teller_sti()
@@ -184,10 +216,10 @@ def main() -> int:
             svar = kjor_dax(token, modell["workspace"], modell["dataset"], dax)
 
         k = klasse(svar["sekunder"], svar["rader"], svar["feil"])
-        if args.mal == "ppu":
+        if args.mal in LOGGES_MAL:
             KO.mkdir(exist_ok=True)
             with PPU_LOGG.open("a", encoding="utf-8") as f:
-                f.write(json.dumps({"noekkel": noekkel(dax), "kode": kode, "klasse": k,
+                f.write(json.dumps({"noekkel": noekkel(dax), "kode": kode, "mal": args.mal, "klasse": k,
                                     "sekunder": svar["sekunder"], "tid": time.time()}) + "\n")
         hint = ""
         if svar["feil"] and "Resource Governance" in str(svar["feil"]):
@@ -199,6 +231,12 @@ def main() -> int:
         print(json.dumps({"kode": kode, "mal": args.mal, "klasse": k, "sekunder": svar["sekunder"],
                           "rader": svar["rader"], "forste": svar["forste"], "feil": svar["feil"], "hint": hint},
                          ensure_ascii=False), flush=True)
+        if not blokk_ok(svar):
+            feilet.append(kode)
+
+    if args.forvent and feilet:
+        print(f"Forventning brutt i: {', '.join(feilet)}", file=sys.stderr)
+        return 1
     return 0
 
 
