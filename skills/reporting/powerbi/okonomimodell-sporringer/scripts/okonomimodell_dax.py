@@ -1,6 +1,6 @@
-"""Kjør DAX-blokker mot okonomimodell_ppu (standard), importkopiene ledelse og bevcontroller, eller F8 (bare røyktest).
+"""Kjør DAX-blokker mot okonomimodell_ppu (standard), importkopiene ledelse, bevcontroller og fellesutgifter, eller F8 (bare røyktest).
 
-Blokkene i --fil starter med en linje "-- <KODE> <beskrivelse>". Mot F8 (f8 og bevcontroller-f8) slippes bare spørringer
+Blokkene i --fil starter med en linje "-- <KODE> <beskrivelse>". Mot F8 (f8, bevcontroller-f8 og fellesutgifter-f8) slippes bare spørringer
 som er kjørt som klasse S de siste 7 dagene på det tilhørende PPU-målet (F8_GODKJENNES_MOT), og høyst F8_PER_DAG kall
 per dag til sammen for begge F8-målene, gjennom samme kø og pause som fabric-cu-glatting.
 Med --forvent returnerer skriptet 1 hvis en blokk feiler eller har [ok] = False i en rad.
@@ -36,9 +36,9 @@ F8_PER_DAG = 5
 F8_PAUSE = 20.0
 GYLDIG_PPU_DAGER = 7
 # F8-målene deler dagstelleren og køen (samme kapasitet), men hvert godkjennes mot sitt eget PPU-mål.
-F8_GODKJENNES_MOT = {"f8": "ppu", "bevcontroller-f8": "bevcontroller"}
+F8_GODKJENNES_MOT = {"f8": "ppu", "bevcontroller-f8": "bevcontroller", "fellesutgifter-f8": "fellesutgifter"}
 LOGGES_MAL = frozenset(F8_GODKJENNES_MOT.values())
-MAL = ["ppu", "ledelse", "bevcontroller", *F8_GODKJENNES_MOT]
+MAL = ["ppu", "ledelse", "bevcontroller", "fellesutgifter", *F8_GODKJENNES_MOT]
 S_SEKUNDER = 1.0
 S_RADER = 500
 
@@ -167,6 +167,7 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--fil", required=True, type=pathlib.Path)
     # ledelse: ledelsesrapportmodell_ppu. bevcontroller: importkopi i PPU. bevcontroller-f8: produksjonsmodellen på F8.
+    # fellesutgifter: fellesutgifter_ppu (importkopi i PPU). fellesutgifter-f8: Fellesutgiftsmodell på F8.
     parser.add_argument("--mal", choices=MAL, default="ppu")
     parser.add_argument("--ut", type=pathlib.Path, default=pathlib.Path("ut") / "okonomimodell")
     parser.add_argument("--forvent", action="store_true",

@@ -67,7 +67,10 @@ class F8GodkjenningTests(unittest.TestCase):
         return rad
 
     def test_mapping_from_f8_target_to_ppu_target_is_explicit(self) -> None:
-        self.assertEqual({"f8": "ppu", "bevcontroller-f8": "bevcontroller"}, modul.F8_GODKJENNES_MOT)
+        self.assertEqual(
+            {"f8": "ppu", "bevcontroller-f8": "bevcontroller", "fellesutgifter-f8": "fellesutgifter"},
+            modul.F8_GODKJENNES_MOT,
+        )
 
     def test_bevcontroller_f8_requires_class_s_on_bevcontroller(self) -> None:
         naa = time.time()
@@ -94,6 +97,15 @@ class F8GodkjenningTests(unittest.TestCase):
         self.assertNotIn("mal", gammel_rad)
         self.assertTrue(godkjent_for_f8(self.DAX, [gammel_rad], naa))
         self.assertTrue(godkjent_for_f8(self.DAX, [gammel_rad], naa, "ppu"))
+
+    def test_fellesutgifter_f8_requires_class_s_on_fellesutgifter(self) -> None:
+        naa = time.time()
+
+        self.assertTrue(godkjent_for_f8(self.DAX, [self.rad("fellesutgifter", naa=naa)], naa, "fellesutgifter"))
+        self.assertFalse(godkjent_for_f8(self.DAX, [self.rad("ppu", naa=naa)], naa, "fellesutgifter"))
+        self.assertFalse(godkjent_for_f8(self.DAX, [self.rad("bevcontroller", naa=naa)], naa, "fellesutgifter"))
+        self.assertFalse(godkjent_for_f8(self.DAX, [self.rad("fellesutgifter", naa=naa)], naa, "ppu"))
+        self.assertFalse(godkjent_for_f8(self.DAX, [self.rad("fellesutgifter", "M", naa=naa)], naa, "fellesutgifter"))
 
     def test_bevcontroller_f8_keeps_the_class_and_age_rules(self) -> None:
         naa = time.time()
@@ -147,7 +159,7 @@ class KonfigStiTests(unittest.TestCase):
 class MainTests(unittest.TestCase):
     """Kjører main() mot en falsk kjor_dax. Ingen nettkall, ingen token."""
 
-    MAL = ["ppu", "ledelse", "f8", "bevcontroller", "bevcontroller-f8"]
+    MAL = ["ppu", "ledelse", "f8", "bevcontroller", "bevcontroller-f8", "fellesutgifter", "fellesutgifter-f8"]
     OK = 'EVALUATE ROW ( "ok", TRUE ( ) )'
     FEIL_RAD = 'EVALUATE ROW ( "ok", FALSE ( ) )'
     FEIL_SVAR = "EVALUATE FEILER"
@@ -243,6 +255,31 @@ class MainTests(unittest.TestCase):
 
         self.assertEqual(["ppu", "bevcontroller"], [r["mal"] for r in rader])
         self.assertEqual(["K01", "K04"], [r["kode"] for r in rader])
+
+    def test_fellesutgifter_targets_are_valid_choices(self) -> None:
+        for mal in ("fellesutgifter", "fellesutgifter-f8"):
+            with self.subTest(mal=mal):
+                self.skriv_konfig(["ppu"])
+                rc, _, _ = self.kjor("--mal", mal)
+                self.assertEqual(2, rc)
+
+    def test_fellesutgifter_runs_are_logged_with_mal(self) -> None:
+        self.kjor("--mal", "fellesutgifter", "K01")
+
+        self.assertEqual(["fellesutgifter"], [r["mal"] for r in self.logg()])
+
+    def test_fellesutgifter_f8_runs_only_what_ran_as_s_on_fellesutgifter(self) -> None:
+        self.kjor("--mal", "ppu", "K01")
+        self.kall.clear()
+        self.assertEqual(3, self.kjor("--mal", "fellesutgifter-f8", "K01")[0])
+        self.assertEqual([], self.kall)
+
+        self.kjor("--mal", "fellesutgifter", "K01")
+        self.kall.clear()
+        rc, _, _ = self.kjor("--mal", "fellesutgifter-f8", "K01")
+
+        self.assertEqual(0, rc)
+        self.assertEqual([("ws-fellesutgifter-f8", "ds-fellesutgifter-f8", self.OK)], self.kall)
 
     def test_ledelse_runs_are_not_logged(self) -> None:
         self.kjor("--mal", "ledelse", "K01")
