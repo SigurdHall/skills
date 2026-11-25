@@ -1,6 +1,6 @@
 ---
 name: uit-powerbi-reporting
-description: Build or edit UiT Power BI finance/reporting artifacts, especially Tertialrapport, UiT/PowerBI templates, UiT økonomirapporter, finance dashboards, budget/accounting DAX, as-of reporting, report themes, color conventions, KPI card icons, reporting unit mappings, Rapporteringsenheter, cost center prefix logic, semantic model conventions, and user-facing labels for UiT finance dashboards. Use fabric-powerbi-report-doc instead when the task is to write Markdown documentation describing such a report rather than build or change it.
+description: Build or edit UiT Power BI finance/reporting artifacts, especially Tertialrapport, UiT/PowerBI templates, UiT økonomirapporter, finance dashboards, budget/accounting DAX, as-of reporting, report themes, color conventions, KPI card icons, reporting unit mappings, Rapporteringsenheter, cost center prefix logic, semantic model conventions, and user-facing labels for UiT finance dashboards. Also use before building or rebuilding any UiT økonomirapport page chrome (topptekst, filterlinje, valgknapper, KPI-kort, meny, «Sist oppdatert»): the Ledelsesrapport is the binding house-style reference. Use fabric-powerbi-report-doc instead when the task is to write Markdown documentation describing such a report rather than build or change it.
 ---
 
 # UiT Power BI Reporting
@@ -13,6 +13,8 @@ Mechanics (live model/report edits, MCP/Desktop, REST) belong to `skills-for-fab
 
 Typical repo paths:
 
+- `uit-powerbi-okonomi/scripts/tertialrapport` (Ledelsesrapport generators, the style reference)
+- `ws_okonomi_ppu_dev/verktoy/rapport` (Node report generators, render and click tests)
 - `UiT/PowerBI/Tertialrapport`
 - `UiT/PowerBI/templates`
 - `UiT/PowerBI/templates/images`
@@ -28,11 +30,16 @@ For UiT økonomirapporter, budget/accounting DAX, kontorelasjon4 logic, BEVAAR b
 
 Use this reference as the business definition source before changing measures, page filters, visual filters, or explanatory documentation in `UiT/PowerBI/Okonomi`. Do not copy private business content into committed skill files or public references.
 
-For UiT økonomirapport layout work, also read:
+## House Style: Ledelsesrapporten Is the Reference
 
-- `references/public/okonomi-template-layouts-all.html`
+For any new or rebuilt UiT økonomirapport (header, filter bar, choice buttons, KPI cards, panels, menu), read `references/public/husstil-ledelsesrapport.md` before writing a work order, a plan or any PBIR. It is binding and overrides generic design guidance from `powerbi-report-design`:
 
-Treat the file as the local layoutkatalog for report-page patterns. Use it to preserve the established UiT finance report chrome: `1600 x 900` canvas, header, title area, sidefilter/filtermeny pattern, card layout, graph layout, overlay filter menu, and full-canvas visual use. Do not treat the HTML file as report data or as a generated report product.
+1. Clone the Ledelsesrapport visuals listed there and rebind fields. Do not redraw them from prose rules such as "follow VP12", and do not copy helpers from other report generators.
+2. The header shows «Sist oppdatert» with date and time, never the period. A model without a timestamp gets `gold_status` through the model profile.
+3. A functional deviation (Filtrer button, bookmark buttons) keeps the Ledelsesrapport look.
+4. Before delivery, render the Ledelsesrapport and the new page at the same size and compare the top 340 px side by side. Static validation and click tests do not check style.
+
+`references/public/okonomi-template-layouts-all.html` is the older layoutkatalog (template catalogue, `1600 x 900`). Use it only for page patterns the Ledelsesrapport does not have. Do not treat the HTML file as report data or as a generated report product.
 
 ## UiT Template Rules
 
@@ -61,10 +68,9 @@ For UiT finance dashboards:
 
 Use these defaults unless the report or user request says otherwise:
 
-- Use `1600 x 900` page size for local UiT finance/reporting pages.
+- Use a `1920 x 960` canvas with FitToPage for UiT finance reports. Older `1600 x 900` templates are not the target size.
 - Keep Norwegian labels in report visuals, page names, slicers, and card titles.
-- Use UiT yellow `#F2A900` for accounting/regnskap when it is a semantic line/category.
-- Use UiT red `#CB333B` for approved/rektorgodkjent budget or risk/deviation semantics when the meaning is explicit.
+- Colors follow UiT's graphic profile only: yellow `#F2A900` is regnskap and merforbruk, dark blue `#003349` is budsjett hittil, blue `#007396` is årsbudsjett and mindreforbruk, light blue `#59BEC9` is prognose. Red `#CB333B` is reserved for Investeringer - KD and is not a budget or warning color.
 - Keep main trend graphs free of result-area filters when they are intended to show total selected report context; put kontorelasjon4 filters on cards or area-specific visuals.
 - For card groups showing result areas, make filters explicit on the visual and verify them statically in JSON.
 - Update the business logic documentation when DAX or report behavior changes the interpretation of accounting, budget, forecast, as-of dates, account exclusions, or filter semantics.
